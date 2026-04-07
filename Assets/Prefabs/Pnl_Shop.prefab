@@ -5595,7 +5595,7 @@ GameObject:
   - component: {fileID: 571843226825780117}
   - component: {fileID: 6966427211891348729}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Btn_Swap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5702,7 +5702,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 571843226825780117}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6508030175093634920}
+        m_TargetAssemblyTypeName: ShopFoodManager, Assembly-CSharp
+        m_MethodName: BuyBoost
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2201788568709413012
 GameObject:
   m_ObjectHideFlags: 0
@@ -10844,10 +10856,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OpenShop
-        m_Mode: 6
+      - m_Target: {fileID: 6508030175093634920}
+        m_TargetAssemblyTypeName: ShopFoodManager, Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -15753,7 +15765,7 @@ GameObject:
   - component: {fileID: 742033483890410450}
   - component: {fileID: 1746394674959282889}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Btn_Hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15860,7 +15872,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 742033483890410450}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6508030175093634920}
+        m_TargetAssemblyTypeName: ShopFoodManager, Assembly-CSharp
+        m_MethodName: BuyBoost
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4964919446475542161
 GameObject:
   m_ObjectHideFlags: 0
@@ -15951,6 +15975,7 @@ GameObject:
   - component: {fileID: 5230229877062333490}
   - component: {fileID: 2634112584835616513}
   - component: {fileID: 8169732649207598197}
+  - component: {fileID: 6508030175093634920}
   m_Layer: 5
   m_Name: Pnl_Shop
   m_TagString: Untagged
@@ -16016,6 +16041,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6508030175093634920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5596367526708480040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd76c7c6a16240499bc8f42842fb1e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopFoodManager
+  Txt_Coins: {fileID: 0}
 --- !u!1 &5598439290923751871
 GameObject:
   m_ObjectHideFlags: 0
@@ -16166,7 +16204,7 @@ GameObject:
   - component: {fileID: 6592118414618235257}
   - component: {fileID: 6014013441018068633}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Btn_undo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16273,7 +16311,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6592118414618235257}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6508030175093634920}
+        m_TargetAssemblyTypeName: ShopFoodManager, Assembly-CSharp
+        m_MethodName: BuyBoost
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5862665506197408718
 GameObject:
   m_ObjectHideFlags: 0
@@ -16352,7 +16402,7 @@ GameObject:
   - component: {fileID: 2289461719693017695}
   - component: {fileID: 176349064226152683}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Btn_WatchVideo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16459,7 +16509,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2289461719693017695}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6508030175093634920}
+        m_TargetAssemblyTypeName: ShopFoodManager, Assembly-CSharp
+        m_MethodName: WatchVideo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6192298363325422257
 GameObject:
   m_ObjectHideFlags: 0
@@ -16970,6 +17032,7 @@ RectTransform:
   m_Children:
   - {fileID: 5923670789056428018}
   - {fileID: 4423682928241963372}
+  - {fileID: 1503844418899544889}
   - {fileID: 1497228630948203327}
   - {fileID: 2011990116644795537}
   m_Father: {fileID: 5230229877062333490}
@@ -22342,3 +22405,133 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1001 &38160788086695468
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2299660869227127628}
+    m_Modifications:
+    - target: {fileID: 364137792526874600, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 205
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -150
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -250
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1479772398970460979, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_Name
+      value: Img_Coins
+      objectReference: {fileID: 0}
+    - target: {fileID: 1479772398970460979, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081332142242403554, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_Name
+      value: Txt_Coins
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955827189957658374, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_fontSize
+      value: 43.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955827189957658374, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b8b7ec989b2245de9aa26364c8788a1, type: 2}
+    - target: {fileID: 6955827189957658374, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 6399581052452292954, guid: 4b8b7ec989b2245de9aa26364c8788a1, type: 2}
+    - target: {fileID: 6955827189957658374, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+--- !u!224 &1503844418899544889 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1466248787104607509, guid: 6e138797417284507a5dfd24d18a2612, type: 3}
+  m_PrefabInstance: {fileID: 38160788086695468}
+  m_PrefabAsset: {fileID: 0}
