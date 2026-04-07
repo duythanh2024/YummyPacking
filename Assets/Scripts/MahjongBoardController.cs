@@ -6,7 +6,7 @@ public class MahjongBoardController : MonoBehaviour
 {
 
 public List<FoodTile>[] allTilesOnBoard = new List<FoodTile>[3];
-
+public Transform[] columns = new Transform[3]; // THÊM DÒNG NÀY
     private void Awake() {
         // Khởi tạo List cho từng cột
         for (int i = 0; i < 3; i++) {
@@ -107,5 +107,33 @@ public List<FoodTile>[] allTilesOnBoard = new List<FoodTile>[3];
     {
        
         UpdateClickableStates();
+    }
+    // --- HÀM KHÓA/MỞ KHÓA TOÀN BỘ ĐĨA ---
+    public void LockAllTiles(bool shouldLock)
+    {
+        // Duyệt qua 3 cột (Index 0, 1, 2)
+        for (int i = 0; i < allTilesOnBoard.Length; i++)
+        {
+            if (allTilesOnBoard[i] == null) continue;
+
+            // Duyệt qua từng đĩa FoodTile trong danh sách của cột đó
+            foreach (FoodTile tile in allTilesOnBoard[i])
+            {
+                if (tile != null)
+                {
+                    // Gán trạng thái khóa cho từng đĩa
+                    tile.isLocked = shouldLock;
+
+                    // (Tùy chọn) Hiệu ứng thị giác: Làm tối đĩa bị khóa
+                    SpriteRenderer sr = tile.tray.GetComponent<SpriteRenderer>();
+                    if (sr != null)
+                    {
+                        sr.color = shouldLock ? new Color(0.5f, 0.5f, 0.5f, 1f) : Color.white;
+                    }
+                }
+            }
+        }
+        
+        Debug.Log(shouldLock ? "Đã khóa toàn bộ đĩa trên bàn." : "Đã mở khóa toàn bộ đĩa.");
     }
 }

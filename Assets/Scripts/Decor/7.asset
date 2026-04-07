@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d607d440625694503b99def7000d6cd9, type: 3}
+  m_Name: 7
+  m_EditorClassIdentifier: Assembly-CSharp::DecoItem
+  id: 5
+  content: Revonate the exterior
+  cost: 2
+  prerequisiteIds: 0200000004000000
+  options:
+  - optionId: 0
+    optionName: tools
+    icon: {fileID: 21300000, guid: fa7ca61bb2a6249ab8a99b68671d8050, type: 3}
+    active: 0
+  - optionId: 1
+    optionName: tools
+    icon: {fileID: 21300000, guid: 8872a095b31f0476986b18a4feb83f8a, type: 3}
+    active: 0
+  - optionId: 2
+    optionName: tools
+    icon: {fileID: 21300000, guid: d1909177733574c07b758724142f7d92, type: 3}
+    active: 0

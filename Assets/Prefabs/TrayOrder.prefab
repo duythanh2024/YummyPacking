@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 644058828731738521}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6, y: 0, z: 0}
-  m_LocalScale: {x: 1.05401, y: 1.0306, z: 1}
+  m_LocalPosition: {x: -7, y: 0.26, z: 0}
+  m_LocalScale: {x: 1.04, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5361106124850931054}
@@ -81,12 +81,12 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 2217956d0b17a438d86d888f3c89eacc, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5686275}
+  m_Sprite: {fileID: 21300000, guid: 1de1ae88a09c54d22ac1974ef2953db2, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 7.95, y: 5.68}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -100,8 +100,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1347591022836974796}
+  - component: {fileID: 2570955453725333908}
   m_Layer: 0
-  m_Name: 1 (1)
+  m_Name: Slot4
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -122,6 +123,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5361106124850931054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2570955453725333908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406916239180551211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5aed7eba48e4b2a8949fd5166d1e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FoodSlot
+  isOccupied: 0
+  anchorPoint: {fileID: 1347591022836974796}
 --- !u!1 &1974201653719920186
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,8 +146,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3610813724787793688}
+  - component: {fileID: 4467505206051482927}
   m_Layer: 0
-  m_Name: 2 (1)
+  m_Name: Slot5
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -153,6 +169,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5361106124850931054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4467505206051482927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974201653719920186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5aed7eba48e4b2a8949fd5166d1e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FoodSlot
+  isOccupied: 0
+  anchorPoint: {fileID: 3610813724787793688}
 --- !u!1 &2156042959851058975
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,8 +192,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5032668781931219498}
+  - component: {fileID: 1437267046387457895}
   m_Layer: 0
-  m_Name: 3 (1)
+  m_Name: Slot6
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -184,6 +215,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5361106124850931054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1437267046387457895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156042959851058975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5aed7eba48e4b2a8949fd5166d1e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FoodSlot
+  isOccupied: 0
+  anchorPoint: {fileID: 5032668781931219498}
 --- !u!1 &2969253138323826146
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,8 +238,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1485241152325181111}
+  - component: {fileID: 720751079823863146}
   m_Layer: 0
-  m_Name: 1
+  m_Name: Slot1
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -215,6 +261,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5361106124850931054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &720751079823863146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969253138323826146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5aed7eba48e4b2a8949fd5166d1e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  isOccupied: 0
+  anchorPoint: {fileID: 1485241152325181111}
 --- !u!1 &6749873746815455872
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,13 +327,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8900d6c6bfc12462780cdc4131cf0620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  transformsTrayOrder:
-  - {fileID: 1485241152325181111}
-  - {fileID: 5775468313011928705}
-  - {fileID: 6028369980103447500}
-  - {fileID: 1347591022836974796}
-  - {fileID: 3610813724787793688}
-  - {fileID: 5032668781931219498}
+  foodSlots:
+  - {fileID: 720751079823863146}
+  - {fileID: 499690331978255222}
+  - {fileID: 4245782749639939081}
+  - {fileID: 2570955453725333908}
+  - {fileID: 4467505206051482927}
+  - {fileID: 1437267046387457895}
   locks: {fileID: 644058828731738521}
 --- !u!212 &9157970420535770204
 SpriteRenderer:
@@ -324,7 +384,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 0dc80b6ca48cf439880913729ce39a6e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d36a585e1558945429efa3763fc58463, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -343,8 +403,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5775468313011928705}
+  - component: {fileID: 499690331978255222}
   m_Layer: 0
-  m_Name: 2
+  m_Name: Slot2
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -365,6 +426,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5361106124850931054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &499690331978255222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8369734380957732864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5aed7eba48e4b2a8949fd5166d1e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FoodSlot
+  isOccupied: 0
+  anchorPoint: {fileID: 5775468313011928705}
 --- !u!1 &8563730327447906711
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,8 +449,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6028369980103447500}
+  - component: {fileID: 4245782749639939081}
   m_Layer: 0
-  m_Name: 3
+  m_Name: Slot3
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -396,3 +472,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5361106124850931054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4245782749639939081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8563730327447906711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5aed7eba48e4b2a8949fd5166d1e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FoodSlot
+  isOccupied: 0
+  anchorPoint: {fileID: 6028369980103447500}

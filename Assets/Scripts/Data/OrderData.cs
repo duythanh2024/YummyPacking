@@ -15,6 +15,7 @@ public class OrderData : ScriptableObject
     
     [Tooltip("Kích thước khay Bento (Cột x Hàng). VD: 2x3")]
     public Vector2Int targetGridSize = new Vector2Int(2, 3);
+    public int typeTray=0; //0: 2*3, 1: 3*3, 2: luc giac
 
     [Header("Placement Strategy")]
     [Tooltip("Danh sách các món và vị trí cố định của chúng trong hộp")]

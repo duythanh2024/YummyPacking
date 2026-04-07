@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 3a9140f5fffb19f48b6d29f260a6f2e7
+labels:
+- UnusedAssetsFinder
+timeCreated: 1542500752
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: unused asset bundle
+  assetBundleVariant: 

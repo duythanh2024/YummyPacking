@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d607d440625694503b99def7000d6cd9, type: 3}
+  m_Name: 9
+  m_EditorClassIdentifier: Assembly-CSharp::DecoItem
+  id: 10
+  content: Light it up
+  cost: 3
+  prerequisiteIds: 0500000008000000
+  options:
+  - optionId: 0
+    optionName: light
+    icon: {fileID: 21300000, guid: 9da9a64ef1e2447c58bb0890b312045f, type: 3}
+    active: 0
+  - optionId: 1
+    optionName: light
+    icon: {fileID: 21300000, guid: 2004c1a89c52e44bd8c2fe84328a4242, type: 3}
+    active: 0
+  - optionId: 2
+    optionName: light
+    icon: {fileID: 21300000, guid: 4f5fea8647ba94f478421e3a6716c430, type: 3}
+    active: 0

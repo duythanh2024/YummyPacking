@@ -51,6 +51,8 @@ public class ObjectPooler : MonoBehaviour
 
     public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
     {
+       
+       
         if (!poolDictionary.ContainsKey(tag))
         {
             //   Debug.LogWarning("Pool với tag " + tag + " không tồn tại!");
@@ -86,7 +88,7 @@ public class ObjectPooler : MonoBehaviour
         // 1. Kiểm tra an toàn trước khi xử lý
         if (!poolDictionary.ContainsKey(tag))
         {
-            //   Debug.LogError($"Pool với tag {tag} không tồn tại! Đang phá hủy object để tránh rác.");
+               Debug.LogError($"Pool với tag {tag} không tồn tại! Đang phá hủy object để tránh rác.");
             Destroy(obj);
             return;
         }

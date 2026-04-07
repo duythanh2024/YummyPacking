@@ -7,6 +7,11 @@ TagManager:
   - Tray
   - Food
   - Order
+  - BuffSlot
+  - Tray66
+  - Tray33
+  - Order33
+  - Order66
   layers:
   - Default
   - TransparentFX
@@ -52,6 +57,12 @@ TagManager:
     locked: 0
   - name: Lock
     uniqueID: 1377158715
+    locked: 0
+  - name: Popup
+    uniqueID: 1464941523
+    locked: 0
+  - name: Particle
+    uniqueID: 3081012897
     locked: 0
   m_RenderingLayers:
   - Default

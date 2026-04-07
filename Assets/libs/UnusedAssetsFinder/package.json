@@ -1,0 +1,19 @@
+{
+  "name": "com.unusedassetsfinder.unusedassetsfinder",
+  "version": "1.4.0",
+  "displayName": "Unused Assets Finder",
+  "description": "A Unity plugin to find all unused assets in your project",
+  "unity": "2018.4",
+  "dependencies": {
+  },
+  "keywords": [
+    "Unused",
+    "Assets",
+    "Finder",
+    "Clean",
+    "Project"
+  ],
+  "author": {
+    "name": "Unused Assets Finder"
+  }
+}

@@ -154,7 +154,7 @@ public static class BentoTweenHelper
               });
     }
 
-    public static void ErrorShake(Transform target)
+    public static void ErrorShake(Transform target,Action onComplete = null)
     {
         if (target == null) return;
 
@@ -164,7 +164,8 @@ public static class BentoTweenHelper
         // 2. RUNG VỊ TRÍ (Shake Position)
         // Strength: 0.2f là vừa đủ để thấy lỗi mà không bị vỡ hình
         // Vibrato: 10 giúp cú rung dứt khoát, nhanh
-        target.DOShakePosition(0.3f, 0.2f, 10, 90f, false, true);
+      target.DOShakePosition(0.3f, 0.2f, 10, 90f, false, true)
+          .OnComplete(() => onComplete?.Invoke());
 
         // 3. ĐỔI MÀU (Visual Feedback) - Rất quan trọng cho UX
         // Chớp đỏ nhẹ rồi quay lại trắng (Bình thường)

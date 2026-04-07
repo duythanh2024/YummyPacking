@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-//Quản lý lưới không gian Tầng 2: xep do an vo khay
+//Quản lý lưới không gian Tầng 2: xep do an vo khay bento lon
 public class BentoGridController : MonoBehaviour
 {
     private int[,] gridCells; // Ma trận 2D lưu trạng thái lưới (0: Trống, 1: Có đồ ăn)
@@ -18,7 +19,7 @@ public class BentoGridController : MonoBehaviour
     private int totalCells;
 
     [Header("--- PREFABS & POSITIONS ---")]
-   // public GameObject bentoPrefab;      // Prefab cái khay gỗ
+    // public GameObject bentoPrefab;      // Prefab cái khay gỗ
     public Transform spawnPoint;        // Điểm xuất phát (Bên phải màn hình)
     public Transform centerPoint;       // Điểm chơi chính (Giữa màn hình)
     public Transform exitPoint;         // Điểm biến mất (Bên trái màn hình)
@@ -27,31 +28,71 @@ public class BentoGridController : MonoBehaviour
     public float moveDuration = 0.5f;   // Tốc độ bay của khay
 
     private GameObject currentBentoUI;  // Khay đang nằm trên màn hình
+    public int typeTray;
 
-    public void InitializeGrid(int width, int height)
+    public void InitializeGrid(int width, int height, int typeTray)
     {
         // Gán giá trị vào biến thành viên
         this.gridWidth = width;
         this.gridHeight = height;
+        this.typeTray = typeTray;
         gridCells = new int[width, height];
         totalCells = gridWidth * gridHeight;
         occupiedCells = 0;
         packedTiles = new List<FoodTile>();
+        Debug.Log("SpawnNewBento  this.typeTray " + this.typeTray);
         SpawnNewBento();
+
+    }
+
+    void ResetData(int width, int height, int typeTray)
+    {
+
+    }
+
+    public string GetTagTray()
+    {
+        String tagTray = "";
+        if (this.typeTray == 0)
+        {
+            tagTray = "Tray";
+
+        }
+        else if (this.typeTray == 1)
+        {
+            tagTray = "Tray33";
+        }
+        else if (this.typeTray == 2)
+        {
+            tagTray = "Tray66";
+        }
+        Debug.Log(tagTray);
+        return tagTray;
     }
     private void SpawnNewBento()
     {
 
-        System.Array.Clear(gridCells, 0, gridCells.Length);
+        if (GameManager.Instance.orderCtrl.activeOrders.Count > 0)
+        {
+            this.gridWidth = GameManager.Instance.orderCtrl.activeOrders[0].targetGridSize.x;
+            this.gridHeight = GameManager.Instance.orderCtrl.activeOrders[0].targetGridSize.y;
+            this.typeTray = GameManager.Instance.orderCtrl.activeOrders[0].typeTray;
+
+        }
+        Debug.Log("SpawnNewBento  this.typeTray " + this.typeTray + "Tag: " + GetTagTray());
+        gridCells = new int[gridWidth, gridHeight];
+
         totalCells = gridWidth * gridHeight;
         occupiedCells = 0;
         // Tạo khay mới tại điểm Spawn
         // currentBentoUI = Instantiate(bentoPrefab, spawnPoint.position, Quaternion.identity, BentoPos);
+        String tagTray = GetTagTray();
 
-        currentBentoUI = ObjectPooler.Instance.SpawnFromPool("Tray", spawnPoint.position, Quaternion.identity);
+
+        currentBentoUI = ObjectPooler.Instance.SpawnFromPool(tagTray, spawnPoint.position, Quaternion.identity);
         currentBentoUI.transform.SetParent(BentoPos);
-        //currentBentoUI.transform.localPosition=Vector3.zero;
-
+        TrayOrder trayOrder = currentBentoUI.GetComponent<TrayOrder>();
+        trayOrder.SetDefault();
         // Bay từ phải vào giữa
         BentoTweenHelper.SafeMove(currentBentoUI.transform, centerPoint.position, moveDuration, Ease.OutBack, () =>
         {
@@ -75,7 +116,9 @@ public class BentoGridController : MonoBehaviour
         {
             trayOrder.locks.SetActive(true);
 
-            BentoTweenHelper.SafeDOLocalMove(trayOrder.locks.transform, Vector2.zero, moveDuration, Ease.OutQuad, () =>
+            Vector2 targetPos = new Vector2(0, trayOrder.locks.transform.localPosition.y);
+
+            BentoTweenHelper.SafeDOLocalMove(trayOrder.locks.transform, targetPos, moveDuration, Ease.OutQuad, () =>
             {
                 // 3. HIỆU ỨNG VA CHẠM (IMPACT SHAKE)
                 // Vì nắp bay từ trái qua, cú va chạm sẽ làm hộp rung nhẹ theo chiều NGANG (trục X)
@@ -115,14 +158,16 @@ public class BentoGridController : MonoBehaviour
                                  foodTile.SetDefault();
                              }
                          }
-                         ObjectPooler.Instance.ReturnToPool("Tray", oldBento.gameObject);
+                         Debug.Log("AN TRAY");
+                         ObjectPooler.Instance.ReturnToPool(GetTagTray(), oldBento);
                          //  Destroy(oldBento);
                          // Xóa các Object cũ trong khay Bento
                          // Kiểm tra xem còn đơn hàng nào không (Logic từ OrderManager)
                          if (GameManager.Instance.orderCtrl.activeOrders.Count > 0)
                          {
-                             SpawnNewBento();
 
+                             SpawnNewBento();
+                             GameManager.Instance.isWin = false;
                          }
                          else
                          {
@@ -231,7 +276,10 @@ public class BentoGridController : MonoBehaviour
             {
 
                 targetCoord = placement.gridValues;
+
                 gridCells[placement.gridCoord.x, placement.gridCoord.y] = 1;
+                tile.gridCoordX = placement.gridCoord.x;
+                tile.gridCoordY = placement.gridCoord.y;
                 occupiedCells++;
                 return true;
             }
@@ -325,13 +373,27 @@ public class BentoGridController : MonoBehaviour
         // Xóa các Object cũ trong khay Bento
         for (int i = BentoPos.childCount - 1; i >= 0; i--)
         {
-            Transform child = BentoPos.GetChild(i);
+            Transform childTray = BentoPos.GetChild(i);
 
             // So sánh Tag dùng CompareTag sẽ nhanh hơn và tránh lỗi chính tả
-            if (child.CompareTag("Tray"))
+            if (childTray.CompareTag(GetTagTray()))
             {
+
+                for (int j = childTray.transform.childCount - 1; j >= 0; j--)
+                {
+                    Transform childFood = childTray.transform.GetChild(j);
+
+                    // So sánh Tag dùng CompareTag sẽ nhanh hơn và tránh lỗi chính tả
+                    if (childFood.CompareTag("Food"))
+                    {
+                        // Trả về pool (thường sẽ làm mất child này khỏi parent hiện tại)
+                        ObjectPooler.Instance.ReturnToPool("Food", childFood.gameObject);
+                        FoodTile foodTile = childFood.gameObject.GetComponent<FoodTile>();
+                        foodTile.SetDefault();
+                    }
+                }
                 // Trả về pool (thường sẽ làm mất child này khỏi parent hiện tại)
-                ObjectPooler.Instance.ReturnToPool("Tray", child.gameObject);
+                ObjectPooler.Instance.ReturnToPool(GetTagTray(), childTray.gameObject);
             }
         }
 
@@ -342,4 +404,51 @@ public class BentoGridController : MonoBehaviour
         Debug.Log(occupiedCells + ": " + totalCells);
         return occupiedCells >= totalCells;
     }
+    // --- THÊM VÀO LỚP BENTOGRIDCONTROLLER ---
+
+    public void RemoveLastTileFromBento(FoodTile tileToUndo)
+    {
+        if (tileToUndo == null || packedTiles == null || packedTiles.Count == 0) return;
+
+        // 1. Kiểm tra xem đĩa này có thực sự nằm trong danh sách đã đóng gói không
+        if (packedTiles.Contains(tileToUndo))
+        {
+            // 2. TÌM TỌA ĐỘ TRONG LƯỚI ĐỂ GIẢI PHÓNG (LOGIC REVERSE)
+            // Vì mỗi món ăn được đặt dựa trên cellSize, ta tính ngược lại tọa độ Grid
+            // Công thức từ hàm PlaceTile: targetLocalX = x * cellSize => x = localX / cellSize
+
+
+            int gridX = tileToUndo.gridCoordX;
+            int gridY = tileToUndo.gridCoordY;
+
+            // 3. CẬP NHẬT LOGIC LƯỚI
+            if (gridCells[gridX, gridY] == 1)
+            {
+                gridCells[gridX, gridY] = 0; // Giải phóng ô trong ma trận
+                occupiedCells--;             // Giảm số lượng ô đã chiếm
+                Debug.Log("cap nhat");
+            }
+
+
+
+            // 4. CẬP NHẬT DANH SÁCH PACKED TILES
+            packedTiles.Remove(tileToUndo);
+
+            // 5. TRẢ LẠI TƯƠNG TÁC (QUAN TRỌNG)
+            // Khi Undo, món ăn phải bấm được lại để người chơi nhặt tiếp
+            if (tileToUndo.TryGetComponent<BoxCollider2D>(out var col))
+            {
+                col.enabled = true;
+            }
+
+            // 6. THIẾT LẬP LẠI CHA (PARENT)
+            // Đưa món ăn thoát khỏi khay Bento (BentoPos) để nó tự do bay về bàn chơi
+            // Thường sẽ trả về transform gốc của game hoặc null
+            tileToUndo.transform.SetParent(null);
+
+            //  Debug.Log($"<color=cyan>Undo thành công món: {tileToUndo.foodName} tại ô [{gridX},{gridY}]</color>");
+        }
+    }
+
+
 }

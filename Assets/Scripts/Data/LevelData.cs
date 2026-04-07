@@ -19,6 +19,8 @@ public class LevelData : ScriptableObject
     [Tooltip("Danh sách tất cả các mảnh đồ ăn có trên bàn lúc bắt đầu")]
     public List<BoardItemSetup> boardItems;
 
+    public int difficultLevel;
+
     // Hàm tiện ích: Tự động kiểm tra xem thiết kế level có bị lỗi thiếu/thừa đồ ăn không
     // (CTO rất thích những hàm Validate như thế này để tránh lỗi do Designer nhập sai)
     private void OnValidate()

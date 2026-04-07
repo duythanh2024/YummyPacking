@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d3bc62ec9904a6685f5975b3717901, type: 3}
+  m_Name: DecoDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::DecoDatabase
+  allItems:
+  - {fileID: 11400000, guid: c0656a94636634597b502ae586b1e448, type: 2}
+  - {fileID: 11400000, guid: 23d00559fd17041c9923ffee02253ecd, type: 2}
+  - {fileID: 11400000, guid: b47f19add252e4e768fae7d70df86b14, type: 2}
+  - {fileID: 11400000, guid: 1d16e512547be466e8c571ba6d439a30, type: 2}
+  - {fileID: 11400000, guid: bc4aebefb13514039925f4431fcea847, type: 2}
+  - {fileID: 11400000, guid: f2069c58adcd04b3e9b1ec687347fffb, type: 2}
+  - {fileID: 11400000, guid: d32e0f76e07cb472d924e5b9f42e59db, type: 2}
+  - {fileID: 11400000, guid: 639fb041ceb2848f3886f0b8395da37b, type: 2}
+  - {fileID: 11400000, guid: 4d11193c7f9174f119faadc216de645a, type: 2}
+  - {fileID: 11400000, guid: 61ed569cd627645bea5b3178a05ebf5e, type: 2}
