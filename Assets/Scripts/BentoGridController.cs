@@ -401,7 +401,7 @@ public class BentoGridController : MonoBehaviour
 
     public bool CheckFullBento()
     {
-        Debug.Log(occupiedCells + ": " + totalCells);
+       
         return occupiedCells >= totalCells;
     }
     // --- THÊM VÀO LỚP BENTOGRIDCONTROLLER ---

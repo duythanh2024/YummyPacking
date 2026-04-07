@@ -61,6 +61,10 @@ public class ShopFoodManager : MonoBehaviour
     {
         AudioManager.Instance.Play("Click");
         gameObject.SetActive(false);
-        GameManager.Instance.boosterManager.LoadBooster();
+        if(GameManager.Instance != null)
+        {
+             GameManager.Instance.boosterManager.LoadBooster();
+        }
+       
     }
 }

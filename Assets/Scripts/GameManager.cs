@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour, IInputHandler
     }
     public void ShowCoin()
     {
-        Txt_Coins.text = GameData.Coins.ToString();
+        Txt_Coins.text = GameData.Coins.ToKMB();
     }
     private void ClearCurrentScene()
     {
@@ -309,6 +309,18 @@ public class GameManager : MonoBehaviour, IInputHandler
                 MoveBuffToTray(currentBufferTiles[i]);
             }
         }
+        StartCoroutine(ResetBuff());
+
+    }
+    IEnumerator ResetBuff()
+    {
+        yield return new WaitForSeconds(2.0f);
+        if (!bufferCtrl.IsFull())
+        {
+             bufferCtrl.ResetWarning();
+        }
+       
+        
     }
     void MoveBuffToTray(FoodTile tappedTile)
     {
@@ -423,7 +435,10 @@ public class GameManager : MonoBehaviour, IInputHandler
                         ShiftTilesUpInColumn(colId);
                     });
                 }
-
+                if (bufferCtrl.IsFull())
+                        {
+                             bufferCtrl.PlayWarning();
+                        }
 
             }
             else
@@ -689,6 +704,10 @@ public class GameManager : MonoBehaviour, IInputHandler
         int percent = orderCtrl.GetPerCent();
         Fail_Pnl.gameObject.SetActive(true);
         catAnimator.Play("Idle");
+         if (bufferCtrl.IsFull())
+                        {
+                             bufferCtrl.ResetWarning();
+                        }
         FailScreenManager failScreenManager = Fail_Pnl.GetComponent<FailScreenManager>();
         failScreenManager.ShowFailScreen(percent);
     }

@@ -1,10 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 //Quản lý Khay chờ
 public class BufferController : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer queueRenderer; // Sprite Renderer của khay chờ
+    [SerializeField] private Color warningColor = new Color(1f, 0.4f, 0.4f); // Màu đỏ cảnh báo
+
+    private Sequence _warningSeq;
+    private bool _isWarning = false;
     private int capacity = 0;
     private List<FoodTile> currentBufferTiles = new List<FoodTile>();
     public List<BuffSlot> allSlots; // Kéo 5 slot vào đây trong Inspector
@@ -193,6 +199,39 @@ public class BufferController : MonoBehaviour
             }
             tileToUndo.transform.SetParent(null);
         }
+    }
+
+    /// <summary>
+    /// Hàm 1: Anim cảnh báo cho Sprite Renderer
+    /// </summary>
+    public void PlayWarning()
+    {
+        if (_isWarning) return;
+        _isWarning = true;
+
+        _warningSeq = DOTween.Sequence();
+
+        // Tác động trực tiếp vào Color của SpriteRenderer và Scale của Transform
+        _warningSeq.Append(queueRenderer.DOColor(warningColor, 0.4f).SetEase(Ease.InOutSine))
+                   .Join(transform.DOScale(1.08f, 0.4f).SetEase(Ease.InOutSine))
+                   .Join(transform.DOShakeRotation(0.4f, new Vector3(0, 0, 8f), 10)) // Rung xoay trục Z
+                   .SetLoops(-1, LoopType.Yoyo);
+    }
+
+    /// <summary>
+    /// Hàm 2: Reset về trạng thái ban đầu
+    /// </summary>
+    public void ResetWarning()
+    {
+        if (!_isWarning) return;
+        _isWarning = false;
+
+        _warningSeq?.Kill();
+
+        // Trả màu về trắng (mặc định), Scale về 1 và Rotation về 0
+        queueRenderer.DOColor(Color.white, 0.25f);
+        transform.DOScale(1f, 0.25f).SetEase(Ease.OutBack);
+        transform.DORotate(Vector3.zero, 0.25f);
     }
 
 }

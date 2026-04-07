@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -72,7 +73,7 @@ public class BoosterBuyManager : MonoBehaviour
         }
         else if (typeBuy == 2) //hamer
         {
-if (GameData.Coins >= this.prices)
+            if (GameData.Coins >= this.prices)
             {
                 AudioManager.Instance.Play("Coins");
                 GameData.Coins -= this.prices;
@@ -114,7 +115,12 @@ if (GameData.Coins >= this.prices)
 
                 GameManager.Instance.ShowCoin();
                 GameManager.Instance.bufferCtrl.ShowBuffSlot();
+                if (!GameManager.Instance.bufferCtrl.IsFull())
+                {
+                    GameManager.Instance.bufferCtrl.ResetWarning();
+                }
                 gameObject.SetActive(false);
+
 
             }
             else

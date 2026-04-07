@@ -33,6 +33,7 @@ public class WinScreenManager : MonoBehaviour
         {
             transform.GetChild(i).gameObject.SetActive(false);
         }
+        
         // 1. Khóa tương tác người chơi
         GameManager.Instance.processing = true;
         StartCoroutine(CaptureBentoRoutine());
@@ -40,7 +41,7 @@ public class WinScreenManager : MonoBehaviour
 
     private IEnumerator CaptureBentoRoutine()
     {
- 
+        coinText.text = GameData.Coins.ToKMB();
         GameManager.Instance.PlayParticle(true);
         // Chờ đến cuối frame để đảm bảo mọi render đã hoàn tất
         yield return new WaitForSeconds(2.0f);
@@ -108,7 +109,9 @@ public class WinScreenManager : MonoBehaviour
     private void ClaimCoinsAndProceed(int amount)
     {
         DOTween.Kill("ClaimProcess");
-        coinText.text = amount.ToString();
+        GameData.Coins+=amount;
+
+        coinText.text = GameData.Coins.ToKMB();
 
         // Dùng biến để quản lý hoặc gắn Target để an toàn
         DOVirtual.DelayedCall(1.0f, () =>

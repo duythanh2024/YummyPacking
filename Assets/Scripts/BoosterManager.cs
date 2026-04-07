@@ -92,7 +92,7 @@ public class BoosterManager : MonoBehaviour
             Img_Booster.sprite = undoIconTo;
             Img_Booster.SetNativeSize();
             Txt_Booster_Name.text = "Undo";
-            Txt_Booster_Des.text = "Undo";
+            Txt_Booster_Des.text = "Go back one step";
             Pnl_Booster.SetActive(true);
         }
         else if (typeBooster == 2) //Swap
@@ -100,15 +100,15 @@ public class BoosterManager : MonoBehaviour
             Img_Booster.sprite = shuffleIconTo;
             Img_Booster.SetNativeSize();
             Txt_Booster_Name.text = "Swap";
-            Txt_Booster_Des.text = "Swap";
+            Txt_Booster_Des.text = "Rearrange all dishes";
             Pnl_Booster.SetActive(true);
         }
         else if (typeBooster == 3) //Hamer
         {
             Img_Booster.sprite = hammerIconTo;
             Img_Booster.SetNativeSize();
-            Txt_Booster_Name.text = "hammerIconTo";
-            Txt_Booster_Des.text = "hammerIconTo";
+            Txt_Booster_Name.text = "Hammer";
+            Txt_Booster_Des.text = "Smash a bomb plate";
             Pnl_Booster.SetActive(true);
         }
     }
@@ -241,12 +241,21 @@ public class BoosterManager : MonoBehaviour
             // Hàm này sẽ dùng DOTween để di chuyển toàn bộ đĩa trong cột về vị trí Y mới
             Debug.Log("colId " + colId + "oldIndex " + oldIndex);
             GameManager.Instance.ShiftTilesDownInColumn(colId, oldIndex);
-
+            StartCoroutine(ResetBuff());
         });
 
 
     }
-
+  IEnumerator ResetBuff()
+    {
+        yield return new WaitForSeconds(1.0f);
+        if (!GameManager.Instance.bufferCtrl.IsFull())
+        {
+             GameManager.Instance.bufferCtrl.ResetWarning();
+        }
+       
+        
+    }
     // // Hàm này phải được gọi trong FoodTile khi người chơi Click nhặt đĩa
     // public void RecordMove(FoodTile tile, Vector3 pos, Vector3 scale)
     // {
