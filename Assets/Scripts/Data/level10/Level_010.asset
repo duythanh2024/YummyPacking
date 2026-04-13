@@ -15,50 +15,81 @@ MonoBehaviour:
   levelId: 0
   bufferCapacity: 5
   orderQueue:
-  - {fileID: 11400000, guid: 57acb9469d2c8404f819bc8a65bb4df3, type: 2}
-  - {fileID: 11400000, guid: 7b1b72d4ba3bd4052909d7b50964149f, type: 2}
-  - {fileID: 11400000, guid: d2a882a7b865a470ba33aaf4b9819119, type: 2}
-  - {fileID: 11400000, guid: 5034be793cbfe41179b74e300f0b2b33, type: 2}
-  - {fileID: 11400000, guid: b6e468b26bc374ae4a2c4ffb8505fe24, type: 2}
-  - {fileID: 11400000, guid: b0137a07a92ec4e2ea851a36278046e4, type: 2}
+  - {fileID: 11400000, guid: 254da22be8e23446481f7c88d4b5b1fc, type: 2}
+  - {fileID: 11400000, guid: 2ce4003b85786474fbfd323bfcb71343, type: 2}
+  - {fileID: 11400000, guid: 8115e094c92bb419b8f8b5ee42ed26f6, type: 2}
   boardItems:
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 7cfff764f47a948b88b9f7651a31259b, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 7cfff764f47a948b88b9f7651a31259b, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
   - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
   - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
   - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 7cfff764f47a948b88b9f7651a31259b, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
   - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
   - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
   - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
-  difficultLevel: 3
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  difficultLevel: 6
+  plateDeltaOffset: {x: 8, y: -15}

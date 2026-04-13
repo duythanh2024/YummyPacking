@@ -15,6 +15,10 @@ public class WinScreenManager : MonoBehaviour
 
     [Header("Buttons")]
     public Button claimX2Button;
+    public Button nextButton;
+
+    public GameObject Img_Cup;
+    public GameObject Txt_Wel;
 
     [Header("Settings")]
     private int baseReward = 0; // Số coin gốc cho mỗi level
@@ -29,22 +33,23 @@ public class WinScreenManager : MonoBehaviour
     // --- BƯỚC 1: GỌI KHI NGƯỜI CHƠI THẮNG ---
     public void ShowWinScreen()
     {
-         for(int i =0;i< transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);
         }
-        
-        // 1. Khóa tương tác người chơi
-        GameManager.Instance.processing = true;
+        Txt_Wel.SetActive(true);
+        Img_Cup.GetComponent<RectTransform>().localScale = Vector3.one * 0.4f;
+        Img_Cup.SetActive(true);
         StartCoroutine(CaptureBentoRoutine());
     }
 
     private IEnumerator CaptureBentoRoutine()
     {
         coinText.text = GameData.Coins.ToKMB();
-        GameManager.Instance.PlayParticle(true);
+        BentoTweenHelper.DoScale(Img_Cup.transform,1,1.5f,()=>{});
+
         // Chờ đến cuối frame để đảm bảo mọi render đã hoàn tất
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.5f);
 
         // --- BƯỚC 2: HIỆN MÀN HÌNH WIN ---
         SetupWinUI();
@@ -52,18 +57,20 @@ public class WinScreenManager : MonoBehaviour
 
     private void SetupWinUI()
     {
-        baseReward=GameManager.Instance.rewardLevel;
-       // winPanel.gameObject.SetActive(true);
-        coinRewardText.text = $"Reward: {baseReward.ToString()}  <sprite name=\"coins_1\">";
-
-        for(int i =0;i< transform.childCount; i++)
+        baseReward = GameManager.Instance.rewardLevel;
+        coinRewardText.text = $"Reward: {baseReward}  <sprite name=\"coins_1\">";
+        claimX2Button.interactable = true;
+        nextButton.interactable = true;
+        for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(true);
         }
 
+
         // Reset trạng thái nút
-        claimX2Button.gameObject.SetActive(true); 
-        claimX2Button.transform.DOPunchScale(Vector3.one * 0.01f, 0.4f).SetLoops(-1);        // Hiệu ứng Fade In chuyên nghiệp
+        claimX2Button.gameObject.SetActive(true);
+        BentoTweenHelper.DOPunchScale(claimX2Button.transform,Vector3.one * 0.01f, 0.4f);
+        //claimX2Button.transform.DOPunchScale(Vector3.one * 0.01f, 0.4f).SetLoops(-1);        // Hiệu ứng Fade In chuyên nghiệp
     }
 
     // --- BƯỚC 3: XỬ LÝ CLICK NÚT ---
@@ -71,7 +78,7 @@ public class WinScreenManager : MonoBehaviour
     // Gắn vào ClaimX2Button
     public void OnClaimX2Clicked()
     {
-          AudioManager.Instance.Play("Click");
+        AudioManager.Instance.Play("Click");
         // 1. Gọi SDK Quảng cáo (Giả định bạn dùng AdMob/AppLovin)
         Debug.Log("<color=green>Calling Rewarded Ad SDK...</color>");
 
@@ -83,7 +90,10 @@ public class WinScreenManager : MonoBehaviour
     // Gắn vào NoThanksButton
     public void OnNoThanksClicked()
     {
-         AudioManager.Instance.Play("Click");
+        AudioManager.Instance.Play("Click");
+        claimX2Button.interactable = false;
+        nextButton.interactable = false;
+
         coinEffectManager.PlayCoinFlowEffect(() =>
         {
             ClaimCoinsAndProceed(baseReward);
@@ -96,20 +106,25 @@ public class WinScreenManager : MonoBehaviour
     // Callback khi xem quảng cáo thành công
     private void OnRewardedAdComplete()
     {
-        
+        claimX2Button.interactable = false;
+        nextButton.interactable = false;
         int x2Reward = baseReward * 2;
 
         // Thêm hiệu ứng âm thanh "Tiền bay"
         Debug.Log("<color=yellow>Ad Watched: Rewarded X2!</color>");
 
-        // Nhận coin gấp đôi
-        ClaimCoinsAndProceed(x2Reward);
+        coinEffectManager.PlayCoinFlowEffect(() =>
+               {
+                   // Nhận coin gấp đôi
+                   ClaimCoinsAndProceed(x2Reward);
+               });
+
     }
 
     private void ClaimCoinsAndProceed(int amount)
     {
         DOTween.Kill("ClaimProcess");
-        GameData.Coins+=amount;
+        GameData.Coins += amount;
 
         coinText.text = GameData.Coins.ToKMB();
 
@@ -118,10 +133,10 @@ public class WinScreenManager : MonoBehaviour
         {
 
             if (GameManager.Instance != null)
-                    {
-                        GameManager.Instance.processing = false;
-                        GameManager.Instance.LoadNextLevel();
-                    }
+            {
+                // GameManager.Instance.processing = false;
+                GameManager.Instance.LoadNextLevel();
+            }
         })
         .SetTarget(this) // Nếu script này bị hủy, Delay 1s này cũng biến mất
         .SetId("ClaimProcess"); // Đặt ID để có thể Kill thủ công nếu cần

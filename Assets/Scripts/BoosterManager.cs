@@ -12,18 +12,20 @@ public struct UndoStep
     public Vector3 originalScale;
     public int columnId;      // Cột của đĩa trước khi nhặt
     public int originalIndex;   // Vị trí của đĩa trong List của cột đó
+    public int layerId;
+    public int rowId;
+    // --- BƯỚC MỚI: CHỤP ẢNH HIỂN THỊ ---
+    public Vector3 originalLocalPos;    // Tọa độ vật lý (độ so le, độ khít)
+    public int originalSortingOrder;   // Thứ tự hiển thị (Lớp đè lên lớp)
 }
 public class BoosterManager : MonoBehaviour
 {
     public RectTransform swapBoost;
     public RectTransform undoBoost;
     public RectTransform hammerBoost;
-
     public static BoosterManager Instance;
-
     [Header("Settings")]
     private Stack<UndoStep> undoStack = new Stack<UndoStep>();
-    public bool isHammerActive = false; // Trạng thái đang cầm búa
     private const int MAX_UNDO_STEPS = 3; // Giới hạn 3 bước
     public BoosterOverlayUI boosterOverlayUI;
     public Sprite shuffleIconTo;
@@ -32,12 +34,12 @@ public class BoosterManager : MonoBehaviour
     public Sprite extraSlotIconTo;
     public GameObject Pnl_Booster;
     public GameObject Pnl_Booster_Buy;
-
     public Image Img_Booster;
     public TextMeshProUGUI Txt_Booster_Name;
     public TextMeshProUGUI Txt_Booster_Des;
     private int typeBooster;
     public ItemBoost[] itemBoosts;
+    bool isMagnic = false;
     private void Awake()
     {
         Instance = this;
@@ -155,37 +157,56 @@ public class BoosterManager : MonoBehaviour
     {
         if (!GameData.HammerBoostTutorial)
         {
-            TutorialManager.Instance.StartBoosterFocus(hammerBoost, "Hamer", 3);
+            TutorialManager.Instance.StartBoosterFocus(hammerBoost, "Magnic", 3);
             GameData.HammerBoostTutorial = true;
             GameData.Save();
         }
     }
     public void ExecuteUndo()
     {
+
+
         if (GameManager.Instance.IsWinOrFail())
             return;
+
+        if (GameManager.Instance.IsProcessing)
+            return;
+
+        GameManager.Instance.IsProcessing = true;
+
         GameManager.Instance.PlayClick();
+
         if (itemBoosts[0].level > GameData.SavedLevelIndex)
         {
             ToastManager.Instance.ShowToast("Unlock Level " + (itemBoosts[0].level + 1));
             return;
         }
 
+
+
         Debug.Log("undoStack " + undoStack.Count);
 
         if (GameData.UndoNumber <= 0)
         {
+            GameManager.Instance.IsProcessing = false;
             Pnl_Booster_Buy.SetActive(true);
             BoosterBuyManager boosterBuyManager = Pnl_Booster_Buy.GetComponent<BoosterBuyManager>();
             boosterBuyManager.SetData("Undo Booster", "Undo Steps", 1800, 3, undoIconTo, 0);
+
             return;
         }
 
+        //neu magnic boc truoc thi xoa
+        if (isMagnic)
+        {
+            undoStack.Clear();
+            isMagnic=false;
+        }
         // . Kiểm tra nếu không còn bước nào để Undo
         if (undoStack.Count == 0)
         {
+            GameManager.Instance.IsProcessing = false;
             ToastManager.Instance.ShowToast("No undo steps available");
-
             return;
         }
 
@@ -196,65 +217,96 @@ public class BoosterManager : MonoBehaviour
         }
 
         // Giả sử bạn đã kéo thả BoosterOverlayUI vào Inspector
-        boosterOverlayUI.PlayBoosterAnim("UNDO", undoIconTo, () =>
+        // boosterOverlayUI.PlayBoosterAnim("UNDO", undoIconTo, () =>
+        // {
+        AudioManager.Instance.Play("Touch");
+        // Chức năng thực sự chạy
+        // 2. Lấy dữ liệu bước đi gần nhất ra khỏi Stack
+
+        UndoStep lastStep = undoStack.Pop();
+    FoodTile tile = lastStep.tile;
+
+    // 1. Khôi phục danh tính ngay lập tức
+    tile.columnId = lastStep.columnId;
+    tile.rowId = lastStep.rowId;
+    tile.layerId = lastStep.layerId;
+
+    // 2. Trả về List logic
+    // var targetCol = GameManager.Instance.boardCtrl.allTilesOnBoard[lastStep.columnId];
+    // targetCol.Insert(lastStep.originalIndex, tile);
+
+        // UndoStep lastStep = undoStack.Pop();
+        // FoodTile tile = lastStep.tile;
+
+
+        // // KHÔI PHỤC THÔNG SỐ TẦNG (Rất quan trọng)
+        // tile.layerId = lastStep.layerId; // Bạn cần đảm bảo UndoStep có lưu biến này
+        // tile.rowId = lastStep.rowId;     // Bạn cần đảm bảo UndoStep có lưu biến này
+
+        Debug.Log("lastStep.rowId "+lastStep.rowId);
+
+        int colId = lastStep.columnId;
+        int oldIndex = lastStep.originalIndex;
+
+        // 3. Xử lý giải phóng đĩa khỏi khay Bento (Grid)
+        // Hàm này bạn đã viết để set gridCells về 0 và occupiedCells--
+        GameManager.Instance.gridCtrl.RemoveLastTileFromBento(tile);
+
+        // 3.1 Xử lý giải phóng đĩa khỏi khay cho
+        GameManager.Instance.bufferCtrl.RemoveLastTileFromBuff(tile);
+        // 4. ĐƯA ĐĨA VỀ ĐÚNG CỘT VẬT LÝ (QUAN TRỌNG NHẤT)
+        // Lấy Transform của cột từ mảng columns đã kéo trong Inspector
+        Transform targetColTransform = GameManager.Instance.boardCtrl.columns[colId];
+        tile.transform.SetParent(targetColTransform);
+
+        // 5. CHÈN LẠI VÀO DANH SÁCH DỮ LIỆU (LIST)
+        // Dùng Insert để đẩy các phần tử hiện có xuống dưới
+        GameManager.Instance.boardCtrl.allTilesOnBoard[colId].Insert(oldIndex, tile);
+
+        // 6. KHÔI PHỤC TRẠNG THÁI CHO ĐĨA
+        tile.transform.localScale = lastStep.originalScale;
+        tile.columnId = colId; // Đảm bảo ID cột đồng bộ
+        tile.isLocked = false;
+        tile.tray.gameObject.SetActive(true);
+        tile.tray.gameObject.transform.localScale = Vector3.one;
+
+        //set grid[i][j]=0;
+
+        // Bật lại Collider để có thể chạm vào
+        if (tile.TryGetComponent<BoxCollider2D>(out var col))
         {
-            AudioManager.Instance.Play("Touch");
-            // Chức năng thực sự chạy
-            // 2. Lấy dữ liệu bước đi gần nhất ra khỏi Stack
-            UndoStep lastStep = undoStack.Pop();
-            FoodTile tile = lastStep.tile;
-            int colId = lastStep.columnId;
-            int oldIndex = lastStep.originalIndex;
-
-            // 3. Xử lý giải phóng đĩa khỏi khay Bento (Grid)
-            // Hàm này bạn đã viết để set gridCells về 0 và occupiedCells--
-            GameManager.Instance.gridCtrl.RemoveLastTileFromBento(tile);
-
-            // 3.1 Xử lý giải phóng đĩa khỏi khay cho
-            GameManager.Instance.bufferCtrl.RemoveLastTileFromBuff(tile);
-            // 4. ĐƯA ĐĨA VỀ ĐÚNG CỘT VẬT LÝ (QUAN TRỌNG NHẤT)
-            // Lấy Transform của cột từ mảng columns đã kéo trong Inspector
-            Transform targetColTransform = GameManager.Instance.boardCtrl.columns[colId];
-            tile.transform.SetParent(targetColTransform);
-
-            // 5. CHÈN LẠI VÀO DANH SÁCH DỮ LIỆU (LIST)
-            // Dùng Insert để đẩy các phần tử hiện có xuống dưới
-            GameManager.Instance.boardCtrl.allTilesOnBoard[colId].Insert(oldIndex, tile);
-
-            // 6. KHÔI PHỤC TRẠNG THÁI CHO ĐĨA
-            tile.transform.localScale = lastStep.originalScale;
-            tile.columnId = colId; // Đảm bảo ID cột đồng bộ
-            tile.isLocked = false;
-            tile.tray.gameObject.SetActive(true);
-            tile.tray.gameObject.transform.localScale = Vector3.one;
-
-            //set grid[i][j]=0;
-
-            // Bật lại Collider để có thể chạm vào
-            if (tile.TryGetComponent<BoxCollider2D>(out var col))
-            {
-                col.enabled = true;
-            }
-            GameData.UndoNumber -= 1;
-            GameManager.Instance.boosterManager.LoadBooster();
-            // 7. CHẠY HIỆU ỨNG ĐẨY HÀNG XUỐI (SHIFT DOWN)
-            // Hàm này sẽ dùng DOTween để di chuyển toàn bộ đĩa trong cột về vị trí Y mới
-            Debug.Log("colId " + colId + "oldIndex " + oldIndex);
+            col.enabled = true;
+        }
+        GameData.UndoNumber -= 1;
+        GameManager.Instance.boosterManager.LoadBooster();
+        // 7. CHẠY HIỆU ỨNG ĐẨY HÀNG XUỐI (SHIFT DOWN)
+        // Hàm này sẽ dùng DOTween để di chuyển toàn bộ đĩa trong cột về vị trí Y mới
+//        Debug.Log("colId " + colId + "oldIndex " + oldIndex);
+        if (!GameManager.Instance.IsStack)
+        {
             GameManager.Instance.ShiftTilesDownInColumn(colId, oldIndex);
-            StartCoroutine(ResetBuff());
-        });
+        }
+        else
+        {
+            Debug.Log("lastStep.originalIndex "+lastStep.originalIndex);
+            // Gọi hàm Shift với logic Layer mới
+            GameManager.Instance.ShiftTilesLayerDownInColumn(lastStep.columnId, lastStep.originalIndex);
+        }
+        GameManager.Instance.IsProcessing = false;
+        StartCoroutine(ResetBuff());
+        //  });
 
 
     }
-  IEnumerator ResetBuff()
+    IEnumerator ResetBuff()
     {
         yield return new WaitForSeconds(1.0f);
         if (!GameManager.Instance.bufferCtrl.IsFull())
         {
-             GameManager.Instance.bufferCtrl.ResetWarning();
+            GameManager.Instance.bufferCtrl.ResetWarning();
         }
-       
-        
+
+
     }
     // // Hàm này phải được gọi trong FoodTile khi người chơi Click nhặt đĩa
     // public void RecordMove(FoodTile tile, Vector3 pos, Vector3 scale)
@@ -279,7 +331,7 @@ public class BoosterManager : MonoBehaviour
             undoStack = new Stack<UndoStep>(list);
         }
         undoStack.Push(step);
-        Debug.Log($"<color=yellow>Recorded move:</color> {step.tile.name} from Col {step.columnId} at Index {step.originalIndex}");
+        Debug.Log($"<color=yellow>Recorded move:</color> {step.tile.name} from Col {step.columnId} at RowId {step.rowId} LayerId {step.layerId}");
     }
     // ==========================================
     // 2. CHỨC NĂNG SHUFFLE (XÁO TRỘN)
@@ -287,64 +339,123 @@ public class BoosterManager : MonoBehaviour
 
     public void OnShuffleButtonClicked()
     {
+
+
         if (GameManager.Instance.IsWinOrFail())
             return;
+        if (GameManager.Instance.IsProcessing)
+            return;
+
+        GameManager.Instance.IsProcessing = true;
         GameManager.Instance.PlayClick();
         if (itemBoosts[1].level > GameData.SavedLevelIndex)
         {
+            GameManager.Instance.IsProcessing = false;
             ToastManager.Instance.ShowToast("Unlock Level " + (itemBoosts[1].level + 1));
             return;
         }
         if (GameData.SwapNumber <= 0)
         {
+            GameManager.Instance.IsProcessing = false;
             Pnl_Booster_Buy.SetActive(true);
             BoosterBuyManager boosterBuyManager = Pnl_Booster_Buy.GetComponent<BoosterBuyManager>();
             boosterBuyManager.SetData("Swap Booster", "Swap", 1900, 3, shuffleIconTo, 1);
             return;
         }
         // Giả sử bạn đã kéo thả BoosterOverlayUI vào Inspector
-        boosterOverlayUI.PlayBoosterAnim("SHUFFLE", shuffleIconTo, () =>
+        // boosterOverlayUI.PlayBoosterAnim("SHUFFLE", shuffleIconTo, () =>
+        // {
+        AudioManager.Instance.Play("CollectingFood");
+        // 1. Thu thập tất cả các đĩa đang còn trên bàn từ 3 cột
+
+        List<FoodTile> allActiveTiles = new List<FoodTile>();
+
+        // Lấy số lượng cột thực tế từ BoardController
+        int columnCount = GameManager.Instance.boardCtrl.allTilesOnBoard.Count;
+
+        for (int i = 0; i < columnCount; i++)
         {
-            AudioManager.Instance.Play("CollectingFood");
-            // 1. Thu thập tất cả các đĩa đang còn trên bàn từ 3 cột
-            List<FoodTile> allActiveTiles = new List<FoodTile>();
-            for (int i = 0; i < 3; i++)
+            // Kiểm tra null để tránh lỗi crash nếu cột đó chưa được khởi tạo
+            if (GameManager.Instance.boardCtrl.allTilesOnBoard[i] != null)
             {
                 allActiveTiles.AddRange(GameManager.Instance.boardCtrl.allTilesOnBoard[i]);
             }
+        }
 
-            // 2. Kiểm tra nếu không có đĩa nào thì không chạy
-            if (allActiveTiles.Count <= 1) return;
+        // 2. Kiểm tra nếu không có đĩa nào thì không chạy
+        if (allActiveTiles.Count <= 1) return;
 
-            ClearStack();
-            // 3. Gọi hàm thực thi xáo trộn
-            ExecuteShuffle(allActiveTiles);
+        ClearStack();
+        // 3. Gọi hàm thực thi xáo trộn
+        ExecuteShuffle(allActiveTiles);
 
-            // (Tùy chọn) Trừ tiền hoặc trừ lượt dùng Booster của người chơi ở đây
-            //Tat huong dan
-            if (TutorialManager.Instance != null)
-            {
-                TutorialManager.Instance.EndBoosterTutorial();
-            }
-            Debug.Log("Shuffle executed!");
-        });
+        // (Tùy chọn) Trừ tiền hoặc trừ lượt dùng Booster của người chơi ở đây
+        //Tat huong dan
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.EndBoosterTutorial();
+        }
+        Debug.Log("Shuffle executed!");
+        // });
+        //    boosterOverlayUI.PlayBoosterAnim("SHUFFLE", shuffleIconTo, () =>
+        // {
+        //     AudioManager.Instance.Play("CollectingFood");
+        //     // 1. Thu thập tất cả các đĩa đang còn trên bàn từ 3 cột
+        //     List<FoodTile> allActiveTiles = new List<FoodTile>();
+        //     for (int i = 0; i < 3; i++)
+        //     {
+        //         allActiveTiles.AddRange(GameManager.Instance.boardCtrl.allTilesOnBoard[i]);
+        //     }
+
+        //     // 2. Kiểm tra nếu không có đĩa nào thì không chạy
+        //     if (allActiveTiles.Count <= 1) return;
+
+        //     ClearStack();
+        //     // 3. Gọi hàm thực thi xáo trộn
+        //     ExecuteShuffle(allActiveTiles);
+
+        //     // (Tùy chọn) Trừ tiền hoặc trừ lượt dùng Booster của người chơi ở đây
+        //     //Tat huong dan
+        //     if (TutorialManager.Instance != null)
+        //     {
+        //         TutorialManager.Instance.EndBoosterTutorial();
+        //     }
+        //     Debug.Log("Shuffle executed!");
+        // });
 
 
     }
     private string shuffleSeqId = "Booster_Shuffle_Seq";
-
     public void ExecuteShuffle(List<FoodTile> activeTiles)
     {
         if (activeTiles == null || activeTiles.Count <= 1) return;
 
-        // 1. Dọn dẹp các Tween Shuffle cũ đang chạy (nếu có) để tránh xung đột
         DOTween.Kill(shuffleSeqId);
 
-        // Khóa tương tác người chơi
-        //GameManager.Instance.processing = true;
+        // BƯỚC 1: Tắt tương tác & Làm tối ngay để tránh bug trong lúc đang bay
+        foreach (var t in activeTiles)
+        {
+            t.isClickable = false;
+            Color dimColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+            t.tray.GetComponent<SpriteRenderer>().color = dimColor;
+            t.icon.color = dimColor; // Dùng trực tiếp .color nếu là SpriteRenderer
+        }
 
-        // 2. XÁO TRỘN DỮ LIỆU (LIST) TRƯỚC
-        // Gom tất cả vào một danh sách tạm để xáo
+        // BƯỚC 2: SNAPSHOT - Chụp ảnh toàn bộ thông số của "Ô CẮM"
+        List<Vector3> originalPositions = new List<Vector3>();
+        List<int> originalSortingOrders = new List<int>();
+        List<Vector2Int> originalLogicCoords = new List<Vector2Int>();
+        List<int> originalLayers = new List<int>(); // QUAN TRỌNG: Thêm LayerId vào snapshot
+
+        foreach (var tile in activeTiles)
+        {
+            originalPositions.Add(tile.transform.localPosition);
+            originalSortingOrders.Add(tile.tray.sortingOrder);
+            originalLogicCoords.Add(new Vector2Int(tile.columnId, tile.rowId));
+            originalLayers.Add(tile.layerId); // Lưu layer của ô này
+        }
+
+        // BƯỚC 3: XÁO TRỘN DANH SÁCH THỰC THỂ (ĐĨA)
         for (int i = 0; i < activeTiles.Count; i++)
         {
             int randomIndex = Random.Range(i, activeTiles.Count);
@@ -353,152 +464,243 @@ public class BoosterManager : MonoBehaviour
             activeTiles[randomIndex] = temp;
         }
 
-        // Xóa dữ liệu cũ trong 3 cột của Board
-        for (int i = 0; i < 3; i++) GameManager.Instance.boardCtrl.allTilesOnBoard[i].Clear();
+        // Dọn dẹp logic board trước khi nạp lại
+        int totalColumns = GameManager.Instance.boardCtrl.allTilesOnBoard.Count;
+        for (int i = 0; i < totalColumns; i++)
+            GameManager.Instance.boardCtrl.allTilesOnBoard[i].Clear();
 
-        // 3. THIẾT LẬP SEQUENCE DI CHUYỂN
         Sequence shuffleSeq = DOTween.Sequence().SetId(shuffleSeqId);
-        float spacingY = 2.0f;
 
+        // BƯỚC 4: GÁN LẠI VÀ CHẠY TWEEN
         for (int i = 0; i < activeTiles.Count; i++)
         {
-            int colId = i % 3; // Chia đều vào 3 cột
-            int rowId = GameManager.Instance.boardCtrl.allTilesOnBoard[colId].Count;
-
             FoodTile tile = activeTiles[i];
-            tile.columnId = colId;
-            GameManager.Instance.boardCtrl.allTilesOnBoard[colId].Add(tile);
 
-            // Đổi cha về đúng cột vật lý mới
+            // Đĩa i nhảy vào vị trí i -> Copy toàn bộ thuộc tính của ô i
+            Vector3 targetPos = originalPositions[i];
+            int targetOrder = originalSortingOrders[i];
+            int colId = originalLogicCoords[i].x;
+            int rowId = originalLogicCoords[i].y;
+            int targetLayer = originalLayers[i]; // Lấy LayerId của ô mới
+
+            // Cập nhật Logic cho đĩa
+            tile.columnId = colId;
+            tile.rowId = rowId;
+            tile.layerId = targetLayer; // CẬP NHẬT LAYER: Fix lỗi sáng ở đáy
+
+            GameManager.Instance.boardCtrl.allTilesOnBoard[colId].Add(tile);
             tile.transform.SetParent(GameManager.Instance.boardCtrl.columns[colId]);
 
-            // Tính toán vị trí đích cục bộ (Local)
-            Vector3 targetLocalPos = new Vector3(0, -(rowId * spacingY), 0);
+            // Cập nhật Sorting Order ngay lập tức để đĩa không bay xuyên qua nhau
+            tile.tray.sortingOrder = targetOrder;
+            tile.icon.sortingOrder = targetOrder + 1;
 
-            // Thêm hiệu ứng Jump vào Sequence
-            // SetLink để tự động Kill Tween nếu đĩa bị hủy đột ngột
-            shuffleSeq.Join(tile.transform.DOLocalJump(targetLocalPos, 1.5f, 1, 0.6f)
+            // Tween bay về vị trí
+            shuffleSeq.Join(tile.transform.DOLocalJump(targetPos, 2.0f, 1, 0.65f)
                 .SetEase(Ease.OutQuad)
                 .SetLink(tile.gameObject));
-
-            // Cập nhật Sorting Order ngay lập tức để không bị đè lỗi khi bay
-            tile.tray.sortingOrder = (10 - rowId) * 10;
-            tile.icon.sortingOrder = (10 - rowId) * 10 + 1;
         }
 
-        // 4. KẾT THÚC: CẬP NHẬT TRẠNG THÁI
         shuffleSeq.OnComplete(() =>
         {
-            // Mở khóa xử lý
-            //GameManager.Instance.processing = false;
-
-            // Gọi hàm của bạn (không đổi) để cập nhật sáng/tối và khả năng Click
+            // SAU KHI BAY XONG: Gọi hàm này để tính toán lại minLayer và Sáng/Tối
             GameManager.Instance.boardCtrl.UpdateClickableStates();
 
-            // Xóa Stack Undo vì bàn chơi đã thay đổi hoàn toàn
             ClearStack();
             GameData.SwapNumber -= 1;
             GameManager.Instance.boosterManager.LoadBooster();
-            Debug.Log("<color=green>Shuffle Finalized & Logic Updated</color>");
+            GameManager.Instance.IsProcessing = false;
+            Debug.Log("<color=green>Shuffle Fix: Sorting & Layer Synced!</color>");
         });
     }
-    // ==========================================
-    // 3. CHỨC NĂNG HAMMER (BÚA)
-    // ==========================================
+    // public void ExecuteShuffle1(List<FoodTile> activeTiles)
+    // {
+    //     if (activeTiles == null || activeTiles.Count <= 1) return;
+
+    //     // 1. Dọn dẹp các Tween Shuffle cũ đang chạy (nếu có) để tránh xung đột
+    //     DOTween.Kill(shuffleSeqId);
+
+    //     // Khóa tương tác người chơi
+    //     GameManager.Instance.processing = true;
+
+    //     // 2. XÁO TRỘN DỮ LIỆU (LIST) TRƯỚC
+    //     // Gom tất cả vào một danh sách tạm để xáo
+    //     for (int i = 0; i < activeTiles.Count; i++)
+    //     {
+    //         int randomIndex = Random.Range(i, activeTiles.Count);
+    //         FoodTile temp = activeTiles[i];
+    //         activeTiles[i] = activeTiles[randomIndex];
+    //         activeTiles[randomIndex] = temp;
+    //     }
+
+    //     // Xóa dữ liệu cũ trong 3 cột của Board
+    //     for (int i = 0; i < 3; i++) GameManager.Instance.boardCtrl.allTilesOnBoard[i].Clear();
+
+    //     // 3. THIẾT LẬP SEQUENCE DI CHUYỂN
+    //     Sequence shuffleSeq = DOTween.Sequence().SetId(shuffleSeqId);
+    //     float spacingY = 2.0f;
+
+    //     for (int i = 0; i < activeTiles.Count; i++)
+    //     {
+    //         int colId = i % 3; // Chia đều vào 3 cột
+    //         int rowId = GameManager.Instance.boardCtrl.allTilesOnBoard[colId].Count;
+
+    //         FoodTile tile = activeTiles[i];
+    //         tile.columnId = colId;
+    //         GameManager.Instance.boardCtrl.allTilesOnBoard[colId].Add(tile);
+
+    //         // Đổi cha về đúng cột vật lý mới
+    //         tile.transform.SetParent(GameManager.Instance.boardCtrl.columns[colId]);
+
+    //         // Tính toán vị trí đích cục bộ (Local)
+    //         Vector3 targetLocalPos = new Vector3(0, -(rowId * spacingY), 0);
+
+    //         // Thêm hiệu ứng Jump vào Sequence
+    //         // SetLink để tự động Kill Tween nếu đĩa bị hủy đột ngột
+    //         shuffleSeq.Join(tile.transform.DOLocalJump(targetLocalPos, 1.5f, 1, 0.6f)
+    //             .SetEase(Ease.OutQuad)
+    //             .SetLink(tile.gameObject));
+
+    //         // Cập nhật Sorting Order ngay lập tức để không bị đè lỗi khi bay
+    //         tile.tray.sortingOrder = (10 - rowId) * 10;
+    //         tile.icon.sortingOrder = (10 - rowId) * 10 + 1;
+    //     }
+
+    //     // 4. KẾT THÚC: CẬP NHẬT TRẠNG THÁI
+    //     shuffleSeq.OnComplete(() =>
+    //     {
+    //         // Mở khóa xử lý
+    //         GameManager.Instance.processing = false;
+
+    //         // Gọi hàm của bạn (không đổi) để cập nhật sáng/tối và khả năng Click
+    //         GameManager.Instance.boardCtrl.UpdateClickableStates();
+
+    //         // Xóa Stack Undo vì bàn chơi đã thay đổi hoàn toàn
+    //         ClearStack();
+    //         GameData.SwapNumber -= 1;
+    //         GameManager.Instance.boosterManager.LoadBooster();
+    //         Debug.Log("<color=green>Shuffle Finalized & Logic Updated</color>");
+    //     });
+    // }
+    // // ==========================================
+    // // 3. CHỨC NĂNG HAMMER (BÚA)
+    // // ==========================================
     public void OnHammerButtonClicked()
     {
+        Debug.Log("OnHammerButtonClicked");
+
+
+
         if (GameManager.Instance.IsWinOrFail())
             return;
+
+        if (GameManager.Instance.IsProcessing)
+            return;
+
+        GameManager.Instance.IsProcessing = true;
+
         GameManager.Instance.PlayClick();
         if (itemBoosts[2].level > GameData.SavedLevelIndex)
         {
+            GameManager.Instance.IsProcessing = false;
             ToastManager.Instance.ShowToast("Unlock Level " + (itemBoosts[2].level + 1));
             return;
         }
         if (GameData.HammerNumber <= 0)
         {
+            GameManager.Instance.IsProcessing = false;
             Pnl_Booster_Buy.SetActive(true);
             BoosterBuyManager boosterBuyManager = Pnl_Booster_Buy.GetComponent<BoosterBuyManager>();
             boosterBuyManager.SetData("Hamer Booster", "Hamer", 1900, 3, hammerIconTo, 2);
             return;
         }
-        isHammerActive = !isHammerActive;
-        // Có thể thay đổi Cursor thành hình cái búa ở đây
-        if (isHammerActive)
+        isMagnic = false;
+
+
+        if (GameData.HammerBoostTutorial)
         {
-            ClearStack();
             Debug.Log("Pick a bomb disk to destroy!");
-            if (GameData.HammerBoostTutorial)
+            //Lay taat ca food so sanh ddown hang
+            FoodTile foodTileTarget = null;
+
+            OrderData orderData = GameManager.Instance.orderCtrl.GetCurrentActiveOrder();
+
+            if (orderData != null)
             {
+                List<FoodPlacement> requiredLayouts = orderData.requiredLayout;
 
-                //Kiem tra co bom o 3 hang dau
-                List<Transform> targets = new List<Transform>();
-                try
+                List<FoodTile> allActiveTiles = new List<FoodTile>();
+
+                // Lấy số lượng cột thực tế từ BoardController
+                int columnCount = GameManager.Instance.boardCtrl.allTilesOnBoard.Count;
+
+                for (int i = 0; i < columnCount; i++)
                 {
-                    for (int i = 0; i < 3; i++)
+                    // Kiểm tra null để tránh lỗi crash nếu cột đó chưa được khởi tạo
+                    if (GameManager.Instance.boardCtrl.allTilesOnBoard[i] != null)
                     {
-                        var column = GameManager.Instance.boardCtrl.allTilesOnBoard[i];
-                        if (column.Count > 0)
-                        {
-                            if (column[0].gameObject != null)
-                            {
-                                targets.Add(column[0].gameObject.transform);
-                            }
 
-                            if (column[1].gameObject != null)
-                            {
-                                targets.Add(column[1].gameObject.transform);
-                            }
-                            if (column[2].gameObject != null)
-                            {
-                                targets.Add(column[2].gameObject.transform);
-                            }
-                        }
-                    }
-                }
-                catch { }
-
-
-                bool hasBom = false;
-
-                if (targets.Count > 0)
-                {
-                    foreach (var target in targets)
-                    {
-                        FoodTile foodTile = target.GetComponent<FoodTile>();
-                        if (foodTile != null)
-                        {
-                            if (foodTile.data.isBuff)
-                            {
-                                hasBom = true;
-                                break;
-                            }
-                        }
+                        allActiveTiles.AddRange(GameManager.Instance.boardCtrl.allTilesOnBoard[i]);
                     }
                 }
 
-                if (hasBom)
+                foreach (FoodTile foodTile in allActiveTiles)
                 {
-                    TutorialManager.Instance.EnableHameHint(true);
+                    foreach (FoodPlacement foodPlacement in requiredLayouts)
+                    {
+                        if (foodTile.data.foodType.Equals(foodPlacement.foodType))
+                        {
+                            foodTileTarget = foodTile;
+                            break;
+                        }
+                    }
+
+
+                }
+
+                if (foodTileTarget != null)
+                {
+                    //hien klen vaf bay
+                    foodTileTarget.tray.sortingOrder = 998;
+                    foodTileTarget.icon.sortingOrder = 999;
+                    foodTileTarget.tray.GetComponent<SpriteRenderer>().color = Color.white;
+                    foodTileTarget.icon.GetComponent<SpriteRenderer>().color = Color.white;
+                    foodTileTarget.isClickable = true;
+
+                    BentoTweenHelper.DoScale(foodTileTarget.transform, 1.2f, 0.5f, () =>
+                    {
+                        BentoTweenHelper.DoScale(foodTileTarget.transform, 1.0f, 0.2f, () =>
+                        {
+                            isMagnic = true;
+                            GameManager.Instance.OnTileTapped(foodTileTarget);
+                            GameManager.Instance.IsProcessing = false;
+                        });
+
+                    });
                 }
                 else
                 {
-                    Debug.Log("Ko co bom");
-                    ToastManager.Instance.ShowToast("no bom");
-                    isHammerActive = false;
+                    GameManager.Instance.IsProcessing = false;
+                    TutorialManager.Instance.EndTutorial();
+                    ToastManager.Instance.ShowToast("No Disc Found!");
                 }
-
-
-
+                // 
             }
             else
             {
+                GameManager.Instance.IsProcessing = false;
                 TutorialManager.Instance.EndTutorial();
                 TutorialManager.Instance.StartHamerTutorial();
             }
 
 
         }
+
+
+
+        //   });
+
+        // Có thể thay đổi Cursor thành hình cái búa ở đây
     }
     public void ExecuteHammer(FoodTile targetTile)
     {
@@ -509,23 +711,27 @@ public class BoosterManager : MonoBehaviour
 
         // 2. Xóa khỏi List dữ liệu của Board
         GameManager.Instance.boardCtrl.allTilesOnBoard[colId].Remove(targetTile);
-
+        Vector3 bomPosition = targetTile.transform.position;
         // 3. Hiệu ứng Visual: Lắc nhẹ rồi biến mất
         targetTile.transform.DOShakePosition(0.3f, 0.2f);
-        targetTile.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack).OnComplete(() =>
+
+        AudioManager.Instance.Play("bomb");
+        targetTile.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
         {
             // Trả về Pool
             ObjectPooler.Instance.ReturnToPool("Food", targetTile.gameObject);
+
 
             // 4. Quan trọng: Dồn hàng lên để lấp chỗ trống
             GameManager.Instance.ShiftTilesUpInColumn(colId);
 
             // Mở khóa xử lý và tắt trạng thái búa
             //GameManager.Instance.processing = false;
-            isHammerActive = false;
+            //isHammerActive = false;
 
             // Xóa Stack Undo vì cấu trúc cột đã thay đổi
             ClearStack();
+
         });
         TutorialManager.Instance.EnableHameHint(false);
         // Rung màn hình (Haptic Feedback)
@@ -538,22 +744,22 @@ public class BoosterManager : MonoBehaviour
     }
 
 
-    public void UseHammerOnTile(FoodTile targetTile)
-    {
-        if (!isHammerActive) return;
+    // public void UseHammerOnTile(FoodTile targetTile)
+    // {
+    //     //if (!isHammerActive) return;
 
-        // Hiệu ứng nổ/biến mất
-        targetTile.transform.DOScale(0, 0.3f).SetEase(Ease.InBack).OnComplete(() =>
-        {
-            // Xóa đĩa khỏi logic game
-            Destroy(targetTile.gameObject);
-        });
+    //     // Hiệu ứng nổ/biến mất
+    //     targetTile.transform.DOScale(0, 0.3f).SetEase(Ease.InBack).OnComplete(() =>
+    //     {
+    //         // Xóa đĩa khỏi logic game
+    //         Destroy(targetTile.gameObject);
+    //     });
 
-        // Rung màn hình nhẹ tạo cảm giác lực
-        Camera.main.transform.DOShakePosition(0.2f, 0.1f);
+    //     // Rung màn hình nhẹ tạo cảm giác lực
+    //     Camera.main.transform.DOShakePosition(0.2f, 0.1f);
 
-        isHammerActive = false; // Dùng xong 1 lần thì tắt
-    }
+    //     //isHammerActive = false; // Dùng xong 1 lần thì tắt
+    // }
     public void ClearStack()
     {
         if (undoStack != null)

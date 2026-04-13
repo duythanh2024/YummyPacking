@@ -194,4 +194,14 @@ public static class BentoTweenHelper
               
               });
     }
+
+     public static void DOPunchScale(Transform target,Vector3 endValue, float duration,Action onComplete = null)
+    {
+        if (target == null) return;
+
+        target.DOKill(complete: true); // Tránh pop chồng pop
+
+        target.transform.DOPunchScale(endValue,duration).SetLoops(-1); 
+
+    }
 }

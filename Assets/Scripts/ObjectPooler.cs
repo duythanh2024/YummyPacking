@@ -95,6 +95,7 @@ public class ObjectPooler : MonoBehaviour
 
         // 2. Dọn dẹp trạng thái (Cực kỳ quan trọng)
         // Nếu object có dùng Interface reset, hãy gọi nó hoặc chủ động reset tại đây
+        obj.transform.localScale=Vector3.one;
         obj.SetActive(false);
 
         // 3. Tối ưu SetParent: 

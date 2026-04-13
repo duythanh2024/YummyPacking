@@ -6,7 +6,6 @@ public class InputController : MonoBehaviour
 {
     private IInputHandler handler;
     private bool touchDown;
-    private bool isMobile = false;
     private void Awake()
     {
         handler = GetComponent<IInputHandler>();
@@ -102,4 +101,4 @@ public class InputController : MonoBehaviour
 
 
     }
-  }
+}

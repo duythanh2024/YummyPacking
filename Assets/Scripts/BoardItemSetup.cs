@@ -11,5 +11,16 @@ public class BoardItemSetup
     // public Vector2 position; 
     
     // [Tooltip("Lớp chồng (Layer). Ví dụ: 0 là dưới cùng, 1 đè lên 0, 2 đè lên 1...")]
-    // public int layer;        
+    // public int layer;       
+    [Header("Phân Tầng & Cột")]
+    [Tooltip("Đĩa thuộc cột nào (0, 1, 2...). Dùng để nhóm đĩa theo hàng dọc.")]
+    public int columnId; 
+
+    [Tooltip("Lớp chồng. 0 là dưới cùng, 1 đè lên 0... Đĩa có Layer cao nhất trong cùng 1 Column sẽ được chọn.")]
+    public int layer; 
+
+    [Tooltip("Vị trí gốc của đĩa này (Nếu muốn tùy chỉnh riêng lẻ, nếu không sẽ dùng Delta tự động)")]
+    public Vector2 customOffset; 
+
+    public bool Finish; 
 }

@@ -12,24 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1270c817af90149de942112a5cab5151, type: 3}
   m_Name: Order_Level8_3
   m_EditorClassIdentifier: Assembly-CSharp::OrderData
-  orderId: 3
-  targetGridSize: {x: 2, y: 3}
+  orderId: 1
+  targetGridSize: {x: 3, y: 3}
+  typeTray: 1
   requiredLayout:
-  - foodType: 3
-    gridCoord: {x: 0, y: 0}
-    gridValues: {x: -1.65, y: 1}
-  - foodType: 4
-    gridCoord: {x: 0, y: 1}
-    gridValues: {x: 0, y: 1}
-  - foodType: 1
-    gridCoord: {x: 0, y: 2}
-    gridValues: {x: 1.71, y: 1}
   - foodType: 2
-    gridCoord: {x: 1, y: 0}
-    gridValues: {x: -1.77, y: -0.7}
+    gridCoord: {x: 0, y: 0}
+    gridValues: {x: -1.73, y: 1.6}
+  - foodType: 2
+    gridCoord: {x: 0, y: 1}
+    gridValues: {x: 0, y: 1.6}
   - foodType: 3
+    gridCoord: {x: 0, y: 2}
+    gridValues: {x: 1.754, y: 1.6}
+  - foodType: 3
+    gridCoord: {x: 1, y: 0}
+    gridValues: {x: -1.75, y: 0.3}
+  - foodType: 4
     gridCoord: {x: 1, y: 1}
-    gridValues: {x: 0, y: -0.7}
+    gridValues: {x: 0, y: 0.3}
   - foodType: 4
     gridCoord: {x: 1, y: 2}
-    gridValues: {x: 1.71, y: -0.7}
+    gridValues: {x: 1.754, y: 0.3}
+  - foodType: 5
+    gridCoord: {x: 2, y: 0}
+    gridValues: {x: -1.75, y: -1}
+  - foodType: 5
+    gridCoord: {x: 2, y: 1}
+    gridValues: {x: 0, y: -1}
+  - foodType: 5
+    gridCoord: {x: 2, y: 2}
+    gridValues: {x: 1.754, y: -1}

@@ -15,18 +15,43 @@ MonoBehaviour:
   levelId: 0
   bufferCapacity: 3
   orderQueue:
-  - {fileID: 11400000, guid: a9836d11668694f9db917a917da4ec32, type: 2}
+  - {fileID: 11400000, guid: e435610f2f25a44b9bf672f9441f5aaf, type: 2}
   boardItems:
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
   - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 0}
-  - foodAsset: {fileID: 0}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
   - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
-  - foodAsset: {fileID: 0}
-  - foodAsset: {fileID: 0}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
   - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
   difficultLevel: 1
+  plateDeltaOffset: {x: 8, y: -15}

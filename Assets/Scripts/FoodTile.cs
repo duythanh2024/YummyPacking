@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 //Lớp này gắn trực tiếp lên Prefab của mỗi miếng đồ ăn.
 public class FoodTile : MonoBehaviour
 {
@@ -9,11 +8,15 @@ public class FoodTile : MonoBehaviour
     public SpriteRenderer icon;
     public bool isClickable = false; // Trạng thái có bị đè hay không   
     public int columnId;
+        public int rowId;
     public bool isLocked = false;
     public int gridCoordX=0;
      public int gridCoordY=0;
+      public int layerId; 
      public BuffSlot currentBuffSlot;
  public FoodSlot currentFoodSlot;
+ [HideInInspector]
+ public bool IsClick;
     public void SetDefault()
     {
         tray.gameObject.SetActive(true);
@@ -24,6 +27,7 @@ public class FoodTile : MonoBehaviour
         currentBuffSlot=null;
         currentFoodSlot=null;
         isLocked = false;
+        IsClick=false;
         gridCoordX=0;
         gridCoordY=0;
     }

@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using static MahjongBoardController;
 
 public class GameManager : MonoBehaviour, IInputHandler
 {
@@ -28,25 +29,26 @@ public class GameManager : MonoBehaviour, IInputHandler
     public TextMeshProUGUI Txt_Levels;
     public TextMeshProUGUI Txt_Order;
     public BoosterManager boosterManager;
-    public GameObject particleSystem1, particleSystem2;
-
     public GameObject Pnl_Shop;
     public GameObject Pnl_Setting;
     public GameObject Pnl_Restart;
     public TextMeshProUGUI Txt_Coins;
     public GameObject Booster;
     public Animator catAnimator;
-
     public static GameManager Instance { get; private set; }
-    public bool processing = false;
+    // public bool processing = false;
     public bool isWin = false;
     public bool isFail = false;
     private FoodTile selectedTile;
     private BuffSlot buffSlot;
-    private float tileWSpacing = 2.52f;
-    private float tileHSpacing = 2.25f;
+    private float tileWSpacing = 1.6f;
+    private float tileHSpacing = 1.5f;
     private bool isHome;
     public int rewardLevel;
+    [HideInInspector]
+    public bool IsStack;
+    [HideInInspector]
+    public bool IsProcessing;
 
     private void Awake()
     {
@@ -65,13 +67,13 @@ public class GameManager : MonoBehaviour, IInputHandler
     void Start()
     {
         // Lấy chỉ số level đã lưu từ PlayerPrefs (mặc định là 0 nếu mới chơi lần đầu)
-
+        AudioManager.Instance.PlayBackground(AudioManager.Instance.gameplayMusic);
         isWin = false;
         isFail = false;
         //test
-        // GameData.SavedLevelIndex = currentLevelIndex;
-        // GameData.Save();
-         currentLevelIndex = GameData.SavedLevelIndex;
+        GameData.SavedLevelIndex = currentLevelIndex;
+        GameData.Save();
+        currentLevelIndex = GameData.SavedLevelIndex;
 
         //catAnimator.SetBool("isWin",false);
 
@@ -117,11 +119,12 @@ public class GameManager : MonoBehaviour, IInputHandler
             );
         }
         rewardLevel = GameData.GetRewardLevel(currentData.difficultLevel);
-
+        IsStack = currentData.IsStack;
         // 4. Sinh ra bàn Mahjong (Tầng 3)
         SpawnLevelBoard(currentData.boardItems);
         boosterManager.LoadBooster();
         ShowCoin();
+        boardCtrl.CaptureBoardDNA();
         Debug.Log($"<color=green>🎮 LEVEL {index + 1} LOADED SUCCESSFULLY</color>");
 
         //TutorialManager
@@ -141,7 +144,8 @@ public class GameManager : MonoBehaviour, IInputHandler
             boosterManager.ShowBoosterDes(2);
 
         }
-        else if (currentLevelIndex == 8 && !GameData.HammerBoostTutorial)
+        // else if (currentLevelIndex == 10 && !GameData.HammerBoostTutorial)
+        else if (currentLevelIndex == 11)
         {
 
             boosterManager.ShowBoosterDes(3);
@@ -191,6 +195,135 @@ public class GameManager : MonoBehaviour, IInputHandler
         // orderCtrl.ClearOrders();
     }
     private void SpawnLevelBoard(List<BoardItemSetup> items)
+    {
+        // 1. Clear dữ liệu cũ
+        foreach (var colList in boardCtrl.allTilesOnBoard) colList.Clear();
+
+        // Dictionary để đếm số đĩa gỗ trong từng Layer của từng Cột: <ColumnID, <LayerID, Count>>
+        Dictionary<int, Dictionary<int, int>> layerCounters = new Dictionary<int, Dictionary<int, int>>();
+
+        // Thông số cấu hình độ lệch (Vị CTO có thể điều chỉnh tùy Art style)
+        float deltaX = 0.08f;    // Độ lệch ngang giữa các Layer (tạo hiệu ứng 2.5D)
+        float deltaY = -0.15f;   // Khoảng cách nhảy giữa các Layer
+        float spacingY = 2.0f;  // Khoảng cách nhỏ giữa các món TRONG CÙNG MỘT LAYER (để không trùng Y)
+        float zStep = 0.1f;
+        foreach (var itemSetup in items)
+        {
+            if (itemSetup.foodAsset == null) continue;
+
+            int cId = itemSetup.columnId;
+            int lId = itemSetup.layer;
+
+            if (cId >= boardCtrl.columns.Length) continue;
+
+            // Khởi tạo bộ đếm nội bộ cho Layer
+            if (!layerCounters.ContainsKey(cId)) layerCounters[cId] = new Dictionary<int, int>();
+            if (!layerCounters[cId].ContainsKey(lId)) layerCounters[cId][lId] = 0;
+
+            int subIndex = layerCounters[cId][lId];
+            Transform targetColTransform = boardCtrl.columns[cId];
+
+            // 2. Spawn từ Pool
+            GameObject newObj = ObjectPooler.Instance.SpawnFromPool("Food", targetColTransform.position, Quaternion.identity);
+            newObj.transform.SetParent(targetColTransform);
+
+            FoodTile tile = newObj.GetComponent<FoodTile>();
+            if (tile != null)
+            {
+                tile.data = itemSetup.foodAsset;
+                tile.icon.sprite = itemSetup.foodAsset.icon;
+                tile.columnId = cId;
+                tile.rowId = subIndex;
+                tile.layerId = lId;
+                tile.gameObject.SetActive(true);
+
+                // 3. CÔNG THỨC VỊ TRÍ MỚI: Tránh trùng Y hoàn toàn
+                // Tính theo: Gốc của Layer + Độ lệch của món trong Layer đó
+                // deltaX += itemSetup.customOffset.x;
+                // deltaY += itemSetup.customOffset.y;
+                float posX = lId * deltaX + itemSetup.customOffset.x;
+                float posY = (lId * deltaY) - (subIndex * spacingY) + itemSetup.customOffset.y;
+                float posZ = (lId * 1.0f) + (subIndex * zStep);
+                newObj.transform.localPosition = new Vector3(posX, posY, posZ);
+
+                // 4. CẬP NHẬT SORTING ORDER
+                // Ưu tiên Layer trước, sau đó là subIndex (món sau đè lên món trước trong cùng layer)
+                // Giả sử tối đa bạn có khoảng 10 Layer (0 đến 9)
+                int maxLayers = 10;
+
+                // CÔNG THỨC MỚI: Layer càng nhỏ (0) thì Sorting càng lớn
+                // (maxLayers - lId) giúp đảo ngược thứ tự: Layer 0 -> 200, Layer 1 -> 180...
+                int baseSorting = 100 + ((maxLayers - lId) * 20) + (subIndex * 2);
+
+                tile.tray.sortingOrder = baseSorting;
+                tile.icon.sortingOrder = baseSorting + 1;
+
+                // 5. Thêm vào danh sách quản lý
+                boardCtrl.allTilesOnBoard[cId].Add(tile);
+
+                // Tăng bộ đếm cho món tiếp theo cùng Layer trong cột này
+                layerCounters[cId][lId]++;
+            }
+        }
+
+        // 6. Cập nhật trạng thái Clickable
+        boardCtrl.UpdateClickableStates();
+    }
+    private void SpawnLevelBoard2(List<BoardItemSetup> items)
+    {
+        // 1. Clear dữ liệu cũ trên BoardController
+        foreach (var colList in boardCtrl.allTilesOnBoard) colList.Clear();
+
+        // Thông số Delta so le (Vị CTO có thể lấy từ LevelData hoặc config chung)
+        float deltaX = 0.08f; // Tương đương 8px trong không gian World Unit
+        float deltaY = -0.15f; // Tương đương -15px
+
+        foreach (var itemSetup in items)
+        {
+            if (itemSetup.foodAsset == null) continue;
+
+            // 2. Xác định cột mục tiêu dựa trên columnId trong data
+            int colId = itemSetup.columnId;
+            if (colId >= boardCtrl.columns.Length) continue; // Phòng lỗi Designer nhập quá số cột
+
+            Transform targetColTransform = boardCtrl.columns[colId];
+
+            // 3. Spawn từ Pool
+            GameObject newObj = ObjectPooler.Instance.SpawnFromPool("Food", targetColTransform.position, Quaternion.identity);
+            newObj.transform.SetParent(targetColTransform);
+
+            FoodTile tile = newObj.GetComponent<FoodTile>();
+            if (tile != null)
+            {
+                // 4. Đổ dữ liệu từ BoardItemSetup vào Tile
+                tile.data = itemSetup.foodAsset;
+                tile.icon.sprite = itemSetup.foodAsset.icon;
+                tile.columnId = colId;
+                tile.layerId = itemSetup.layer; // Lưu layer để xử lý logic khóa/mở sau này
+                tile.gameObject.SetActive(true);
+
+                // 5. TÍNH TOÁN VỊ TRÍ SO LE THEO LAYER
+                // Công thức: Pos = layer * Delta
+                float posX = itemSetup.layer * deltaX;
+                float posY = itemSetup.layer * deltaY;
+                newObj.transform.localPosition = new Vector3(posX, posY, 0);
+
+                // 6. CẬP NHẬT SORTING ORDER (Quan trọng nhất)
+                // Layer càng cao (ở trên) thì Sorting Order càng lớn
+                int baseSorting = 100 + (itemSetup.layer * 10);
+                tile.tray.sortingOrder = baseSorting;
+                tile.icon.sortingOrder = baseSorting + 1;
+
+                // 7. Thêm vào danh sách quản lý của Controller
+                boardCtrl.allTilesOnBoard[colId].Add(tile);
+            }
+        }
+
+        // 8. Cập nhật trạng thái Clickable (Chỉ cho phép click layer cao nhất mỗi cột)
+        boardCtrl.UpdateClickableStates();
+    }
+
+    private void SpawnLevelBoard1(List<BoardItemSetup> items)
     {
 
         // Clear dữ liệu cũ của cả 3 cột
@@ -251,8 +384,7 @@ public class GameManager : MonoBehaviour, IInputHandler
     public void LoadNextLevel()
     {
 
-        particleSystem1.SetActive(false);
-        particleSystem2.SetActive(false);
+       
         Win_Pnl.gameObject.SetActive(false);
         isWin = false;
         isFail = false;
@@ -278,8 +410,7 @@ public class GameManager : MonoBehaviour, IInputHandler
     }
     public void RestartLevel()
     {
-        particleSystem1.SetActive(false);
-        particleSystem2.SetActive(false);
+      
         Win_Pnl.gameObject.SetActive(false);
         Fail_Pnl.gameObject.SetActive(false);
         isWin = false;
@@ -314,13 +445,13 @@ public class GameManager : MonoBehaviour, IInputHandler
     }
     IEnumerator ResetBuff()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         if (!bufferCtrl.IsFull())
         {
-             bufferCtrl.ResetWarning();
+            bufferCtrl.ResetWarning();
         }
-       
-        
+
+
     }
     void MoveBuffToTray(FoodTile tappedTile)
     {
@@ -357,34 +488,34 @@ public class GameManager : MonoBehaviour, IInputHandler
     // PHẢI CÓ TỪ KHÓA 'public' ĐỂ FoodTile CÓ THỂ GỌI
     public void OnTileTapped(FoodTile tappedTile)
     {
-        Debug.Log("OnTileTapped");
-        if (processing || tappedTile == null) return;
-        processing = true;
+        // Debug.Log("OnTileTapped");
+        if (tappedTile == null || tappedTile.IsClick) return;
+        tappedTile.IsClick = true;
         OrderData currentOrder = orderCtrl.GetCurrentActiveOrder();
         if (currentOrder == null)
         {
-            processing = false;
+            tappedTile.IsClick = false;
             return;
 
         }
-        Debug.Log("OnTileTapped");
+        // Debug.Log("OnTileTapped");
         int colId = tappedTile.columnId; // Lấy ID cột của miếng vừa bấm
         // Lấy tọa độ đích cố định từ yêu cầu của Đơn hàng
         if (gridCtrl.GetFixedTargetCoord(tappedTile, currentOrder, out Vector2 targetCoord) && !tappedTile.data.isBuff)
         {
-            Debug.Log("OnTileTapped");
+            //  Debug.Log("OnTileTapped");
             // TRƯỚC KHI REMOVE: Ghi lại dữ liệu Undo
             RecordUndoStep(tappedTile, colId);
-            Debug.Log("OnTileTapped");
+            // Debug.Log("OnTileTapped");
             // 1. Xóa khỏi danh sách của cột đó
             boardCtrl.allTilesOnBoard[colId].Remove(tappedTile);
-            Debug.Log("OnTileTapped");
+            // Debug.Log("OnTileTapped");
             // boardCtrl.RemoveTile(tappedTile);
             // Tính vị trí World để Tween biết đường bay tới (trước khi đổi cha)
             Vector3 targetWorldPos = gridCtrl.GetWorldPositionOfGrid(targetCoord);
             if (gridCtrl.CheckFullBento())
             {
-                Debug.Log("OnTileTapped");
+                //Debug.Log("OnTileTapped");
                 // Nếu đã đủ ô (occupiedCells >= totalCells), gọi hàm xử lý thắng
                 // Lưu ý: Có thể delay một chút để đợi Tween cuối cùng bay tới nơi
                 ExecuteWinSequence();
@@ -397,8 +528,16 @@ public class GameManager : MonoBehaviour, IInputHandler
                 gridCtrl.PlaceTile(tappedTile, targetCoord);
                 BentoTweenHelper.PackPopEffect(tappedTile.transform, () =>
                 {
-                    processing = false;
-                    ShiftTilesUpInColumn(colId);
+                    Debug.Log("Kiem tra " + IsStack);
+                    tappedTile.IsClick = false;
+                    if (!IsStack)
+                        ShiftTilesUpInColumn(colId);
+                    else
+                    {
+
+                        boardCtrl.UpdateClickableStates();
+                    }
+
                     //  CheckWinCondition();
                 });
 
@@ -408,7 +547,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         // 2. Nếu không vừa Bento, thử cho vào Khay chờ (Buffer)
         else if (!bufferCtrl.IsFull())
         {
-            Debug.Log("HANG CHO");
+            //Debug.Log("HANG CHO");
             // TRƯỚC KHI REMOVE: Ghi lại dữ liệu Undo
             RecordUndoStep(tappedTile, colId);
             // boardCtrl.RemoveTile(tappedTile);
@@ -423,30 +562,37 @@ public class GameManager : MonoBehaviour, IInputHandler
                     emptySlot.Occupy();
                     tappedTile.currentBuffSlot = emptySlot;
                     // Code xử lý hiệu ứng bay (Tweening) món ăn vào emptySlot.anchorPoint ở đây
-                    Debug.Log("Món ăn đã vào slot!");
+                    //  Debug.Log("Món ăn đã vào slot!");
 
                     Vector3 bufferPos = emptySlot.anchorPoint.position;
-                    Debug.Log(bufferPos);
+
                     HideUpperTray(tappedTile.tray.gameObject, 0.02f, () =>
                     {
                         BentoTweenHelper.ParabolicMove(tappedTile.transform, bufferPos);
-                        processing = false;
+
+                        tappedTile.IsClick = false;
                         tappedTile.isClickable = false;
-                        ShiftTilesUpInColumn(colId);
+                        if (!IsStack)
+                            ShiftTilesUpInColumn(colId);
+                        else
+                        {
+
+                            boardCtrl.UpdateClickableStates();
+                        }
+
                     });
                 }
                 if (bufferCtrl.IsFull())
-                        {
-                             bufferCtrl.PlayWarning();
-                        }
+                {
+                    bufferCtrl.PlayWarning();
+                }
 
             }
             else
             {
 
                 BentoTweenHelper.ErrorShake(tappedTile.transform);
-                //  Handheld.Vibrate();
-                processing = false;
+                tappedTile.IsClick = false;
 
             }
 
@@ -457,7 +603,7 @@ public class GameManager : MonoBehaviour, IInputHandler
 
             // Trường hợp kẹt: Rung lắc báo lỗi
             BentoTweenHelper.ErrorShake(tappedTile.transform);
-            processing = false;
+            tappedTile.IsClick = false;
             //Handheld.Vibrate();
             if (bufferCtrl.IsFull())
             {
@@ -474,13 +620,22 @@ public class GameManager : MonoBehaviour, IInputHandler
         List<FoodTile> targetColumn = boardCtrl.allTilesOnBoard[colId];
         int currentIndex = targetColumn.IndexOf(tile);
 
+        
+
+        Debug.Log("RecordUndoStep currentIndex "+currentIndex);
+
         UndoStep step = new UndoStep
         {
             tile = tile,
             originalPosition = tile.transform.localPosition, // Lưu Local để khớp với logic Shift
             originalScale = tile.transform.localScale,
             columnId = colId,
-            originalIndex = currentIndex
+            rowId = tile.rowId,
+            layerId = tile.layerId,
+            originalIndex = currentIndex,
+            originalSortingOrder = tile.tray.sortingOrder,
+
+
         };
 
         boosterManager.RecordMove(step);
@@ -519,7 +674,36 @@ public class GameManager : MonoBehaviour, IInputHandler
 
         });
     }
+    public void ShiftTilesLayerDownInColumn(int colId, int insertedIndex)
+    {
+        string sequenceId = "ShiftColumn_Undo_" + colId;
+        DOTween.Kill(sequenceId);
 
+        Sequence seq = DOTween.Sequence().SetId(sequenceId);
+
+       List<FoodTile> targetColumn = boardCtrl.allTilesOnBoard[colId];
+
+    for (int i = insertedIndex; i < targetColumn.Count; i++)
+    {
+        FoodTile tile = targetColumn[i];
+        if (tile == null) continue;
+
+        // TRA CỨU THEO DANH TÍNH VẬT LÝ
+        string dnaKey = $"{colId}_{tile.rowId}_{tile.layerId}"; 
+
+        if (boardCtrl.boardDNA.TryGetValue(dnaKey, out SlotData dna))
+        {
+            // Ép đĩa về đúng tọa độ XYZ và Sorting tuyệt đối
+            seq.Join(tile.transform.DOLocalMove(dna.localPos, 0.4f).SetEase(Ease.OutQuad));
+            
+            tile.tray.sortingOrder = dna.sortingOrder;
+            tile.icon.sortingOrder = dna.sortingOrder + 1;
+            
+            // Không cần gán lại rowId vì nó là định danh gốc rồi
+        }
+    }
+        seq.OnComplete(() => boardCtrl.UpdateClickableStates());
+    }
     public void ShiftTilesDownInColumn(int colId, int insertedIndex)
     {
         float spacingY = 2.0f;
@@ -670,12 +854,6 @@ public class GameManager : MonoBehaviour, IInputHandler
         WinScreenManager winScreenManager = Win_Pnl.GetComponent<WinScreenManager>();
         winScreenManager.ShowWinScreen();
     }
-
-    public void PlayParticle(bool display)
-    {
-        particleSystem1.SetActive(display);
-        particleSystem2.SetActive(display);
-    }
     public void CheckGameOver()
     {
         //     // Bế tắc: Khay chờ đầy VÀ không mảnh nào trong khay có thể đưa vào lưới Bento
@@ -683,7 +861,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         //     // 1. Lấy số lượng đĩa hiện có trong khay Bento (Grid)
         // Khóa tương tác
 
-        processing = true;
+        //    processing = true; 
         StartCoroutine(PlayAnimationFailSequence());
 
     }
@@ -704,10 +882,10 @@ public class GameManager : MonoBehaviour, IInputHandler
         int percent = orderCtrl.GetPerCent();
         Fail_Pnl.gameObject.SetActive(true);
         catAnimator.Play("Idle");
-         if (bufferCtrl.IsFull())
-                        {
-                             bufferCtrl.ResetWarning();
-                        }
+        if (bufferCtrl.IsFull())
+        {
+            bufferCtrl.ResetWarning();
+        }
         FailScreenManager failScreenManager = Fail_Pnl.GetComponent<FailScreenManager>();
         failScreenManager.ShowFailScreen(percent);
     }
@@ -721,7 +899,6 @@ public class GameManager : MonoBehaviour, IInputHandler
     {
         if (isWin || isFail)
         {
-            Debug.Log(isWin + " " + isFail);
             return true;
         }
 
@@ -730,8 +907,9 @@ public class GameManager : MonoBehaviour, IInputHandler
 
     public void HandleTouchDown(Vector2 touch)
     {
+        Debug.Log("HandleTouchDown");
         buffSlot = null;
-        if (isWin || isFail)
+        if (isWin || isFail || IsProcessing)
             return;
         selectedTile = TileCloseToPoint(touch);
         if (selectedTile != null)
@@ -744,19 +922,19 @@ public class GameManager : MonoBehaviour, IInputHandler
             }
 
             // Logic xử lý khi click vào Tile của bạn ở đây
-            Debug.Log("Đã click vào Tile!");
+            //   Debug.Log("Đã click vào Tile!");
             if (selectedTile.isLocked) return;
-            Debug.Log("Đã click vào Tile! 1");
+            // Debug.Log("Đã click vào Tile! 1");
             // --- LOGIC BÚA (ƯU TIÊN HÀNG ĐẦU) ---
-            if (boosterManager.isHammerActive)
-            {
-                Debug.Log("Đã click vào Tile!");
-                if (!selectedTile.data.isBuff)
-                    return;
-                boosterManager.ExecuteHammer(selectedTile);
-                return; // Thoát hàm, không chạy logic nhặt đĩa bên dưới
-            }
-            Debug.Log("Đã click vào Tile!");
+            // if (boosterManager.isHammerActive)
+            // {
+            //     // Debug.Log("Đã click vào Tile!");
+            //     if (!selectedTile.data.isBuff)
+            //         return;
+            //     boosterManager.ExecuteHammer(selectedTile);
+            //     return; // Thoát hàm, không chạy logic nhặt đĩa bên dưới
+            // }
+            // Debug.Log("Đã click vào Tile!");
             // 1. Nếu Tutorial đang bật
             if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
             {
@@ -773,13 +951,14 @@ public class GameManager : MonoBehaviour, IInputHandler
                     return; // Dừng hàm tại đây, không chạy code nhặt đĩa bên dưới
                 }
             }
-            Debug.Log("Đã click vào Tile! 3");
+            // Debug.Log("Đã click vào Tile! 3");
 
-            //Debug.Log("Nhan "+isClickable);
+
+            //            Debug.Log("Nhan " + selectedTile.isClickable);
             // Kiểm tra xem miếng Cá này có đang bị miếng khác đè không
-            if (selectedTile.isClickable)
+            if (selectedTile.isClickable && !selectedTile.data.isBuff)
             {
-                Debug.Log("Đã click vào Tile! 4");
+                //Debug.Log("Đã click vào Tile! 4");
                 AudioManager.Instance.Play("Click");
                 // Thông báo cho TutorialManager đã click đúng
                 if (TutorialManager.Instance != null)
@@ -790,9 +969,9 @@ public class GameManager : MonoBehaviour, IInputHandler
 
 
             }
-            else if (isWin)
+            else if (isWin || selectedTile.data.isBuff)
             {
-                Debug.Log("NO Nhan ");
+                // Debug.Log("NO Nhan ");
                 AudioManager.Instance.Play("Error");
                 // Hiệu ứng rung lắc nhẹ báo hiệu miếng Cá đang bị kẹt
                 BentoTweenHelper.ErrorShake(selectedTile.transform);
@@ -807,6 +986,10 @@ public class GameManager : MonoBehaviour, IInputHandler
             {
                 AudioManager.Instance.Play("Click");
                 boosterManager.ShowBuySlot(buffSlot.index);
+            }
+            else
+            {
+                Debug.Log("NO HandleTouchDown");
             }
 
         }
@@ -830,13 +1013,74 @@ public class GameManager : MonoBehaviour, IInputHandler
     private FoodTile TileCloseToPoint(Vector2 point)
     {
         var worldPoint = Camera.main.ScreenToWorldPoint(point);
+        worldPoint.z = 0; // Đưa về mặt phẳng 2D để tính khoảng cách ngang
+
+        FoodTile bestTile = null;
+        float minDistance = float.MaxValue;
+        int bestLayer = int.MaxValue; // Để tìm thằng trên cùng
+
+        float threshold = Mathf.Min(tileWSpacing, tileHSpacing) * 0.6f; // Tăng nhẹ vùng chạm cho cảm giác mượt hơn
+        List<List<FoodTile>> allTilesOnBoard = boardCtrl.allTilesOnBoard;
+
+        for (int colId = 0; colId < allTilesOnBoard.Count; colId++)
+        {
+            for (int i = 0; i < allTilesOnBoard[colId].Count; i++)
+            {
+                FoodTile food = allTilesOnBoard[colId][i];
+
+                // 1. Kiểm tra tồn tại và Active (dùng ?. để an toàn)
+                if (food == null || !food.gameObject.activeInHierarchy) continue;
+
+                float distance = Vector2.Distance(food.transform.position, worldPoint);
+
+                // 2. Chỉ xét các đĩa nằm trong vùng chạm
+                if (distance < threshold)
+                {
+                    /* LOGIC CTO: ƯU TIÊN LAYER TRƯỚC, KHOẢNG CÁCH SAU
+                       - Ưu tiên đĩa cho phép bấm (isClickable).
+                       - Nếu cùng có thể bấm, đĩa nào Layer thấp hơn (nằm trên) thắng.
+                       - Nếu cùng Layer, đĩa nào gần tâm hơn thắng.
+                    */
+                    bool isBetter = false;
+
+                    if (bestTile == null)
+                    {
+                        isBetter = true;
+                    }
+                    else
+                    {
+                        // Nếu đĩa này bấm được mà đĩa cũ không bấm được -> Lấy ngay
+                        if (food.isClickable && !bestTile.isClickable) isBetter = true;
+                        // Nếu cả hai cùng trạng thái bấm -> So sánh Layer
+                        else if (food.isClickable == bestTile.isClickable)
+                        {
+                            if (food.layerId < bestLayer) isBetter = true;
+                            else if (food.layerId == bestLayer && distance < minDistance) isBetter = true;
+                        }
+                    }
+
+                    if (isBetter)
+                    {
+                        minDistance = distance;
+                        bestLayer = food.layerId;
+                        bestTile = food;
+                    }
+                }
+            }
+        }
+
+        return bestTile;
+    }
+    private FoodTile TileCloseToPoint1(Vector2 point)
+    {
+        var worldPoint = Camera.main.ScreenToWorldPoint(point);
         worldPoint.z = 0;
 
         FoodTile closestTile = null;
         float closestDistance = float.MaxValue;
-        List<FoodTile>[] allTilesOnBoard = boardCtrl.allTilesOnBoard;
+        List<List<FoodTile>> allTilesOnBoard = boardCtrl.allTilesOnBoard;
         // Duyệt qua tất cả các tile để tìm tile gần nhất
-        for (int colId = 0; colId < 3; colId++)
+        for (int colId = 0; colId < allTilesOnBoard.Count; colId++)
         {
             for (int i = 0; i < allTilesOnBoard[colId].Count; i++)
             {
@@ -844,6 +1088,7 @@ public class GameManager : MonoBehaviour, IInputHandler
 
                 if (food != null && food.gameObject.transform.parent.gameObject.activeSelf)
                 {
+
                     float distance = Vector3.Distance(food.transform.position, worldPoint);
                     if (distance < closestDistance)
                     {
@@ -854,7 +1099,6 @@ public class GameManager : MonoBehaviour, IInputHandler
 
             }
         }
-
         // Chỉ trả về tile nếu nó đủ gần (trong phạm vi nửa tile)
         if (closestTile != null && closestDistance < Mathf.Min(tileWSpacing, tileHSpacing) * 0.5f)
         {
@@ -904,6 +1148,8 @@ public class GameManager : MonoBehaviour, IInputHandler
     {
         if (IsWinOrFail())
             return;
+        if (IsProcessing)
+            return;
         AudioManager.Instance.Play("Click");
         Pnl_Setting.SetActive(display);
     }
@@ -911,12 +1157,16 @@ public class GameManager : MonoBehaviour, IInputHandler
     {
         if (IsWinOrFail())
             return;
+        if (IsProcessing)
+            return;
         AudioManager.Instance.Play("Click");
         Pnl_Restart.SetActive(display);
     }
     public void OpenShop(bool display)
     {
         if (IsWinOrFail())
+            return;
+        if (IsProcessing)
             return;
         AudioManager.Instance.Play("Click");
         Pnl_Shop.SetActive(display);
@@ -964,6 +1214,16 @@ public class GameManager : MonoBehaviour, IInputHandler
         {
             GameData.Coins = 10000;
             GameData.Save();
+
+
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+                Win_Pnl.gameObject.SetActive(true);
+                WinScreenManager winScreenManager = Win_Pnl.GetComponent<WinScreenManager>();
+                winScreenManager.ShowWinScreen();
+        }
+
+
     }
 }

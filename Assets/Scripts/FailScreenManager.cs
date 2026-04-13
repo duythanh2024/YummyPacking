@@ -87,8 +87,8 @@ public class FailScreenManager : MonoBehaviour
         if (BoosterManager.Instance != null)
             BoosterManager.Instance.ExecuteUndo();
 
-        if (GameManager.Instance != null)
-            GameManager.Instance.processing = false;
+        // if (GameManager.Instance != null)
+        //     GameManager.Instance.processing = false;
     }
 
     // ==========================================
@@ -99,7 +99,7 @@ public class FailScreenManager : MonoBehaviour
         AudioManager.Instance.Play("Click");
         HideFailScreen();
 
-        GameManager.Instance.processing = false;
+        //GameManager.Instance.processing = false;
         GameManager.Instance.RestartLevel();
 
 

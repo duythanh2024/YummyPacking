@@ -42,12 +42,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _HoleRadius: 142.89236
+    - _HoleRadius: 149.99077
     - _Softness: 2
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 0.009433985, g: 0.009122485, b: 0.009122485, a: 0.5882353}
-    - _HolePosition: {r: 242.44446, g: 110, b: 0, a: 0}
+    - _HolePosition: {r: 1202.889, g: 110, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

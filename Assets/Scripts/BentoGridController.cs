@@ -40,7 +40,7 @@ public class BentoGridController : MonoBehaviour
         totalCells = gridWidth * gridHeight;
         occupiedCells = 0;
         packedTiles = new List<FoodTile>();
-        Debug.Log("SpawnNewBento  this.typeTray " + this.typeTray);
+        // Debug.Log("SpawnNewBento  this.typeTray " + this.typeTray);
         SpawnNewBento();
 
     }
@@ -66,7 +66,7 @@ public class BentoGridController : MonoBehaviour
         {
             tagTray = "Tray66";
         }
-        Debug.Log(tagTray);
+
         return tagTray;
     }
     private void SpawnNewBento()
@@ -114,7 +114,9 @@ public class BentoGridController : MonoBehaviour
         TrayOrder trayOrder = oldBento.GetComponent<TrayOrder>();
         if (trayOrder != null)
         {
+
             trayOrder.locks.SetActive(true);
+            AudioManager.Instance.Play("WoodClack");
 
             Vector2 targetPos = new Vector2(0, trayOrder.locks.transform.localPosition.y);
 
@@ -310,6 +312,7 @@ public class BentoGridController : MonoBehaviour
     // VIẾT ĐẦY ĐỦ HÀM PLACETILE ĐỂ KHÓA LƯỚI
     public void PlaceTile(FoodTile tile, Vector2 coord)
     {
+        AudioManager.Instance.TriggerVibrate(30);
         // 1. ĐỔI CHA: Đưa thức ăn làm con của đối tượng D (currentBentoUI)
         tile.transform.SetParent(currentBentoUI.transform);
         tile.tray.transform.localPosition = Vector3.zero;
@@ -327,6 +330,7 @@ public class BentoGridController : MonoBehaviour
         if (tile.TryGetComponent<BoxCollider2D>(out var col)) col.enabled = false;
 
         packedTiles.Add(tile);
+
 
         // // 1. ĐỔI CHA: Đưa món ăn vào làm con của Khay Bento
         // tile.transform.SetParent(currentBentoUI.transform);
@@ -401,7 +405,7 @@ public class BentoGridController : MonoBehaviour
 
     public bool CheckFullBento()
     {
-       
+
         return occupiedCells >= totalCells;
     }
     // --- THÊM VÀO LỚP BENTOGRIDCONTROLLER ---
@@ -426,7 +430,7 @@ public class BentoGridController : MonoBehaviour
             {
                 gridCells[gridX, gridY] = 0; // Giải phóng ô trong ma trận
                 occupiedCells--;             // Giảm số lượng ô đã chiếm
-                Debug.Log("cap nhat");
+//                Debug.Log("cap nhat");
             }
 
 

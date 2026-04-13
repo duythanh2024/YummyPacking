@@ -72,11 +72,11 @@ public class BufferController : MonoBehaviour
     public void GetCapacity()
     {
         capacity = allSlots.Where(n => n.isUnlocked && n.isBuyed).ToList().Count;
-        Debug.Log("currentBufferTiles.Count capacity: " + capacity);
+       // Debug.Log("currentBufferTiles.Count capacity: " + capacity);
     }
     public bool IsFull()
     {
-        Debug.Log("currentBufferTiles.Count " + currentBufferTiles.Count + " capacity: " + capacity);
+        //Debug.Log("currentBufferTiles.Count " + currentBufferTiles.Count + " capacity: " + capacity);
         return currentBufferTiles.Count >= capacity;
     }
     public BuffSlot GetFirstEmptySlot()
@@ -99,7 +99,7 @@ public class BufferController : MonoBehaviour
         if (currentBufferTiles.Count < capacity)
         {
             currentBufferTiles.Add(tile);
-            Debug.Log(currentBufferTiles.Count);
+        //   Debug.Log(currentBufferTiles.Count);
             return true;
             // Thêm logic sắp xếp vị trí các mảnh trong khay tại đây
         }

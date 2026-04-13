@@ -18,9 +18,28 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2c12637f3ffc54ee9a22b52734c8c2c5, type: 2}
   boardItems:
   - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
   - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
   - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
   difficultLevel: 1
+  plateDeltaOffset: {x: 8, y: -15}

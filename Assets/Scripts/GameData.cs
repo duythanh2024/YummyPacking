@@ -32,7 +32,9 @@ public static class GameData
     private const string KEY_SOUND = "Settings_Sound";
     private const string KEY_MUSIC = "Settings_Music";
     private const string KEY_VIBRATE = "Settings_Vibrate";
-
+    // Level 11-20: 2 tầng đơn giản (Sandwich).
+    // Level 21-35: 3-4 tầng kèm theo Nắp đậy (Hidden Lid).
+    // Level 36-50: Kết hợp các yếu tố Xích (Chains) hoặc Đóng băng (Ice) như chúng ta đã thảo luận.
     public static int GetRewardLevel(int level)
     {
         if (level == 1 || level == 2)

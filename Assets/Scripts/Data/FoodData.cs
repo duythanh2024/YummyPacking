@@ -21,5 +21,5 @@ public class FoodData : ScriptableObject
     // (Tùy chọn) Kích thước tổng thể của mảnh ghép để tính toán bound (khung bao)
     public int width = 1;
     public int height = 1;
-    public bool isBuff;
+    public bool isBuff; //BOM
 }

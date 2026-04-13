@@ -21,15 +21,15 @@ public class OrderManager : MonoBehaviour
 
         foreach (var ui in spawnedUI)
         {
-              ObjectPooler.Instance.ReturnToPool("Order", ui.gameObject);
+            ObjectPooler.Instance.ReturnToPool("Order", ui.gameObject);
         }
         foreach (var ui in spawnedUI)
         {
-              ObjectPooler.Instance.ReturnToPool("Order33", ui.gameObject);
+            ObjectPooler.Instance.ReturnToPool("Order33", ui.gameObject);
         }
         foreach (var ui in spawnedUI)
         {
-              ObjectPooler.Instance.ReturnToPool("Order66", ui.gameObject);
+            ObjectPooler.Instance.ReturnToPool("Order66", ui.gameObject);
         }
         spawnedUI.Clear();
         activeOrders.Clear();
@@ -39,20 +39,21 @@ public class OrderManager : MonoBehaviour
         RefreshOrders();
 
     }
-      public string GetTagTray(int typeTray)
+    public string GetTagTray(int typeTray)
     {
-        String tagTray="";
-           if (typeTray == 0)
+        String tagTray = "";
+        if (typeTray == 0)
         {
-            tagTray="Order";
+            tagTray = "Order";
 
-        }else if (typeTray == 1)
+        }
+        else if (typeTray == 1)
         {
-            tagTray="Order33";
+            tagTray = "Order33";
         }
         else if (typeTray == 2)
         {
-            tagTray="Order66";
+            tagTray = "Order66";
         }
         return tagTray;
     }
@@ -71,14 +72,15 @@ public class OrderManager : MonoBehaviour
             spawnedUI.Add(uiElem);
             activeOrder++;
         }
-        
+
     }
 
     public int GetPerCent()
     {
-       
 
-        return 100*activeOrder /numberOrder;
+        if ((activeOrder-1) <=0)
+            return 0;
+        return 100 * (activeOrder-1) / numberOrder;
 
     }
 

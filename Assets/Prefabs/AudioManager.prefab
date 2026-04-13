@@ -58,7 +58,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 03b224d6d9a404b3fa57b03056237ce1, type: 3}
   - {fileID: 8300000, guid: 12b70f0daa3c847549e349b4bb68cf2d, type: 3}
   - {fileID: 8300000, guid: e28f6ee5b4d484840b00334aad5a5b54, type: 3}
-  homeMusic: {fileID: 8300000, guid: 4afb950acef104a17b00e78a39b2e88e, type: 3}
+  - {fileID: 8300000, guid: f29716dd4055d48d58d41f254b2bc460, type: 3}
+  - {fileID: 8300000, guid: c0dcb580c0eea46ac84f0e4e21f0cf17, type: 3}
+  homeMusic: {fileID: 8300000, guid: a2ab9845ea4104b57bde9b9214df507b, type: 3}
   gameplayMusic: {fileID: 8300000, guid: 5cc1c335c0ab04c0d8b70c612ff6edb1, type: 3}
   musicSource: {fileID: 2202208614259661901}
   sfxSourcePrefab: {fileID: 4184073882307573088, guid: 2dc3f9f3a530c479e89d38918cc5532e, type: 3}

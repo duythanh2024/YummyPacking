@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47242727038164cb88529402f3174a7e, type: 3}
+  m_Name: Level_020
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  levelId: 0
+  bufferCapacity: 5
+  orderQueue:
+  - {fileID: 11400000, guid: fae5d7f533a0142e2a87a04f16847f4a, type: 2}
+  - {fileID: 11400000, guid: cde19180f33a9432290586eb71e19439, type: 2}
+  - {fileID: 11400000, guid: f6d1c6729a84b40b69a6301bded221aa, type: 2}
+  - {fileID: 11400000, guid: b73438a6442844f30b9ce651de5bbdc1, type: 2}
+  - {fileID: 11400000, guid: f3358e528b8cd4675b6897539b660ba1, type: 2}
+  - {fileID: 11400000, guid: 11ac010fdb2624c5e990952e2874e56a, type: 2}
+  boardItems:
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 7cfff764f47a948b88b9f7651a31259b, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 7cfff764f47a948b88b9f7651a31259b, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 7cfff764f47a948b88b9f7651a31259b, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 998f971c4d5324fe583cda1f7e7b79f5, type: 2}
+  - foodAsset: {fileID: 11400000, guid: baf52b5df44d4429f824487777f2bb8c, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 998f971c4d5324fe583cda1f7e7b79f5, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
+  - foodAsset: {fileID: 11400000, guid: 998f971c4d5324fe583cda1f7e7b79f5, type: 2}
+  - foodAsset: {fileID: 11400000, guid: baf52b5df44d4429f824487777f2bb8c, type: 2}
+  - foodAsset: {fileID: 11400000, guid: baf52b5df44d4429f824487777f2bb8c, type: 2}
+  difficultLevel: 6

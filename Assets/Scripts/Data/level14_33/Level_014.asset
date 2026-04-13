@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47242727038164cb88529402f3174a7e, type: 3}
+  m_Name: Level_014
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  levelId: 0
+  bufferCapacity: 5
+  orderQueue:
+  - {fileID: 11400000, guid: 1328b3a30fa43474da204c6e9aac52b6, type: 2}
+  - {fileID: 11400000, guid: 408801b3c6f434254a8e1c6c463c404d, type: 2}
+  - {fileID: 11400000, guid: 0f8782c702b1240e993dce9eb94a1a59, type: 2}
+  - {fileID: 11400000, guid: 5de5e5344579a4690a2a97c324f2724c, type: 2}
+  IsStack: 1
+  boardItems:
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 0
+    layer: 1
+    customOffset: {x: -0.46, y: -0.15}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 1
+    layer: 1
+    customOffset: {x: -0.08, y: -0.15}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 2
+    layer: 1
+    customOffset: {x: 0.3, y: -0.15}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 0
+    layer: 2
+    customOffset: {x: -0.92, y: -0.3}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    columnId: 1
+    layer: 2
+    customOffset: {x: -0.16, y: -0.3}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 2
+    layer: 2
+    customOffset: {x: 0.6, y: -0.3}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 0
+    layer: 3
+    customOffset: {x: -1.38, y: -0.45}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    columnId: 1
+    layer: 3
+    customOffset: {x: -0.24, y: -0.45}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 2
+    layer: 3
+    customOffset: {x: 0.9, y: -0.45}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    columnId: 0
+    layer: 1
+    customOffset: {x: -0.46, y: -0.15}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 1
+    layer: 1
+    customOffset: {x: -0.08, y: -0.15}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    columnId: 2
+    layer: 1
+    customOffset: {x: 0.3, y: -0.3}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 0
+    layer: 2
+    customOffset: {x: -0.92, y: -0.3}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    columnId: 1
+    layer: 2
+    customOffset: {x: -0.16, y: -0.3}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    columnId: 2
+    layer: 2
+    customOffset: {x: 0.6, y: -0.3}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    columnId: 0
+    layer: 3
+    customOffset: {x: -1.38, y: -0.45}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    columnId: 1
+    layer: 3
+    customOffset: {x: -0.24, y: -0.45}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    columnId: 2
+    layer: 3
+    customOffset: {x: 0.9, y: -0.45}
+    Finish: 1
+  difficultLevel: 3
+  plateDeltaOffset: {x: 8, y: -15}

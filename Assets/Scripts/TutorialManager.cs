@@ -127,14 +127,6 @@ public class TutorialManager : MonoBehaviour
 
     public void StartBoosterFocus(RectTransform boosterRect, string message, int typeBooster)
     {
-        // isTutorialActive = true;
-        // isBoosterMode = true;
-        // tutorialCanvas.SetActive(true);
-
-        // // Booster dùng RectTransform nên lấy position trực tiếp
-        // Vector2 screenPos = boosterRect.position;
-        // Debug.Log(screenPos);
-        // PlayStepAnimation(screenPos, message, boosterRadius);
 
         if (boosterRect == null) return;
 
@@ -302,8 +294,8 @@ public class TutorialManager : MonoBehaviour
     private string GetStepMessage(int index)
     {
         string[] hints = {
-            "Tap the <color=orange>1st</color> plate!",
-            "Well done! Tap the <color=yellow>2nd</color> one.",
+            "Tap the plate!",
+            "Well done! Tap the one.",
             "Finally, tap this to <color=green>Finish</color>!"
         };
         return index < hints.Length ? hints[index] : "Tap the next plate!";

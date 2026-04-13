@@ -1,38 +1,227 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //XU ly tang 3: cacs mon an xep cuoi cung de chon
 public class MahjongBoardController : MonoBehaviour
 {
+    // Lưu trữ "vân tay" của từng vị trí: [Cột_Tầng] -> (Tọa độ, Sorting)
+[HideInInspector]
+// Dùng Vector2Int nhanh hơn string key và dễ quản lý tọa độ (x=col, y=row)
 
-public List<FoodTile>[] allTilesOnBoard = new List<FoodTile>[3];
-public Transform[] columns = new Transform[3]; // THÊM DÒNG NÀY
-    private void Awake() {
+public struct SlotData {
+    public Vector3 localPos;
+    public int sortingOrder;
+    public int layerId; // Nên lưu cả LayerId để Undo không bị sáng/tối sai
+    public int rowId;
+}
+
+// Thay đổi Dictionary sang dùng string làm Key
+public Dictionary<string, SlotData> boardDNA = new Dictionary<string, SlotData>();
+
+public void CaptureBoardDNA() {
+    if (boardDNA == null) boardDNA = new Dictionary<string, SlotData>();
+    boardDNA.Clear();
+
+    // Duyệt qua toàn bộ cột
+    for (int c = 0; c < allTilesOnBoard.Count; c++) {
+        for (int i = 0; i < allTilesOnBoard[c].Count; i++) {
+            var tile = allTilesOnBoard[c][i];
+            if (tile == null) continue;
+
+            // QUAN TRỌNG: Key phải là sự kết hợp của ColumnID, RowID (Chồng) và LayerID (Tầng)
+            // Đây là "tọa độ chết" của slot đó trên bàn chơi
+            string key = $"{c}_{tile.rowId}_{tile.layerId}";
+
+            boardDNA[key] = new SlotData {
+                localPos = tile.transform.localPosition,
+                sortingOrder = tile.tray.sortingOrder,
+                layerId = tile.layerId,
+                rowId = tile.rowId
+            };
+        }
+    }
+    Debug.Log($"<color=cyan>DNA Captured: {boardDNA.Count} physical slots locked!</color>");
+}
+
+    // List ngoài cùng đại diện cho các Cột (Columns)
+    // List bên trong đại diện cho các Đĩa (Tiles) xếp chồng trong cột đó
+    //allTilesOnBoard.Count: Trả về Tổng số cột đang có trên bàn (Ví dụ: 3, 4 hoặc 5 cột tùy Level).
+
+    //allTilesOnBoard[colId].Count: Trả về Số lượng đĩa đang xếp chồng trong cột cụ thể đó.
+    public List<List<FoodTile>> allTilesOnBoard = new List<List<FoodTile>>();
+    public Transform[] columns;
+    private void Awake()
+    {
         // Khởi tạo List cho từng cột
-        for (int i = 0; i < 3; i++) {
-            allTilesOnBoard[i] = new List<FoodTile>();
+        InitializeBoard(3);
+    }
+
+    public void InitializeBoard(int numColumns)
+    {
+        // Clear sạch các cột cũ
+        allTilesOnBoard.Clear();
+
+        // Khởi tạo các List con tương ứng với số cột của Level đó
+        for (int i = 0; i < numColumns; i++)
+        {
+            allTilesOnBoard.Add(new List<FoodTile>());
         }
     }
     // RẤT QUAN TRỌNG: Thuật toán kiểm tra xem mảnh nào được phép nhấn
-    public void UpdateClickableStates()
+    public void UpdateClickableStates2()
     {
-    
-    for (int colId = 0; colId < 3; colId++)
-    {
-        for (int i = 0; i < allTilesOnBoard[colId].Count; i++)
-        {
-            FoodTile tile = allTilesOnBoard[colId][i];
-            
-            // Chỉ miếng index 0 trong mỗi cột mới được bấm
-            tile.isClickable = (i == 0);
 
-            // Hiệu ứng Visual (Sáng/Tối)
-            Color targetColor = tile.isClickable ? Color.white : Color.gray;
-           // tile.tray.GetComponent<SpriteRenderer>().DOColor(targetColor, 0.2f);
-            BentoTweenHelper.SafeDOColor(tile.tray.GetComponent<SpriteRenderer>(),targetColor, 0.2f);
-            
+        for (int colId = 0; colId < 3; colId++)
+        {
+            for (int i = 0; i < allTilesOnBoard[colId].Count; i++)
+            {
+                FoodTile tile = allTilesOnBoard[colId][i];
+
+                // Chỉ miếng index 0 trong mỗi cột mới được bấm
+                tile.isClickable = (i == 0);
+
+                // Hiệu ứng Visual (Sáng/Tối)
+                Color targetColor = tile.isClickable ? Color.white : Color.gray;
+                // tile.tray.GetComponent<SpriteRenderer>().DOColor(targetColor, 0.2f);
+                BentoTweenHelper.SafeDOColor(tile.tray.GetComponent<SpriteRenderer>(), targetColor, 0.2f);
+
+            }
         }
     }
+
+    public void UpdateClickableStates()
+    {
+        if (!GameManager.Instance.IsStack)
+        {
+            // Duyệt qua từng cột đĩa trên bàn
+            for (int colId = 0; colId < allTilesOnBoard.Count; colId++)
+            {
+                var currentColumn = allTilesOnBoard[colId];
+                int count = currentColumn.Count;
+
+                for (int i = 0; i < count; i++)
+                {
+                    FoodTile tile = currentColumn[i];
+
+                    // LOGIC QUAN TRỌNG: 
+                    // LOGIC MỚI: Chỉ đĩa ở đầu danh sách (Index 0) mới được tương tác
+                    bool isTopItem = (i == 0);
+                    tile.isClickable = isTopItem;
+
+                    // 1. Bật/Tắt Collider để chống bấm xuyên tầng
+                    BoxCollider2D col = tile.GetComponent<BoxCollider2D>();
+                    if (col != null)
+                    {
+                        col.enabled = isTopItem;
+                    }
+
+                    // 2. Hiệu ứng Visual (Làm tối các khay ở dưới để người chơi dễ nhận biết)
+                    Color targetColor = isTopItem ? Color.white : new Color(0.6f, 0.6f, 0.6f, 1f);
+
+                    // Sử dụng Helper để đổi màu mượt mà
+                    BentoTweenHelper.SafeDOColor(tile.tray.GetComponent<SpriteRenderer>(), targetColor, 0.2f);
+                    BentoTweenHelper.SafeDOColor(tile.icon, targetColor, 0.2f);
+                }
+            }
+        }
+        else
+        {
+           // Debug.Log("Kiem tra");
+            // Duyệt qua từng cột đĩa trên bàn
+            for (int colId = 0; colId < allTilesOnBoard.Count; colId++)
+            {
+                var currentColumn = allTilesOnBoard[colId];
+                if (currentColumn.Count == 0) continue;
+
+                // 1. Tìm giá trị Layer nhỏ nhất đang còn tồn tại trong cột này (ví dụ: 0)
+
+                // 2. Gom nhóm theo Chồng (Stack)
+                //  1. Gom nhóm theo rowId (Mỗi nhóm là 1 chồng đĩa)
+                var stacks = currentColumn.GroupBy(t => t.rowId).ToList();
+
+                // 2. Tìm giá trị Layer nhỏ nhất trong số các đĩa đang nằm ở ĐỈNH của mỗi chồng
+                // Chúng ta chỉ quan tâm đến những đĩa lộ diện (Index 0 của mỗi stack)
+
+
+                foreach (var stackGroup in stacks)
+                {
+                    // 3. Lấy danh sách đĩa trong chồng và sắp xếp theo Layer
+                    var tilesInStack = stackGroup.OrderBy(t => t.layerId).ToList();
+
+                    // Đĩa ở Index 0 chính là đĩa có Layer nhỏ nhất của CHỒNG này (Local Min)
+                    int minLayerInCol = tilesInStack[0].layerId;
+                    for (int i = 0; i < tilesInStack.Count; i++)
+                    {
+                        FoodTile tile = tilesInStack[i];
+
+                        // ĐIỀU KIỆN TƯƠNG TÁC (QUY TẮC CTO):
+                        // - Đĩa phải thuộc Layer thấp nhất hiện có (minLayerInCol)
+                        // - Đĩa phải nằm trên cùng của chồng đó (Index 0)
+                        bool isLowestLayerNow = (tile.layerId == minLayerInCol);
+                        bool isTopOfItsStack = (i == 0);
+                        bool canInteract = isLowestLayerNow && isTopOfItsStack;
+
+                        tile.isClickable = canInteract;
+
+                        // 1. Collider: Rất quan trọng để không bấm nhầm vào Layer cao hơn
+                        BoxCollider2D col = tile.GetComponent<BoxCollider2D>();
+                        if (col != null) col.enabled = canInteract;
+
+                        // 2. Hiển thị Visual (Trạng thái Highlight)
+                        Color targetColor;
+                        if (canInteract)
+                        {
+                            targetColor = Color.white; // Sáng rực để biết là bấm được
+                        }
+                        else if (isTopOfItsStack)
+                        {
+                            // Là đỉnh chồng nhưng Layer cao hơn -> Chờ dọn tầng dưới
+                            targetColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+                        }
+                        else
+                        {
+                            // Bị đè hoàn toàn bên dưới
+                            targetColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+                        }
+                        // 1. Cấu hình hằng số (Nên để Layer 0 gần Camera nhất)
+                        float zStep = 0.5f;       // Khoảng cách giữa các tầng Layer (tăng lên để phân lớp rõ rệt)
+                        float subStep = 0.02f;    // Khoảng cách giữa các đĩa trong cùng 1 xấp (rowId)
+
+                        // 2. Tính toán targetZ
+                        // Công thức: Layer càng lớn (càng sâu) thì Z càng lớn (càng xa Camera)
+                        // Ví dụ: 
+                        // Layer 0 (Trên cùng) -> targetZ = (0 * 0.5) + (rowId * 0.02) = ~0 (Gần Camera)
+                        // Layer 2 (Dưới sâu)  -> targetZ = (2 * 0.5) + (rowId * 0.02) = ~1.0 (Xa Camera)
+                        float targetZ = (tile.layerId * zStep) + (tile.rowId * subStep);
+
+                        // 3. Cập nhật vị trí
+                        Vector3 currentPos = tile.transform.localPosition;
+
+                        // Chỉ cập nhật nếu có sự thay đổi đáng kể (> 0.001) để tối ưu hiệu năng
+                        if (Mathf.Abs(currentPos.z - targetZ) > 0.001f)
+                        {
+                            tile.transform.localPosition = new Vector3(currentPos.x, currentPos.y, targetZ);
+                        }
+                        // 3. Hiệu ứng bừng sáng (Feedback)
+                        // if (canInteract && tile.icon.color != Color.white)
+                        // {
+                        //     // Hiệu ứng "Pop" báo hiệu tầng này đã được mở khóa
+                        //     tile.transform.DOScale(1.1f, 0.15f).SetLoops(2, LoopType.Yoyo);
+                        // }
+
+                        BentoTweenHelper.SafeDOColor(tile.tray.GetComponent<SpriteRenderer>(), targetColor, 0.2f);
+                        BentoTweenHelper.SafeDOColor(tile.icon, targetColor, 0.2f);
+
+                        // // 4. Sorting Order: Giữ đúng phối cảnh Layer (Lớn nằm trên nhỏ)
+                        // int depthPriority = tilesInStack.Count - i;
+                        // tile.tray.GetComponent<SpriteRenderer>().sortingOrder = (tile.layer * 100) + depthPriority;
+                        // tile.icon.sortingOrder = (tile.layer * 100) + depthPriority + 1;
+                    }
+                }
+            }
+        }
+
     }
     // private bool IsCovered(FoodTile checkTile)
     // {
@@ -105,14 +294,14 @@ public Transform[] columns = new Transform[3]; // THÊM DÒNG NÀY
 
     public void RemoveTile(FoodTile tile)
     {
-       
+
         UpdateClickableStates();
     }
     // --- HÀM KHÓA/MỞ KHÓA TOÀN BỘ ĐĨA ---
     public void LockAllTiles(bool shouldLock)
     {
         // Duyệt qua 3 cột (Index 0, 1, 2)
-        for (int i = 0; i < allTilesOnBoard.Length; i++)
+        for (int i = 0; i < allTilesOnBoard.Count; i++)
         {
             if (allTilesOnBoard[i] == null) continue;
 
@@ -133,7 +322,7 @@ public Transform[] columns = new Transform[3]; // THÊM DÒNG NÀY
                 }
             }
         }
-        
+
         Debug.Log(shouldLock ? "Đã khóa toàn bộ đĩa trên bàn." : "Đã mở khóa toàn bộ đĩa.");
     }
 }

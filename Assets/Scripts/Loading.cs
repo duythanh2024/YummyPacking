@@ -13,7 +13,7 @@ public class Loading : MonoBehaviour
     // public GameObject pnl_check_work;
 
     private float duration = 2.5f;
-    async void Start()
+    void Start()
     {
         // Gọi hàm dùng chung từ NetworkHelper đã viết ở trên
         // bool hasInternet = await Utilities.IsInternetAvailable();
@@ -74,6 +74,6 @@ public class Loading : MonoBehaviour
     void EnterHome()
     {
         // Sử dụng LoadSceneAsync để quá trình chuyển cảnh mượt mà hơn
-        SceneManager.LoadSceneAsync("Home");
+        SceneManager.LoadSceneAsync("Game");
     }
 }
