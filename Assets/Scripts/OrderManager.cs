@@ -5,32 +5,30 @@ using UnityEngine.Rendering.Universal;
 //Quản lý Đơn hàng Tầng 1
 public class OrderManager : MonoBehaviour
 {
-    public int maxActiveOrders = 3; // Số lượng đơn tối đa hiển thị cùng lúc trên Tầng 1
+    public int maxActiveOrders = 1; // Số lượng đơn tối đa hiển thị cùng lúc trên Tầng 1
 
-    public List<OrderData> activeOrders = new List<OrderData>(); // Danh sách 3 đơn đang nằm trên màn hình
+    public List<OrderData> activeOrders = new List<OrderData>(); // Danh sách  đơn đang nằm trên màn hình
     private Queue<OrderData> orderQueue = new Queue<OrderData>();  // HÀNG ĐỢI: Chứa các đơn còn lại của màn chơi
     // public GameObject orderPrefab;     // Kéo Prefab OrderUIElement vào đây
     public Transform uiContainer;
     private List<OrderUIElement> spawnedUI = new List<OrderUIElement>();
     private int numberOrder = 0;
     private int activeOrder = 0;
-
+    public string CurrentPoolTag { get; set; } // Lưu lại tag khi được spawn
     public void InitializeOrders(List<OrderData> levelOrders)
     {
 
 
+        // Chỉ cần 1 vòng lặp duy nhất
         foreach (var ui in spawnedUI)
         {
-            ObjectPooler.Instance.ReturnToPool("Order", ui.gameObject);
+            // Trả về đúng pool dựa trên tag đã lưu khi khởi tạo
+            if (ui != null && !string.IsNullOrEmpty(ui.CurrentPoolTag))
+            {
+                ObjectPooler.Instance.ReturnToPool(ui.CurrentPoolTag, ui.gameObject);
+            }
         }
-        foreach (var ui in spawnedUI)
-        {
-            ObjectPooler.Instance.ReturnToPool("Order33", ui.gameObject);
-        }
-        foreach (var ui in spawnedUI)
-        {
-            ObjectPooler.Instance.ReturnToPool("Order66", ui.gameObject);
-        }
+
         spawnedUI.Clear();
         activeOrders.Clear();
         orderQueue = new Queue<OrderData>(levelOrders);
@@ -39,35 +37,44 @@ public class OrderManager : MonoBehaviour
         RefreshOrders();
 
     }
-    public string GetTagTray(int typeTray)
+    public string GetTagTray(TypeTray typeTray)
     {
-        String tagTray = "";
-        if (typeTray == 0)
+        switch (typeTray)
         {
-            tagTray = "Order";
+            case TypeTray.Tray23:
+                return PoolTags.Order23;
 
+            case TypeTray.Tray33:
+                return PoolTags.Order33;
+
+            case TypeTray.TrayHex:
+                return PoolTags.Order66;
+
+            default:
+                // Log cảnh báo để CEO/CTO như bạn dễ dàng debug khi mở rộng studio
+                Debug.LogWarning($"[GetTagTray] Type {typeTray} chưa được cấu hình Tag. Trả về mặc định Order23.");
+                return PoolTags.Order23;
         }
-        else if (typeTray == 1)
-        {
-            tagTray = "Order33";
-        }
-        else if (typeTray == 2)
-        {
-            tagTray = "Order66";
-        }
-        return tagTray;
     }
     private void RefreshOrders()
     {
+
+
         GameManager.Instance.ShowOrderActive(activeOrder, numberOrder);
         while (activeOrders.Count < maxActiveOrders && orderQueue.Count > 0)
         {
             OrderData data = orderQueue.Dequeue();
             activeOrders.Add(data);
-            GameObject newGo = ObjectPooler.Instance.SpawnFromPool(GetTagTray(data.typeTray), Vector3.zero, Quaternion.identity);
-            newGo.transform.SetParent(uiContainer);
 
+            string tag = GetTagTray(data.typeOfTray);
+            GameObject newGo = ObjectPooler.Instance.SpawnFromPool(tag, Vector3.zero, Quaternion.identity);
+
+            newGo.transform.SetParent(uiContainer);
             OrderUIElement uiElem = newGo.GetComponent<OrderUIElement>();
+            uiElem.ClearOldData();
+            // QUAN TRỌNG: Gán tag để tí nữa biết đường mà thu hồi
+            uiElem.CurrentPoolTag = tag;
+
             uiElem.SetupUI(data);
             spawnedUI.Add(uiElem);
             activeOrder++;
@@ -78,9 +85,9 @@ public class OrderManager : MonoBehaviour
     public int GetPerCent()
     {
 
-        if ((activeOrder-1) <=0)
+        if ((activeOrder - 1) <= 0)
             return 0;
-        return 100 * (activeOrder-1) / numberOrder;
+        return 100 * (activeOrder - 1) / numberOrder;
 
     }
 
@@ -92,7 +99,7 @@ public class OrderManager : MonoBehaviour
             return activeOrders[0];
         }
 
-        Debug.LogWarning("Không tìm thấy đơn hàng active nào!");
+        // Debug.LogWarning("Không tìm thấy đơn hàng active nào!");
         return null;
     }
 
@@ -114,11 +121,11 @@ public class OrderManager : MonoBehaviour
                 {
 
 
-                    ObjectPooler.Instance.ReturnToPool(GetTagTray(completedOrder.typeTray), uiToRemove.gameObject);
+                    ObjectPooler.Instance.ReturnToPool(uiToRemove.CurrentPoolTag, uiToRemove.gameObject);
                     // 2. Xóa khỏi danh sách quản lý
                     spawnedUI.RemoveAt(index);
                     activeOrders.RemoveAt(index);
-                    Debug.Log("RefreshOrders CompleteOrder " + activeOrders.Count + ": " + orderQueue.Count);
+                    //                    Debug.Log("RefreshOrders CompleteOrder " + activeOrders.Count + ": " + orderQueue.Count);
                     // 3. Nạp đơn mới ngay lập tức
                     RefreshOrders();
                     onComplete?.Invoke();

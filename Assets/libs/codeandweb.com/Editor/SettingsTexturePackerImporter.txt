@@ -1,0 +1,35 @@
+version: 2
+tpsheetFileNames:
+- Assets/Animations/happy.tpsheet
+- Assets/Animations/idle-1.tpsheet
+- Assets/Animations/idle-default.tpsheet
+- Assets/Animations/sad.tpsheet
+- Assets/Art/texturepackeAsets/game-1.tpsheet
+- Assets/Art/texturepackeAsets/game-2.tpsheet
+- Assets/Art/texturepackeAsets/game-3.tpsheet
+- Assets/Art/texturepackeAsets/game-4.tpsheet
+- Assets/Art/texturepackeAsets/game-5.tpsheet
+- Assets/Art/texturepackeAsets/game-6.tpsheet
+textureFileNames:
+- Assets/Animations/happy.png
+- Assets/Animations/idle-1.png
+- Assets/Animations/idle-default.png
+- Assets/Animations/sad.png
+- Assets/Art/texturepackeAsets/game-1.png
+- Assets/Art/texturepackeAsets/game-2.png
+- Assets/Art/texturepackeAsets/game-3.png
+- Assets/Art/texturepackeAsets/game-4.png
+- Assets/Art/texturepackeAsets/game-5.png
+- Assets/Art/texturepackeAsets/game-6.png
+normalmapFileNames:
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+enableDebugOutput: 0

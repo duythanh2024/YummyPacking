@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
 using System; // Thêm namespace này để dùng Action

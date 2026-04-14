@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FoodData
   id: 0
   foodType: 0
-  icon: {fileID: 21300000, guid: d1aff64810130440da46716b8c021854, type: 3}
+  icon: {fileID: 119760489, guid: c232bd68783404c59800a2756cbcf40e, type: 3}
   shapeBlocks: []
   width: 1
   height: 1

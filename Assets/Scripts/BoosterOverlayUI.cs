@@ -2,64 +2,73 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class BoosterOverlayUI : MonoBehaviour
 {
-    public GameObject overlayGroup; // Panel đen mờ hoặc chứa Anim
-    public RectTransform iconContainer; // Chứa Icon để scale cho mượt
+    public GameObject overlayGroup; 
+    public RectTransform iconContainer; 
     public Image iconImage;
-    public TextMeshProUGUI boosterNameText;        // Icon to giữa màn hình
-    [Header("Settings")]
-    private string boosterSeqId = "BoosterAnim_Global";
-    public void PlayBoosterAnim(string name, Sprite icon, System.Action onCompleteAction)
-    {
-        // 1. Dọn dẹp & Khởi tạo (Kill để tránh spam nút)
-        DOTween.Kill(boosterSeqId);
+    public TextMeshProUGUI boosterNameText;        
 
-        boosterNameText.text = name.ToUpper(); // Voodoo thường dùng Uppercase cho mạnh mẽ
+    // Cache lại các tham số Vector để tránh khởi tạo Struct liên tục trong hàm
+    private readonly Vector3 punchRotation = new Vector3(0, 0, 15f);
+    private readonly Vector3 punchScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+    // Lưu Action vào biến class để tránh tạo rác Closure (Lambda)
+    private Action currentOnCompleteAction;
+
+    private void Awake()
+    {
+        // Tối ưu 1: Ép TextMeshPro luôn hiển thị chữ IN HOA ở cấp độ render.
+        // Cài đặt này chỉ gọi 1 lần khi khởi tạo.
+        boosterNameText.fontStyle = FontStyles.UpperCase;
+    }
+
+    public void PlayBoosterAnim(string name, Sprite icon, Action onCompleteAction)
+    {
+        // Tối ưu 2: Dùng gameObject làm Target/ID thay vì cấp phát String
+        // Việc dùng chuỗi string "BoosterAnim_Global" làm ID sẽ khiến DOTween phải xử lý so sánh chuỗi, chậm hơn so với so sánh Object Reference.
+        DOTween.Kill(this.gameObject);
+
+        // Lưu callback lại để dùng lúc sau
+        this.currentOnCompleteAction = onCompleteAction;
+
+        // Tối ưu 1 (Tiếp): Gán thẳng chuỗi name. Không dùng name.ToUpper() nữa!
+        boosterNameText.SetText(name); 
         iconImage.sprite = icon;
 
-        // Reset trạng thái
-        overlayGroup.gameObject.SetActive(true);
-        // overlayGroup.alpha = 0;
+        // Reset trạng thái (overlayGroup vốn đã là GameObject, không cần gọi .gameObject.SetActive)
+        overlayGroup.SetActive(true);
         iconContainer.localScale = Vector3.zero;
         iconContainer.localRotation = Quaternion.identity;
 
         // 2. CHUỖI HIỆU ỨNG JUICY (Sequence)
-        Sequence seq = DOTween.Sequence().SetId(boosterSeqId).SetUpdate(true); // Chạy bất kể pause game
+        // SetTarget(this.gameObject) để gán ID quản lý tween
+        Sequence seq = DOTween.Sequence().SetUpdate(true).SetTarget(this.gameObject).SetLink(this.gameObject); // <--- THÊM DÒNG NÀY VÀO ĐÂY; 
 
-        // --- GIAI ĐOẠN 1: IMPACT (Hiện hình) ---
-        // Flash màn hình nhẹ và phóng to icon cực nhanh với Ease OutBack
-        //seq.Append(overlayGroup..DOFade(1f, 0.15f).SetEase(Ease.OutCubic));
+        // --- GIAI ĐOẠN 1: IMPACT ---
         seq.Join(iconContainer.DOScale(1.2f, 0.25f).SetEase(Ease.OutBack));
 
-        // --- GIAI ĐOẠN 2: EMPHASIS (Nhấn mạnh) ---
-        // Lắc nhẹ icon và rung màn hình (Haptic Feedback giả lập)
-        seq.Append(iconContainer.DOPunchRotation(new Vector3(0, 0, 15f), 0.4f, 10, 1f));
-        seq.Join(iconContainer.DOPunchScale(Vector3.one * 0.1f, 0.4f, 5, 1f));
+        // --- GIAI ĐOẠN 2: EMPHASIS ---
+        seq.Append(iconContainer.DOPunchRotation(punchRotation, 0.4f, 10, 1f));
+        seq.Join(iconContainer.DOPunchScale(punchScale, 0.4f, 5, 1f));
 
-        // --- GIAI ĐOẠN 3: EXECUTION (Thực thi logic) ---
-        // Khoảnh khắc icon to nhất, ta gọi logic game (Undo/Shuffle/Hammer)
-        // Lúc này màn hình đang bị che bởi Overlay nên người chơi không thấy đĩa "nhảy"
-        // seq.AppendCallback(() => {
-        //     onCompleteAction?.Invoke();
-        //     // Thêm hiệu ứng rung camera nhẹ nếu là Hammer
-        //     //if(name.ToLower().Contains("hammer")) Camera.main.transform.DOShakePosition(0.2f, 0.1f);
-        // });
-
-        // Chờ một nhịp rất ngắn để người chơi kịp thấy thành quả
         seq.AppendInterval(0.15f);
 
-        // --- GIAI ĐOẠN 4: OUTRO (Biến mất) ---
-        // Thu nhỏ biến mất và làm mờ dần
+        // --- GIAI ĐOẠN 3: OUTRO ---
         seq.Append(iconContainer.DOScale(0f, 0.5f).SetEase(Ease.InBack));
-        // seq.Join(overlayGroup.DOFade(0f, 0.25f).SetEase(Ease.InCubic));
 
-        seq.OnComplete(() =>
-        {
-            overlayGroup.gameObject.SetActive(false);
-            onCompleteAction?.Invoke();
-        });
+        // Tối ưu 3: Dùng Method Group thay vì Lambda/Anonymous Function
+        seq.OnComplete(OnAnimationComplete);
     }
 
+    // Hàm riêng để xử lý khi kết thúc Tween
+    private void OnAnimationComplete()
+    {
+        overlayGroup.SetActive(false);
+        
+        currentOnCompleteAction?.Invoke();
+        currentOnCompleteAction = null; // Clear tham chiếu để giải phóng bộ nhớ an toàn
+    }
 }

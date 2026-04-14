@@ -12,6 +12,8 @@ TagManager:
   - Tray33
   - Order33
   - Order66
+  - Tray23
+  - Order23
   layers:
   - Default
   - TransparentFX
@@ -51,6 +53,9 @@ TagManager:
     locked: 0
   - name: BentoTray
     uniqueID: 1782567463
+    locked: 0
+  - name: LockSlot
+    uniqueID: 1027770469
     locked: 0
   - name: Food
     uniqueID: 3336866749

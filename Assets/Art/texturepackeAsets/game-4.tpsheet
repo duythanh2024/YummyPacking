@@ -1,0 +1,35 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:871442a0f207ac9b0dca58391792f08c:fe84074e1aafdff197764d2d0f78a45f:fb7f97a9c314f63c6c2bfc3980a0bbe8$
+#
+:format=40300
+:texture=game-4.png
+:size=2048x2048
+:pivotpoints=enabled
+:borders=disabled
+:alphahandling=ClearTransparentPixels
+
+board;1105;613;622;343; 0.5;0.5; 0;0;0;0
+bottombar_normal;1502;10;199;148; 0.5;0.5; 0;0;0;0
+boxcoin;10;33;205;70; 0.5;0.5; 0;0;0;0
+Frame 55;1269;10;218;103; 0.5022935779816514;0.5048543689320388; 0;0;0;0
+Frame 75;1105;1363;769;675; 0.5;0.5; 0;0;0;0
+Frame 76;1105;192;574;196; 0.5;0.5; 0;0;0;0
+Frame 112;1716;10;322;390; 0.5;0.5; 0;0;0;0
+Frame 191;10;118;1080;1920; 0.5;0.5; 0;0;0;0
+fx_rotate_line_small;1889;1766;128;128; 0.5;0.5; 0;0;0;0
+fx_star_red;1726;415;128;128; 0.5;0.5; 0;0;0;0
+Group 27 copy;1909;570;129;129; 0.5;0.5; 0;0;0;0
+Group 43 (3);1105;971;714;377; 0.5;0.5; 0;0;0;0
+Group 60;1889;1631;73;120; 0.5;0.5; 0;0;0;0
+Group 61;1105;403;587;195; 0.5008517887563884;0.4871794871794872; 0;0;0;0
+Group 81;230;11;92;92; 0.5;0.5; 0;0;0;0
+Group 124;1889;1909;129;129; 0.5;0.5; 0;0;0;0
+Group 126;337;30;73;73; 0.5;0.5; 0;0;0;0
+hear;1869;415;169;140; 0.5;0.5; 0;0;0;0
+heart;425;38;79;65; 0.5;0.5; 0;0;0;0
+home;1920;714;118;98; 0.5;0.5816326530612245; 0;0;0;0

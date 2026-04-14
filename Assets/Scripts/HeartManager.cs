@@ -174,7 +174,7 @@ public class HeartManager : Singleton<HeartManager>
     {
         currentHearts = GameData.Heart;
 
-        Debug.Log(currentHearts);
+//        Debug.Log(currentHearts);
 
         // Load Time an toàn
         long nextBin = Convert.ToInt64(PlayerPrefs.GetString(PREF_NEXT_TIME, DateTime.UtcNow.ToBinary().ToString()));

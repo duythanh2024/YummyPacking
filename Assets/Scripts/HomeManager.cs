@@ -170,7 +170,7 @@ public class HomeManager : Singleton<HomeManager>
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Không thể mở liên kết: " + e.Message);
+          //  Debug.LogError("Không thể mở liên kết: " + e.Message);
         }
     }
     // void Update()

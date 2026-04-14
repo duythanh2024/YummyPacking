@@ -72,7 +72,7 @@ public class BufferController : MonoBehaviour
     public void GetCapacity()
     {
         capacity = allSlots.Where(n => n.isUnlocked && n.isBuyed).ToList().Count;
-       // Debug.Log("currentBufferTiles.Count capacity: " + capacity);
+        // Debug.Log("currentBufferTiles.Count capacity: " + capacity);
     }
     public bool IsFull()
     {
@@ -99,13 +99,13 @@ public class BufferController : MonoBehaviour
         if (currentBufferTiles.Count < capacity)
         {
             currentBufferTiles.Add(tile);
-        //   Debug.Log(currentBufferTiles.Count);
+            //   Debug.Log(currentBufferTiles.Count);
             return true;
             // Thêm logic sắp xếp vị trí các mảnh trong khay tại đây
         }
         else
         {
-            Debug.Log("Buffer đã đầy!");
+            //   Debug.Log("Buffer đã đầy!");
             return false;
         }
     }
@@ -151,7 +151,7 @@ public class BufferController : MonoBehaviour
         }
 
         // Nếu đầy khay, trả về vị trí hiện tại của Buffer hoặc báo lỗi
-        Debug.LogWarning("Khay đã đầy, không còn chỗ trống!");
+        //    Debug.LogWarning("Khay đã đầy, không còn chỗ trống!");
         return transform.position;
     }
 

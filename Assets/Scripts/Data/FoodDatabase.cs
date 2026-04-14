@@ -12,7 +12,7 @@ public class FoodDatabase : ScriptableObject
         FoodData data = allFoods.Find(f => f.id == id);
         if (data != null) return data.icon;
         
-        Debug.LogError($"Không tìm thấy FoodID: {id}");
+      //  Debug.LogError($"Không tìm thấy FoodID: {id}");
         return null;
     }
 

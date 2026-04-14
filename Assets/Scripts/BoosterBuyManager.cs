@@ -1,11 +1,17 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
-
+// Tối ưu 1: Sử dụng Enum thay cho Magic Numbers (0, 1, 2, 3) để code dễ đọc và mở rộng hơn.
+public enum BoosterType
+{
+    Undo = 0,
+    Swap = 1,
+    Magnet = 2,
+    Slot = 3
+}
 public class BoosterBuyManager : MonoBehaviour
 {
+    [Header("UI References")]
     public TextMeshProUGUI Txt_Booster_Name;
     public TextMeshProUGUI Txt_Booster_Des;
     public TextMeshProUGUI Txt_Booster_Price;
@@ -13,121 +19,106 @@ public class BoosterBuyManager : MonoBehaviour
 
     public Image Img_Booster;
     public Image Img_Small_Booster;
-    private int typeBuy;
-    private int prices;
-    private int indexSlot;
 
+    private int typeBuy;
+    private BoosterType currentType;
+    private int currentPrice;
+    private int currentSlotIndex;
+    // Cache lại chuỗi tĩnh để tránh tạo rác khi gán liên tục
     public void SetData(string name, string des, int prices, int number, Sprite spriteBoost, int typeBuy, int indexSlot = 0)
     {
+
         Txt_Booster_Name.text = name;
         Txt_Booster_Des.text = des;
-        Txt_Booster_Price.text = "<sprite name=\"coins_1\">" + prices.ToString();
+        // Tối ưu GC (Garbage Collection): Dùng SetText thay vì toán tử cộng chuỗi (+) và ToString()
+        // TextMeshPro xử lý SetText mà không sinh ra rác bộ nhớ (Boxing/String Allocation)
+        Txt_Booster_Price.SetText("<sprite name=\"coins_1\">{0}", prices);
+        Txt_Booster_Number.SetText("X{0}", number);
+
         Img_Booster.sprite = spriteBoost;
         Img_Booster.SetNativeSize();
         Img_Small_Booster.sprite = spriteBoost;
         Img_Small_Booster.SetNativeSize();
-        Txt_Booster_Number.text = "X" + number;
-        this.typeBuy = typeBuy;
-        this.prices = prices;
-        this.indexSlot = indexSlot;
+
+        this.currentType = (BoosterType)typeBuy;
+        this.currentPrice = prices;
+        this.currentSlotIndex = indexSlot;
 
     }
     public void Buy()
     {
         AudioManager.Instance.Play("Click");
-        if (typeBuy == 0) //undo
+
+        AudioManager.Instance.Play("Click");
+
+        // Tối ưu 2: Early Exit - Gom logic kiểm tra tiền lên đầu, thoát sớm nếu không đủ.
+        // Giúp loại bỏ hoàn toàn các khối if-else lồng nhau phức tạp.
+        if (GameData.Coins < currentPrice)
         {
-            if (GameData.Coins >= this.prices)
-            {
-                AudioManager.Instance.Play("Coins");
-                GameData.Coins -= this.prices;
+            GameManager.Instance.Pnl_Shop.SetActive(true);
+            gameObject.SetActive(false);
+            return;
+        }
+
+        // Nếu đủ tiền, tiến hành thanh toán và xử lý vật phẩm
+        ProcessPurchase();
+    }
+    private void ProcessPurchase()
+    {
+
+        GameData.Coins -= currentPrice;
+
+        // Tối ưu 3: Dùng Switch-case gọn gàng và có tốc độ thực thi nhỉnh hơn if-else
+        switch (currentType)
+        {
+            case BoosterType.Undo:
                 GameData.UndoNumber += 3;
-                GameData.Save();
-                GameManager.Instance.ShowCoin();
-                GameManager.Instance.boosterManager.LoadBooster();
-
-                gameObject.SetActive(false);
-            }
-            else
-            {
-                GameManager.Instance.Pnl_Shop.SetActive(true);
-            }
-        }
-        else if (typeBuy == 1) //swap
-        {
-            if (GameData.Coins >= this.prices)
-            {
-                AudioManager.Instance.Play("Coins");
-                GameData.Coins -= this.prices;
+                break;
+            case BoosterType.Swap:
                 GameData.SwapNumber += 3;
-                GameData.Save();
-                GameManager.Instance.ShowCoin();
-                GameManager.Instance.boosterManager.LoadBooster();
-
-                gameObject.SetActive(false);
-            }
-            else
-            {
-                GameManager.Instance.Pnl_Shop.SetActive(true);
-            }
-        }
-        else if (typeBuy == 2) //hamer
-        {
-            if (GameData.Coins >= this.prices)
-            {
-                AudioManager.Instance.Play("Coins");
-                GameData.Coins -= this.prices;
+                break;
+            case BoosterType.Magnet:
                 GameData.HammerNumber += 3;
-                GameData.Save();
-                GameManager.Instance.ShowCoin();
-                GameManager.Instance.boosterManager.LoadBooster();
-                gameObject.SetActive(false);
-            }
-            else
+                break;
+            case BoosterType.Slot:
+                UnlockSlot();
+                break;
+        }
+
+        // Tối ưu 4: Giảm thiểu I/O. Code cũ gọi GameData.Save() 2 lần trong trường hợp mua Slot.
+        // I/O là thao tác cực kỳ tốn chi phí, chỉ nên gọi 1 lần sau khi đã thay đổi xong mọi Data.
+        GameData.Save();
+
+        // Tối ưu 5: Cache singleton instance vào biến cục bộ nếu phải gọi nhiều lần
+        // Singleton getter thường đi kèm với các phép check null (== null), cache lại sẽ giảm overhead.
+        var gameManager = GameManager.Instance;
+        gameManager.ShowCoin();
+
+        if (currentType == BoosterType.Slot)
+        {
+            var bufferCtrl = gameManager.bufferCtrl;
+            bufferCtrl.ShowBuffSlot();
+            if (!bufferCtrl.IsFull())
             {
-                GameManager.Instance.Pnl_Shop.SetActive(true);
+                bufferCtrl.ResetWarning();
             }
         }
-        if (typeBuy == 3) //slot
+        else
         {
-            if (GameData.Coins >= this.prices)
-            {
+            gameManager.boosterManager.LoadBooster();
+        }
 
-                AudioManager.Instance.Play("Coins");
-                GameData.Coins -= this.prices;
-                GameData.Save();
+        gameObject.SetActive(false);
+        ToastManager.Instance.ShowToast("Purchase successful!");
+    }
 
-                if (indexSlot == 3)
-                {
-                    GameData.Slot1 = true;
-                    GameData.Save();
-                }
-                else if (indexSlot == 4)
-                {
-                    GameData.Slot2 = true;
-                    GameData.Save();
-                }
-                else if (indexSlot == 5)
-                {
-                    GameData.Slot3 = true;
-                    GameData.Save();
-                }
-
-                GameManager.Instance.ShowCoin();
-                GameManager.Instance.bufferCtrl.ShowBuffSlot();
-                if (!GameManager.Instance.bufferCtrl.IsFull())
-                {
-                    GameManager.Instance.bufferCtrl.ResetWarning();
-                }
-                gameObject.SetActive(false);
-
-
-            }
-            else
-            {
-                GameManager.Instance.Pnl_Shop.SetActive(true);
-            }
-
+    private void UnlockSlot()
+    {
+        switch (currentSlotIndex)
+        {
+            case 3: GameData.Slot1 = true; break;
+            case 4: GameData.Slot2 = true; break;
+            case 5: GameData.Slot3 = true; break;
         }
     }
 }

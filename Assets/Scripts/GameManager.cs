@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour, IInputHandler
     public GameObject Win_Pnl;
     public GameObject Fail_Pnl;
     public TextMeshProUGUI Txt_Levels;
+    public TextMeshProUGUI Txt_Complete;
     public TextMeshProUGUI Txt_Order;
     public BoosterManager boosterManager;
     public GameObject Pnl_Shop;
@@ -71,11 +72,10 @@ public class GameManager : MonoBehaviour, IInputHandler
         isWin = false;
         isFail = false;
         //test
-        GameData.SavedLevelIndex = currentLevelIndex;
-        GameData.Save();
+        // GameData.SavedLevelIndex = currentLevelIndex;
+        // GameData.Save();
         currentLevelIndex = GameData.SavedLevelIndex;
 
-        //catAnimator.SetBool("isWin",false);
 
         // Gọi hàm nạp level lần đầu tiên
         InitializeLevel(currentLevelIndex);
@@ -85,10 +85,13 @@ public class GameManager : MonoBehaviour, IInputHandler
     {
         selectedTile = null;
         Booster.SetActive(true);
+        GameData.SortLayer = 700;
+        GameData.Save();
+        Txt_Complete.gameObject.SetActive(false);
         // 1. Kiểm tra an toàn dữ liệu
         if (allLevels == null || allLevels.Count == 0 || index >= allLevels.Count)
         {
-            Debug.LogError("Danh sách LevelData trống hoặc Index vượt quá giới hạn!");
+            //   Debug.LogError("Danh sách LevelData trống hoặc Index vượt quá giới hạn!");
             return;
         }
         Txt_Levels.text = "Level " + (currentLevelIndex + 1).ToString();
@@ -115,7 +118,7 @@ public class GameManager : MonoBehaviour, IInputHandler
             gridCtrl.InitializeGrid(
                 orderCtrl.activeOrders[0].targetGridSize.x,
                 orderCtrl.activeOrders[0].targetGridSize.y,
-                orderCtrl.activeOrders[0].typeTray
+                orderCtrl.activeOrders[0].typeOfTray
             );
         }
         rewardLevel = GameData.GetRewardLevel(currentData.difficultLevel);
@@ -125,8 +128,9 @@ public class GameManager : MonoBehaviour, IInputHandler
         boosterManager.LoadBooster();
         ShowCoin();
         boardCtrl.CaptureBoardDNA();
-        Debug.Log($"<color=green>🎮 LEVEL {index + 1} LOADED SUCCESSFULLY</color>");
+        boosterManager.ClearStack();
 
+        Debug.Log($"<color=green>🎮 LEVEL {index + 1} LOADED SUCCESSFULLY</color>");
         //TutorialManager
         if (currentLevelIndex == 0)
         {
@@ -144,15 +148,16 @@ public class GameManager : MonoBehaviour, IInputHandler
             boosterManager.ShowBoosterDes(2);
 
         }
-        // else if (currentLevelIndex == 10 && !GameData.HammerBoostTutorial)
-        else if (currentLevelIndex == 11)
+        else if (currentLevelIndex == 11 && !GameData.HammerBoostTutorial)
         {
 
             boosterManager.ShowBoosterDes(3);
 
         }
 
+
     }
+
     public void ShowCoin()
     {
         Txt_Coins.text = GameData.Coins.ToKMB();
@@ -268,6 +273,8 @@ public class GameManager : MonoBehaviour, IInputHandler
 
         // 6. Cập nhật trạng thái Clickable
         boardCtrl.UpdateClickableStates();
+
+
     }
     private void SpawnLevelBoard2(List<BoardItemSetup> items)
     {
@@ -384,7 +391,7 @@ public class GameManager : MonoBehaviour, IInputHandler
     public void LoadNextLevel()
     {
 
-       
+
         Win_Pnl.gameObject.SetActive(false);
         isWin = false;
         isFail = false;
@@ -396,7 +403,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         {
             // Quay lại chơi một level ngẫu nhiên để giữ chân người chơi
             currentLevelIndex = UnityEngine.Random.Range(0, allLevels.Count);
-            Debug.Log("🔄 Chơi lại level ngẫu nhiên vì đã hết danh sách!");
+            //     Debug.Log("🔄 Chơi lại level ngẫu nhiên vì đã hết danh sách!");
         }
 
         // 3. Lưu tiến trình vào máy (Để tắt game mở lại vẫn ở level đó)
@@ -410,7 +417,7 @@ public class GameManager : MonoBehaviour, IInputHandler
     }
     public void RestartLevel()
     {
-      
+
         Win_Pnl.gameObject.SetActive(false);
         Fail_Pnl.gameObject.SetActive(false);
         isWin = false;
@@ -420,7 +427,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         {
             // Quay lại chơi một level ngẫu nhiên để giữ chân người chơi
             currentLevelIndex = UnityEngine.Random.Range(0, allLevels.Count);
-            Debug.Log("🔄 Chơi lại level ngẫu nhiên vì đã hết danh sách!");
+            //  Debug.Log("🔄 Chơi lại level ngẫu nhiên vì đã hết danh sách!");
         }
         // 4. Gọi hàm khởi tạo lại toàn bộ bàn chơi
         InitializeLevel(currentLevelIndex);
@@ -446,11 +453,12 @@ public class GameManager : MonoBehaviour, IInputHandler
     IEnumerator ResetBuff()
     {
         yield return new WaitForSeconds(1.0f);
+
+
         if (!bufferCtrl.IsFull())
         {
             bufferCtrl.ResetWarning();
         }
-
 
     }
     void MoveBuffToTray(FoodTile tappedTile)
@@ -521,6 +529,12 @@ public class GameManager : MonoBehaviour, IInputHandler
                 ExecuteWinSequence();
             }
             HideUpperTray(tappedTile.tray.gameObject, 0.3f, null);
+            //Cho food bay leen luon o tren
+            int sortingOrder = GameData.SortLayer;
+            tappedTile.tray.sortingOrder = sortingOrder + 1;
+            tappedTile.icon.sortingOrder = sortingOrder + 2;
+            GameData.SortLayer += 2;
+            GameData.Save();
             //  tappedTile.tray.transform.DOScale(Vector3.zero,0.5f);
             BentoTweenHelper.ParabolicMove(tappedTile.icon.transform, targetWorldPos, () =>
             {
@@ -528,7 +542,7 @@ public class GameManager : MonoBehaviour, IInputHandler
                 gridCtrl.PlaceTile(tappedTile, targetCoord);
                 BentoTweenHelper.PackPopEffect(tappedTile.transform, () =>
                 {
-                    Debug.Log("Kiem tra " + IsStack);
+                    //    Debug.Log("Kiem tra " + IsStack);
                     tappedTile.IsClick = false;
                     if (!IsStack)
                         ShiftTilesUpInColumn(colId);
@@ -609,6 +623,7 @@ public class GameManager : MonoBehaviour, IInputHandler
             {
                 // Khóa tương tác
                 isFail = true;
+                boosterManager.ClearStack();
                 CheckGameOver();
             }
         }
@@ -620,9 +635,9 @@ public class GameManager : MonoBehaviour, IInputHandler
         List<FoodTile> targetColumn = boardCtrl.allTilesOnBoard[colId];
         int currentIndex = targetColumn.IndexOf(tile);
 
-        
 
-        Debug.Log("RecordUndoStep currentIndex "+currentIndex);
+
+        //    Debug.Log("RecordUndoStep currentIndex " + currentIndex);
 
         UndoStep step = new UndoStep
         {
@@ -681,27 +696,27 @@ public class GameManager : MonoBehaviour, IInputHandler
 
         Sequence seq = DOTween.Sequence().SetId(sequenceId);
 
-       List<FoodTile> targetColumn = boardCtrl.allTilesOnBoard[colId];
+        List<FoodTile> targetColumn = boardCtrl.allTilesOnBoard[colId];
 
-    for (int i = insertedIndex; i < targetColumn.Count; i++)
-    {
-        FoodTile tile = targetColumn[i];
-        if (tile == null) continue;
-
-        // TRA CỨU THEO DANH TÍNH VẬT LÝ
-        string dnaKey = $"{colId}_{tile.rowId}_{tile.layerId}"; 
-
-        if (boardCtrl.boardDNA.TryGetValue(dnaKey, out SlotData dna))
+        for (int i = insertedIndex; i < targetColumn.Count; i++)
         {
-            // Ép đĩa về đúng tọa độ XYZ và Sorting tuyệt đối
-            seq.Join(tile.transform.DOLocalMove(dna.localPos, 0.4f).SetEase(Ease.OutQuad));
-            
-            tile.tray.sortingOrder = dna.sortingOrder;
-            tile.icon.sortingOrder = dna.sortingOrder + 1;
-            
-            // Không cần gán lại rowId vì nó là định danh gốc rồi
+            FoodTile tile = targetColumn[i];
+            if (tile == null) continue;
+
+            // TRA CỨU THEO DANH TÍNH VẬT LÝ
+            string dnaKey = $"{colId}_{tile.rowId}_{tile.layerId}";
+
+            if (boardCtrl.boardDNA.TryGetValue(dnaKey, out SlotData dna))
+            {
+                // Ép đĩa về đúng tọa độ XYZ và Sorting tuyệt đối
+                seq.Join(tile.transform.DOLocalMove(dna.localPos, 0.4f).SetEase(Ease.OutQuad));
+
+                tile.tray.sortingOrder = dna.sortingOrder;
+                tile.icon.sortingOrder = dna.sortingOrder + 1;
+
+                // Không cần gán lại rowId vì nó là định danh gốc rồi
+            }
         }
-    }
         seq.OnComplete(() => boardCtrl.UpdateClickableStates());
     }
     public void ShiftTilesDownInColumn(int colId, int insertedIndex)
@@ -747,7 +762,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         seq.OnComplete(() =>
         {
             boardCtrl.UpdateClickableStates();
-            Debug.Log($"<color=cyan>Column {colId} Re-aligned after Undo.</color>");
+            //     Debug.Log($"<color=cyan>Column {colId} Re-aligned after Undo.</color>");
         });
     }
 
@@ -778,12 +793,14 @@ public class GameManager : MonoBehaviour, IInputHandler
     private void ExecuteWinSequence()
     {
         isWin = true;
+
         // Đợi một khoảng ngắn (ví dụ 0.3s) để ô cuối cùng kịp bay vào khay rồi mới hiện UI thắng
-        StartCoroutine(DelayedWin(0.5f));
+        StartCoroutine(DelayedWin(1.3f));
     }
 
     IEnumerator DelayedWin(float delay)
     {
+
         // catAnimator.SetBool("isWin",true);
         //catAnimator.Play("happy");
         //yield return new WaitForSeconds(catAnimator.GetCurrentAnimatorStateInfo(0).length);
@@ -791,7 +808,10 @@ public class GameManager : MonoBehaviour, IInputHandler
         // 3. Chuyển sang Animation thứ hai
         //catAnimator.Play("Idle");
         yield return new WaitForSeconds(delay);
-        Debug.Log("Winner! Tất cả ô đã vào vị trí.");
+
+        GameManager.Instance.boardCtrl.SetLockTiles();
+
+        //   Debug.Log("Winner! Tất cả ô đã vào vị trí.");
         boosterManager.ClearStack();
         // isWin = true;
 
@@ -822,6 +842,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         {
             // catAnimator.SetBool("isWin",true);
             catAnimator.Play("happy");
+            Txt_Complete.gameObject.SetActive(true);
             //yield return new WaitForSeconds(catAnimator.GetCurrentAnimatorStateInfo(0).length);
 
             // 3. Chuyển sang Animation thứ hai
@@ -835,7 +856,7 @@ public class GameManager : MonoBehaviour, IInputHandler
 
     private void OnLevelVictory()
     {
-        Debug.Log("🎉 CHIẾN THẮNG! Toàn bộ đơn hàng đã xong và bàn đã sạch.");
+        //   Debug.Log("🎉 CHIẾN THẮNG! Toàn bộ đơn hàng đã xong và bàn đã sạch.");
         AudioManager.Instance.Play("Vic");
         StartCoroutine(WinRoutine());
 
@@ -907,7 +928,7 @@ public class GameManager : MonoBehaviour, IInputHandler
 
     public void HandleTouchDown(Vector2 touch)
     {
-        Debug.Log("HandleTouchDown");
+        //    Debug.Log("HandleTouchDown");
         buffSlot = null;
         if (isWin || isFail || IsProcessing)
             return;
@@ -986,10 +1007,6 @@ public class GameManager : MonoBehaviour, IInputHandler
             {
                 AudioManager.Instance.Play("Click");
                 boosterManager.ShowBuySlot(buffSlot.index);
-            }
-            else
-            {
-                Debug.Log("NO HandleTouchDown");
             }
 
         }
@@ -1212,16 +1229,16 @@ public class GameManager : MonoBehaviour, IInputHandler
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            GameData.Coins = 10000;
-            GameData.Save();
-
+            // GameData.Coins = 10000;
+            // GameData.Save();
+            GameManager.Instance.boardCtrl.SetLockTiles();
 
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-                Win_Pnl.gameObject.SetActive(true);
-                WinScreenManager winScreenManager = Win_Pnl.GetComponent<WinScreenManager>();
-                winScreenManager.ShowWinScreen();
+            Win_Pnl.gameObject.SetActive(true);
+            WinScreenManager winScreenManager = Win_Pnl.GetComponent<WinScreenManager>();
+            winScreenManager.ShowWinScreen();
         }
 
 

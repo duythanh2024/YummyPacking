@@ -46,7 +46,7 @@ public class FailScreenManager : MonoBehaviour
 
         // Hiệu ứng nảy liên tục cho nút Ad để gây chú ý (Monetization)
         reviveAdButton.transform.DOScale(1.1f, 0.6f)
-            .SetLoops(-1, LoopType.Yoyo)
+            .SetLoops(-1, LoopType.Yoyo).SetLink( reviveAdButton.transform.gameObject) // Tự động Kill khi target bị Destroy
             .SetId(tweenId);
 
 
@@ -67,7 +67,7 @@ public class FailScreenManager : MonoBehaviour
         reviveAdButton.interactable = false;
 
         // 2. GIẢ LẬP GỌI SDK QUẢNG CÁO (AdMob/AppLovin/UnityAds)
-        Debug.Log("<color=cyan>[ADS]</color> Requesting Rewarded Ad...");
+    //    Debug.Log("<color=cyan>[ADS]</color> Requesting Rewarded Ad...");
 
         // Trong thực tế, bạn sẽ đợi Callback "OnUserEarnedReward"
         // Ở đây ta giả định xem xong thành công:
@@ -77,12 +77,13 @@ public class FailScreenManager : MonoBehaviour
     private IEnumerator ExecuteReviveRoutine()
     {
         // Hiệu ứng tắt Popup mượt mà trước khi hành động
-        Debug.Log("<color=cyan>[ADS]</color> Tat...");
+     //   Debug.Log("<color=cyan>[ADS]</color> Tat...");
 
-        Debug.Log("<color=green>Reviving: Undoing 1 step...</color>");
+     //   Debug.Log("<color=green>Reviving: Undoing 1 step...</color>");
         yield return new WaitForSeconds(0.4f);
         HideFailScreen();
         gameObject.SetActive(false);
+        GameManager.Instance.isFail=false;
 
         if (BoosterManager.Instance != null)
             BoosterManager.Instance.ExecuteUndo();

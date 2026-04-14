@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 [System.Serializable]
 public class FoodPlacement
 {
@@ -7,6 +8,7 @@ public class FoodPlacement
     public Vector2Int gridCoord;   // Tọa độ mục tiêu trong lưới (VD: 0,0 hoặc 2,1)
      public Vector2 gridValues;   // Tọa độ mục tiêu trong lưới (VD: 0,0 hoặc 2,1)
 }
+
 [CreateAssetMenu(fileName = "NewOrderData", menuName = "BentoJam/Order Data")]
 public class OrderData : ScriptableObject 
 {
@@ -15,7 +17,9 @@ public class OrderData : ScriptableObject
     
     [Tooltip("Kích thước khay Bento (Cột x Hàng). VD: 2x3")]
     public Vector2Int targetGridSize = new Vector2Int(2, 3);
-    public int typeTray=0; //0: 2*3, 1: 3*3, 2: luc giac
+
+    public TypeTray typeOfTray;//0: 2*3, 1: 3*3, 2: luc giac
+   // public int typeTray=0; //0: 2*3, 1: 3*3, 2: luc giac
 
     [Header("Placement Strategy")]
     [Tooltip("Danh sách các món và vị trí cố định của chúng trong hộp")]

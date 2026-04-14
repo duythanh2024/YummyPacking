@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using DG.Tweening;
 using UnityEngine;
 
 public class TrayOrder : MonoBehaviour
@@ -9,6 +7,7 @@ public class TrayOrder : MonoBehaviour
     public FoodSlot[] foodSlots;
     public GameObject locks;
     private Vector3 originPosition;
+    public string CurrentPoolTag { get; set; } // Lưu lại tag khi được spawn
     void Awake()
     {
         originPosition = locks.transform.localPosition;

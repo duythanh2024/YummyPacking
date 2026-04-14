@@ -6,43 +6,48 @@ using UnityEngine;
 public class MahjongBoardController : MonoBehaviour
 {
     // Lưu trữ "vân tay" của từng vị trí: [Cột_Tầng] -> (Tọa độ, Sorting)
-[HideInInspector]
-// Dùng Vector2Int nhanh hơn string key và dễ quản lý tọa độ (x=col, y=row)
+    [HideInInspector]
+    // Dùng Vector2Int nhanh hơn string key và dễ quản lý tọa độ (x=col, y=row)
 
-public struct SlotData {
-    public Vector3 localPos;
-    public int sortingOrder;
-    public int layerId; // Nên lưu cả LayerId để Undo không bị sáng/tối sai
-    public int rowId;
-}
-
-// Thay đổi Dictionary sang dùng string làm Key
-public Dictionary<string, SlotData> boardDNA = new Dictionary<string, SlotData>();
-
-public void CaptureBoardDNA() {
-    if (boardDNA == null) boardDNA = new Dictionary<string, SlotData>();
-    boardDNA.Clear();
-
-    // Duyệt qua toàn bộ cột
-    for (int c = 0; c < allTilesOnBoard.Count; c++) {
-        for (int i = 0; i < allTilesOnBoard[c].Count; i++) {
-            var tile = allTilesOnBoard[c][i];
-            if (tile == null) continue;
-
-            // QUAN TRỌNG: Key phải là sự kết hợp của ColumnID, RowID (Chồng) và LayerID (Tầng)
-            // Đây là "tọa độ chết" của slot đó trên bàn chơi
-            string key = $"{c}_{tile.rowId}_{tile.layerId}";
-
-            boardDNA[key] = new SlotData {
-                localPos = tile.transform.localPosition,
-                sortingOrder = tile.tray.sortingOrder,
-                layerId = tile.layerId,
-                rowId = tile.rowId
-            };
-        }
+    public struct SlotData
+    {
+        public Vector3 localPos;
+        public int sortingOrder;
+        public int layerId; // Nên lưu cả LayerId để Undo không bị sáng/tối sai
+        public int rowId;
     }
-    Debug.Log($"<color=cyan>DNA Captured: {boardDNA.Count} physical slots locked!</color>");
-}
+
+    // Thay đổi Dictionary sang dùng string làm Key
+    public Dictionary<string, SlotData> boardDNA = new Dictionary<string, SlotData>();
+
+    public void CaptureBoardDNA()
+    {
+        if (boardDNA == null) boardDNA = new Dictionary<string, SlotData>();
+        boardDNA.Clear();
+
+        // Duyệt qua toàn bộ cột
+        for (int c = 0; c < allTilesOnBoard.Count; c++)
+        {
+            for (int i = 0; i < allTilesOnBoard[c].Count; i++)
+            {
+                var tile = allTilesOnBoard[c][i];
+                if (tile == null) continue;
+
+                // QUAN TRỌNG: Key phải là sự kết hợp của ColumnID, RowID (Chồng) và LayerID (Tầng)
+                // Đây là "tọa độ chết" của slot đó trên bàn chơi
+                string key = $"{c}_{tile.rowId}_{tile.layerId}";
+
+                boardDNA[key] = new SlotData
+                {
+                    localPos = tile.transform.localPosition,
+                    sortingOrder = tile.tray.sortingOrder,
+                    layerId = tile.layerId,
+                    rowId = tile.rowId
+                };
+            }
+        }
+        //  Debug.Log($"<color=cyan>DNA Captured: {boardDNA.Count} physical slots locked!</color>");
+    }
 
     // List ngoài cùng đại diện cho các Cột (Columns)
     // List bên trong đại diện cho các Đĩa (Tiles) xếp chồng trong cột đó
@@ -127,7 +132,7 @@ public void CaptureBoardDNA() {
         }
         else
         {
-           // Debug.Log("Kiem tra");
+            // Debug.Log("Kiem tra");
             // Duyệt qua từng cột đĩa trên bàn
             for (int colId = 0; colId < allTilesOnBoard.Count; colId++)
             {
@@ -324,5 +329,70 @@ public void CaptureBoardDNA() {
         }
 
         Debug.Log(shouldLock ? "Đã khóa toàn bộ đĩa trên bàn." : "Đã mở khóa toàn bộ đĩa.");
+    }
+     public int SizeBoard()
+    {
+
+
+        int count=0;
+        for (int i = 0; i < allTilesOnBoard.Count; i++)
+        {
+            if (allTilesOnBoard[i] == null) continue;
+
+            // Duyệt qua từng đĩa FoodTile trong danh sách của cột đó
+            foreach (FoodTile tile in allTilesOnBoard[i])
+            {
+                if (tile != null)
+                {
+                   count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public void SetLockTiles()
+    {
+
+
+        for (int i = 0; i < allTilesOnBoard.Count; i++)
+        {
+            if (allTilesOnBoard[i] == null) continue;
+
+            // Duyệt qua từng đĩa FoodTile trong danh sách của cột đó
+            foreach (FoodTile tile in allTilesOnBoard[i])
+            {
+                if (tile != null)
+                {
+                    tile.isClickable = false;
+                    Color dimColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+                    tile.tray.color = dimColor;
+                    tile.icon.color = dimColor; // Dùng trực tiếp .color nếu là SpriteRenderer
+                }
+            }
+        }
+
+        //  List<FoodTile> allActiveTiles = new List<FoodTile>();
+
+        // // Lấy số lượng cột thực tế từ BoardController
+        // int columnCount = GameManager.Instance.boardCtrl.allTilesOnBoard.Count;
+
+        // for (int i = 0; i < columnCount; i++)
+        // {
+        //     // Kiểm tra null để tránh lỗi crash nếu cột đó chưa được khởi tạo
+        //     if (GameManager.Instance.boardCtrl.allTilesOnBoard[i] != null)
+        //     {
+        //         allActiveTiles.AddRange(GameManager.Instance.boardCtrl.allTilesOnBoard[i]);
+        //     }
+        // }
+        // Debug.Log("SetLockTiles eeee "+allActiveTiles.Count);
+        // foreach (var t in allActiveTiles)
+        // { Debug.Log("SetLockTiles 123");
+        //     t.isClickable = false;
+        //     Color dimColor = new Color(0.6f, 0.6f, 0.6f, 1f);
+        //     t.tray.color = dimColor;
+        //     t.icon.color = dimColor; // Dùng trực tiếp .color nếu là SpriteRenderer
+        // }
+
     }
 }

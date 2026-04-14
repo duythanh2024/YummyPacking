@@ -1,0 +1,24 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:871442a0f207ac9b0dca58391792f08c:fe84074e1aafdff197764d2d0f78a45f:fb7f97a9c314f63c6c2bfc3980a0bbe8$
+#
+:format=40300
+:texture=game-2.png
+:size=2048x1024
+:pivotpoints=enabled
+:borders=disabled
+:alphahandling=ClearTransparentPixels
+
+bottom_bg;10;856;1114;158; 0.5;0.5; 0;0;0;0
+btn_bg_2;1654;13;384;200; 0.4986979166666667;0.5025; 0;0;0;0
+button_bg_1;525;86;384;200; 0.4986979166666667;0.5025; 0;0;0;0
+Frame 29;10;511;1096;130; 0.5;0.5; 0;0;0;0
+Frame 55 (1);10;61;500;225; 0.5;0.5; 0;0;0;0
+Group 44;1438;614;600;400; 0.5;0.5; 0;0;0;0
+Group 85;10;656;1080;185; 0.5;0.5; 0;0;0;0
+Group 130;10;301;1014;195; 0.5004930966469427;0.5; 0;0;0;0
+Layer 3 1;1440;228;598;371; 0.5;0.5; 0;0;0;0

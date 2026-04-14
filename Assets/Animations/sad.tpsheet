@@ -1,0 +1,20 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:91a15b0e1f5b8e09ca1384e0b3f4ff4a:3bac7085f1a65de04d3690243f3dcf8d:b584d24a31d180a7963183ad4d60ee2b$
+#
+:format=40300
+:texture=sad.png
+:size=512x1024
+:pivotpoints=enabled
+:borders=disabled
+:alphahandling=ClearTransparentPixels
+
+1 (1);3;699;222;322; 0.5;0.5; 0;0;0;0
+2 (1);229;703;227;318; 0.5;0.5; 0;0;0;0
+3 (1);3;385;241;310; 0.5;0.5; 0;0;0;0
+4 (1);248;395;257;300; 0.5;0.5; 0;0;0;0
+5 (1);3;86;264;295; 0.5;0.5; 0;0;0;0

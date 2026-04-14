@@ -1,15 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using DG.Tweening; // Khuyên dùng cho chuẩn Studio
+using DG.Tweening; 
 using System.Collections;
 
 public class WinScreenManager : MonoBehaviour
 {
-    //  public static WinScreenManager Instance;
-
     [Header("UI Components")]
-    //public CanvasGroup winPanel;
     public TextMeshProUGUI coinText;
     public TextMeshProUGUI coinRewardText;
 
@@ -46,7 +43,7 @@ public class WinScreenManager : MonoBehaviour
     private IEnumerator CaptureBentoRoutine()
     {
         coinText.text = GameData.Coins.ToKMB();
-        BentoTweenHelper.DoScale(Img_Cup.transform,1,1.5f,()=>{});
+        BentoTweenHelper.DoScale(Img_Cup.transform, 1, 1.5f, () => { });
 
         // Chờ đến cuối frame để đảm bảo mọi render đã hoàn tất
         yield return new WaitForSeconds(1.5f);
@@ -69,7 +66,7 @@ public class WinScreenManager : MonoBehaviour
 
         // Reset trạng thái nút
         claimX2Button.gameObject.SetActive(true);
-        BentoTweenHelper.DOPunchScale(claimX2Button.transform,Vector3.one * 0.01f, 0.4f);
+        BentoTweenHelper.DOPunchScale(claimX2Button.transform, Vector3.one * 0.01f, 0.4f);
         //claimX2Button.transform.DOPunchScale(Vector3.one * 0.01f, 0.4f).SetLoops(-1);        // Hiệu ứng Fade In chuyên nghiệp
     }
 
@@ -80,7 +77,7 @@ public class WinScreenManager : MonoBehaviour
     {
         AudioManager.Instance.Play("Click");
         // 1. Gọi SDK Quảng cáo (Giả định bạn dùng AdMob/AppLovin)
-        Debug.Log("<color=green>Calling Rewarded Ad SDK...</color>");
+        ///    Debug.Log("<color=green>Calling Rewarded Ad SDK...</color>");
 
         // Nếu dùng quảng cáo thực, bạn sẽ đăng ký callback cho "UserRewarded"
         // Ở đây tôi giả định xem quảng cáo thành công ngay lập tức:
@@ -111,7 +108,7 @@ public class WinScreenManager : MonoBehaviour
         int x2Reward = baseReward * 2;
 
         // Thêm hiệu ứng âm thanh "Tiền bay"
-        Debug.Log("<color=yellow>Ad Watched: Rewarded X2!</color>");
+        //   Debug.Log("<color=yellow>Ad Watched: Rewarded X2!</color>");
 
         coinEffectManager.PlayCoinFlowEffect(() =>
                {
@@ -143,7 +140,13 @@ public class WinScreenManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        DOTween.Kill(this); // Dọn sạch tất cả Tween liên quan đến script này
+       // Dọn dẹp "kép" để không lọt lưới bất kỳ Tween nào
+
+    // 1. Giết các DOVirtual hoặc các Tween có target được gán bằng this (như DelayedCall ở trên)
+    DOTween.Kill(this); 
+
+    // 2. Giết các hiệu ứng vật lý, di chuyển, co giãn tác động lên Object này
+    transform.DOKill();
     }
 
 }

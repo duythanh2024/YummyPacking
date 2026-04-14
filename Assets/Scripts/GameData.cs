@@ -1,5 +1,20 @@
 using UnityEngine;
+public static class PoolTags {
+    public const string Order23 = "Order23";
+    public const string Order33 = "Order33";
+    public const string Order66 = "Order66";
 
+     public const string Tray23 = "Tray23";
+    public const string Tray33 = "Tray33";
+    public const string Tray66 = "Tray66";
+
+}
+public enum TypeTray
+{
+    Tray23,
+    Tray33, 
+    TrayHex
+}
 public static class GameData
 {
     //GIA CA
@@ -32,6 +47,7 @@ public static class GameData
     private const string KEY_SOUND = "Settings_Sound";
     private const string KEY_MUSIC = "Settings_Music";
     private const string KEY_VIBRATE = "Settings_Vibrate";
+        private const string KEY_LAYER = "layer_sorting";
     // Level 11-20: 2 tầng đơn giản (Sandwich).
     // Level 21-35: 3-4 tầng kèm theo Nắp đậy (Hidden Lid).
     // Level 36-50: Kết hợp các yếu tố Xích (Chains) hoặc Đóng băng (Ice) như chúng ta đã thảo luận.
@@ -47,7 +63,12 @@ public static class GameData
             return veryHardLevel;
 
     }
-
+  public static int SortLayer
+    {
+        // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
+        get => PlayerPrefs.GetInt(KEY_LAYER, 700);
+        set => PlayerPrefs.SetInt(KEY_LAYER, value);
+    }
     public static bool Slot1
     {
         // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
