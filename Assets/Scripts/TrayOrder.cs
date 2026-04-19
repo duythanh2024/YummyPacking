@@ -27,14 +27,15 @@ public class TrayOrder : MonoBehaviour
         for (int i = 0; i < foodSlots.Length; i++)
         {
 
-           Vector2 newPos = new Vector2(
-            foodSlots[i].anchorPoint.localPosition.x,
-            foodSlots[i].anchorPoint.localPosition.y
-        );
-           requiredLayout[i].gridValues = newPos;
-// Quan trọng: Đánh dấu ScriptableObject đã thay đổi để Unity lưu lại (nếu chạy trong Editor)
+            Vector2 newPos = new Vector2(
+             foodSlots[i].anchorPoint.localPosition.x,
+             foodSlots[i].anchorPoint.localPosition.y
+         );
+            requiredLayout[i].gridValues = newPos;
+           // foodSlots[i].gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            // Quan trọng: Đánh dấu ScriptableObject đã thay đổi để Unity lưu lại (nếu chạy trong Editor)
 #if UNITY_EDITOR
-    UnityEditor.EditorUtility.SetDirty(currentOrder);
+            UnityEditor.EditorUtility.SetDirty(currentOrder);
 #endif
 
         }

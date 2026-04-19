@@ -14,32 +14,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   levelId: 0
   bufferCapacity: 3
+  sizeCamera: 11.2
+  difficultLevel: 0
   orderQueue:
   - {fileID: 11400000, guid: 2c12637f3ffc54ee9a22b52734c8c2c5, type: 2}
+  IsStack: 0
   boardItems:
   - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 0
     columnId: 0
     layer: 0
     customOffset: {x: 0, y: 0}
+    Finish: 0
   - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 0
     columnId: 1
     layer: 0
     customOffset: {x: 0, y: 0}
+    Finish: 0
   - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 0
     columnId: 2
     layer: 0
     customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    Finish: 0
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 0
     columnId: 0
     layer: 0
     customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    Finish: 0
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 0
     columnId: 1
     layer: 0
     customOffset: {x: 0, y: 0}
+    Finish: 0
   - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 0
     columnId: 2
     layer: 0
     customOffset: {x: 0, y: 0}
-  difficultLevel: 1
+    Finish: 0
   plateDeltaOffset: {x: 8, y: -15}

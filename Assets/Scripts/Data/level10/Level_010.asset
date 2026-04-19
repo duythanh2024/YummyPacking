@@ -14,82 +14,305 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   levelId: 0
   bufferCapacity: 5
+  sizeCamera: 15.5
+  difficultLevel: 4
   orderQueue:
   - {fileID: 11400000, guid: 254da22be8e23446481f7c88d4b5b1fc, type: 2}
-  - {fileID: 11400000, guid: 2ce4003b85786474fbfd323bfcb71343, type: 2}
-  - {fileID: 11400000, guid: 8115e094c92bb419b8f8b5ee42ed26f6, type: 2}
+  - {fileID: 11400000, guid: 1e8faff2e90ab4fcfa8e09518b7ab404, type: 2}
+  IsStack: 1
   boardItems:
-  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 0
     columnId: 0
     layer: 0
     customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 0
     columnId: 1
     layer: 0
     customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 0
     columnId: 2
     layer: 0
     customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 0
+    columnId: 0
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 0
+    columnId: 1
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 0
+    columnId: 2
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 1
     columnId: 0
     layer: 0
     customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    typeTrayFood: 0
+    rowId: 1
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 1
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 1
+    columnId: 0
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
   - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 1
     columnId: 1
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 1
     columnId: 2
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 1
     columnId: 0
-    layer: 0
-    customOffset: {x: 0, y: 0}
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
   - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 1
     columnId: 1
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 0
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 1
     columnId: 2
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-    columnId: 0
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
-    columnId: 1
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
-    columnId: 2
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
-    columnId: 0
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
-    columnId: 1
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
-    columnId: 2
-    layer: 0
-    customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
-    columnId: 0
-    layer: 0
-    customOffset: {x: 0, y: 0}
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
   - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    typeTrayFood: 0
+    rowId: 2
     columnId: 1
     layer: 0
     customOffset: {x: 0, y: 0}
-  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    Finish: 0
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    typeTrayFood: 0
+    rowId: 2
     columnId: 2
     layer: 0
     customOffset: {x: 0, y: 0}
-  difficultLevel: 6
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 0
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 1
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 0
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 2
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 0
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 0
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 1
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 0
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 2
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+  - foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 0
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 0
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 1
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 0
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 2
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 0
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 1
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 2
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 4
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 4
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 4
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 4
+    columnId: 0
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 4
+    columnId: 1
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 4
+    columnId: 2
+    layer: 1
+    customOffset: {x: 0, y: -0.2}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 4
+    columnId: 0
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
+  - foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 4
+    columnId: 1
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
+  - foodAsset: {fileID: 0}
+    typeTrayFood: 0
+    rowId: 4
+    columnId: 2
+    layer: 2
+    customOffset: {x: 0, y: -0.4}
+    Finish: 1
   plateDeltaOffset: {x: 8, y: -15}

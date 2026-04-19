@@ -286,7 +286,7 @@ public class BentoGridController : MonoBehaviour
     // VIẾT ĐẦY ĐỦ HÀM PLACETILE ĐỂ KHÓA LƯỚI
     public void PlaceTile(FoodTile tile, Vector2 coord)
     {
-        AudioManager.Instance.TriggerVibrate(30);
+        AudioManager.Instance.Play("DropFood");
         // 1. ĐỔI CHA: Đưa thức ăn làm con của đối tượng D (currentBentoUI)
         tile.transform.SetParent(currentBentoUI.transform);
         tile.tray.transform.localPosition = Vector3.zero;

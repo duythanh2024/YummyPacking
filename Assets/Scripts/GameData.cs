@@ -1,18 +1,39 @@
 using UnityEngine;
-public static class PoolTags {
+public static class PoolTags
+{
     public const string Order23 = "Order23";
     public const string Order33 = "Order33";
     public const string Order66 = "Order66";
 
-     public const string Tray23 = "Tray23";
+    public const string Tray23 = "Tray23";
     public const string Tray33 = "Tray33";
     public const string Tray66 = "Tray66";
 
 }
+public enum TypeTrayFood
+{
+    None,
+    Ice,
+    Lock,
+    Hidden
+}
+public enum DifficultyLevel
+{
+    VeryEasy,
+    Easy,
+    Medium,
+    Hard,
+    VeryHard
+}
+public enum ScenesType
+{
+    Home,
+    Game
+}
 public enum TypeTray
 {
     Tray23,
-    Tray33, 
+    Tray33,
     TrayHex
 }
 public static class GameData
@@ -24,6 +45,7 @@ public static class GameData
     public const int slot1Price = 500;
     public const int slot2Price = 1000;
     public const int slot3Price = 2500;
+    public const int veryeasyRewardLevel = 10; //sl order: 1,2
     public const int easyRewardLevel = 15; //sl order: 1,2
     public const int normalRewardLevel = 25; //sl order: 3,4
     public const int normalHardLevel = 50; //sl order: 5,6
@@ -47,23 +69,26 @@ public static class GameData
     private const string KEY_SOUND = "Settings_Sound";
     private const string KEY_MUSIC = "Settings_Music";
     private const string KEY_VIBRATE = "Settings_Vibrate";
-        private const string KEY_LAYER = "layer_sorting";
+    private const string KEY_LAYER = "layer_sorting";
+    private const string KEY_REMOVEADS = "removeadds";
     // Level 11-20: 2 tầng đơn giản (Sandwich).
     // Level 21-35: 3-4 tầng kèm theo Nắp đậy (Hidden Lid).
     // Level 36-50: Kết hợp các yếu tố Xích (Chains) hoặc Đóng băng (Ice) như chúng ta đã thảo luận.
-    public static int GetRewardLevel(int level)
+    public static int GetRewardLevel(DifficultyLevel difficultyLevel)
     {
-        if (level == 1 || level == 2)
+        if (difficultyLevel == DifficultyLevel.VeryEasy)
+            return veryeasyRewardLevel;
+        else if (difficultyLevel == DifficultyLevel.Easy)
             return easyRewardLevel;
-        else if (level == 3 || level == 4)
-            return normalRewardLevel;
-        else if (level == 5 || level == 6)
+        else if (difficultyLevel == DifficultyLevel.Medium)
+            return normalHardLevel;
+        else if (difficultyLevel == DifficultyLevel.Hard)
             return normalHardLevel;
         else
             return veryHardLevel;
 
     }
-  public static int SortLayer
+    public static int SortLayer
     {
         // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
         get => PlayerPrefs.GetInt(KEY_LAYER, 700);
@@ -172,6 +197,13 @@ public static class GameData
         get => PlayerPrefs.GetInt(KEY_VIBRATE, 1) == 1;
         set => PlayerPrefs.SetInt(KEY_VIBRATE, value ? 1 : 0);
     }
+    public static bool AdsRemoved
+    {
+        // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
+        get => PlayerPrefs.GetInt(KEY_REMOVEADS, 1) == 1;
+        set => PlayerPrefs.SetInt(KEY_REMOVEADS, value ? 1 : 0);
+    }
+
     public static void Save()
     {
         PlayerPrefs.Save();

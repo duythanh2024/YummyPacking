@@ -60,6 +60,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e28f6ee5b4d484840b00334aad5a5b54, type: 3}
   - {fileID: 8300000, guid: f29716dd4055d48d58d41f254b2bc460, type: 3}
   - {fileID: 8300000, guid: c0dcb580c0eea46ac84f0e4e21f0cf17, type: 3}
+  - {fileID: 8300000, guid: 47d7804d7b9e34ad49b5f1a4ce5d7300, type: 3}
   homeMusic: {fileID: 8300000, guid: a2ab9845ea4104b57bde9b9214df507b, type: 3}
   gameplayMusic: {fileID: 8300000, guid: 5cc1c335c0ab04c0d8b70c612ff6edb1, type: 3}
   musicSource: {fileID: 2202208614259661901}

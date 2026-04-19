@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1468448536045849413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2685829825805556816}
+  - component: {fileID: 389593266232950857}
+  m_Layer: 0
+  m_Name: ObjectPooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2685829825805556816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468448536045849413}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &389593266232950857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468448536045849413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13fca86b12aca4c2397573d2d4cc5631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  itemsToPool:
+  - tag: Food
+    prefab: {fileID: 8679247121131155777, guid: b8ba70d02037e4bb0b721922068a4dde, type: 3}
+    size: 10
+    expandable: 1
+  - tag: Tray23
+    prefab: {fileID: 6749873746815455872, guid: 53bacf8ec0ce54d349ce3b54e102c347, type: 3}
+    size: 3
+    expandable: 1
+  - tag: Tray33
+    prefab: {fileID: 6611813371938669287, guid: 78d218875fe3b4e7ea0d5ed8a4d12e43, type: 3}
+    size: 5
+    expandable: 1
+  - tag: Tray66
+    prefab: {fileID: 1395412215469156162, guid: 5d3c773c34958463e92dd13ee3e1bfa0, type: 3}
+    size: 5
+    expandable: 1
+  - tag: Order23
+    prefab: {fileID: 8667181737865603095, guid: 494eb7431dd6c4af48251a024feea730, type: 3}
+    size: 5
+    expandable: 1
+  - tag: Order33
+    prefab: {fileID: 8667181737865603095, guid: 96f378b9e23d9495cb0f822d2f7cdf80, type: 3}
+    size: 5
+    expandable: 1
+  - tag: Order66
+    prefab: {fileID: 8667181737865603095, guid: d684338e645dc435cb13a9cab8312f31, type: 3}
+    size: 5
+    expandable: 1
+  - tag: Coins
+    prefab: {fileID: 7723359912213307925, guid: b2ea4ee786c5c44619e60cf335824dd5, type: 3}
+    size: 30
+    expandable: 1

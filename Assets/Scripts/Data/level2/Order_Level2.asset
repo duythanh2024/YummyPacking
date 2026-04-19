@@ -15,22 +15,23 @@ MonoBehaviour:
   orderId: 1
   targetGridSize: {x: 2, y: 3}
   typeOfTray: 0
+  slotLocks: 
   requiredLayout:
-  - foodType: 1
+  - foodType: 3
     gridCoord: {x: 0, y: 0}
     gridValues: {x: -2.02, y: 1}
-  - foodType: 1
+  - foodType: 3
     gridCoord: {x: 0, y: 1}
     gridValues: {x: -0.097, y: 1}
-  - foodType: 3
+  - foodType: 2
     gridCoord: {x: 0, y: 2}
     gridValues: {x: 2.008, y: 1}
-  - foodType: 3
+  - foodType: 2
     gridCoord: {x: 1, y: 0}
     gridValues: {x: -2.004, y: -0.67}
-  - foodType: 2
+  - foodType: 1
     gridCoord: {x: 1, y: 1}
     gridValues: {x: -0.081, y: -0.67}
-  - foodType: 2
+  - foodType: 1
     gridCoord: {x: 1, y: 2}
     gridValues: {x: 2.004, y: -0.67}

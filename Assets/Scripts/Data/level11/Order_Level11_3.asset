@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrderData
   orderId: 1
   targetGridSize: {x: 2, y: 3}
-  typeTray: 0
+  typeOfTray: 0
+  slotLocks: 
   requiredLayout:
   - foodType: 3
     gridCoord: {x: 0, y: 0}

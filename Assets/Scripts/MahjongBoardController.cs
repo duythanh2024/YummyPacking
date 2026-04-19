@@ -97,8 +97,10 @@ public class MahjongBoardController : MonoBehaviour
 
     public void UpdateClickableStates()
     {
+        Debug.Log("UpdateClickableStates");
         if (!GameManager.Instance.IsStack)
         {
+            
             // Duyệt qua từng cột đĩa trên bàn
             for (int colId = 0; colId < allTilesOnBoard.Count; colId++)
             {
@@ -132,7 +134,7 @@ public class MahjongBoardController : MonoBehaviour
         }
         else
         {
-            // Debug.Log("Kiem tra");
+            
             // Duyệt qua từng cột đĩa trên bàn
             for (int colId = 0; colId < allTilesOnBoard.Count; colId++)
             {
@@ -354,6 +356,7 @@ public class MahjongBoardController : MonoBehaviour
     public void SetLockTiles()
     {
 
+Debug.Log("SetLockTiles");
 
         for (int i = 0; i < allTilesOnBoard.Count; i++)
         {
@@ -372,27 +375,32 @@ public class MahjongBoardController : MonoBehaviour
             }
         }
 
-        //  List<FoodTile> allActiveTiles = new List<FoodTile>();
+        
 
-        // // Lấy số lượng cột thực tế từ BoardController
-        // int columnCount = GameManager.Instance.boardCtrl.allTilesOnBoard.Count;
+    }
 
-        // for (int i = 0; i < columnCount; i++)
-        // {
-        //     // Kiểm tra null để tránh lỗi crash nếu cột đó chưa được khởi tạo
-        //     if (GameManager.Instance.boardCtrl.allTilesOnBoard[i] != null)
-        //     {
-        //         allActiveTiles.AddRange(GameManager.Instance.boardCtrl.allTilesOnBoard[i]);
-        //     }
-        // }
-        // Debug.Log("SetLockTiles eeee "+allActiveTiles.Count);
-        // foreach (var t in allActiveTiles)
-        // { Debug.Log("SetLockTiles 123");
-        //     t.isClickable = false;
-        //     Color dimColor = new Color(0.6f, 0.6f, 0.6f, 1f);
-        //     t.tray.color = dimColor;
-        //     t.icon.color = dimColor; // Dùng trực tiếp .color nếu là SpriteRenderer
-        // }
+     public bool CheckFrozenTray()
+    {
+
+
+
+        for (int i = 0; i < allTilesOnBoard.Count; i++)
+        {
+            if (allTilesOnBoard[i] == null) continue;
+
+            // Duyệt qua từng đĩa FoodTile trong danh sách của cột đó
+            foreach (FoodTile tile in allTilesOnBoard[i])
+            {
+                if (tile != null)
+                {
+                   if(tile.typeTrayFood==TypeTrayFood.Ice)
+                   return true;
+                }
+            }
+        }
+        return false;
+
+        
 
     }
 }

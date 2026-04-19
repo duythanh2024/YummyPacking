@@ -48,24 +48,24 @@ public class Loading : MonoBehaviour
             yield return null;
         }
 
-        // 2. Xử lý Apple ATT (Chỉ hiện Popup hệ thống, không hiện màn hình mồi)
-#if UNITY_IOS && !UNITY_EDITOR
-        // Kiểm tra trạng thái, nếu chưa xác định (NOT_DETERMINED) thì mới hiện Popup
-        if (ATTrackingStatusBinding.GetAuthorizationTrackingStatus() == ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
-        {
-            // Lệnh này kích hoạt TRỰC TIẾP Popup của Apple
-            ATTrackingStatusBinding.RequestAuthorizationTracking();
+                // 2. Xử lý Apple ATT (Chỉ hiện Popup hệ thống, không hiện màn hình mồi)
+        #if UNITY_IOS && !UNITY_EDITOR
+                // Kiểm tra trạng thái, nếu chưa xác định (NOT_DETERMINED) thì mới hiện Popup
+                if (ATTrackingStatusBinding.GetAuthorizationTrackingStatus() == ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
+                {
+                    // Lệnh này kích hoạt TRỰC TIẾP Popup của Apple
+                    ATTrackingStatusBinding.RequestAuthorizationTracking();
 
-            // Đợi cho đến khi người dùng nhấn "Allow" hoặc "Ask App Not to Track"
-            // Việc đợi này rất quan trọng để đảm bảo có IDFA trước khi vào Home
-            while (ATTrackingStatusBinding.GetAuthorizationTrackingStatus() == ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
-            {
-                yield return null;
-            }
-        }
-        
-        // Log trạng thái để bạn kiểm tra trong Xcode console
-#endif
+                    // Đợi cho đến khi người dùng nhấn "Allow" hoặc "Ask App Not to Track"
+                    // Việc đợi này rất quan trọng để đảm bảo có IDFA trước khi vào Home
+                    while (ATTrackingStatusBinding.GetAuthorizationTrackingStatus() == ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
+                    {
+                        yield return null;
+                    }
+                }
+                
+                // Log trạng thái để bạn kiểm tra trong Xcode console
+        #endif
 
         // 3. Bước cuối: Vào Home
         EnterHome();

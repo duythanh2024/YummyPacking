@@ -21,6 +21,9 @@ public class OrderData : ScriptableObject
     public TypeTray typeOfTray;//0: 2*3, 1: 3*3, 2: luc giac
    // public int typeTray=0; //0: 2*3, 1: 3*3, 2: luc giac
 
+   //Slot Lock
+   public int[] slotLocks;
+
     [Header("Placement Strategy")]
     [Tooltip("Danh sách các món và vị trí cố định của chúng trong hộp")]
     public List<FoodPlacement> requiredLayout; 

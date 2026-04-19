@@ -15,6 +15,7 @@ MonoBehaviour:
   orderId: 1
   targetGridSize: {x: 2, y: 3}
   typeOfTray: 0
+  slotLocks: 
   requiredLayout:
   - foodType: 4
     gridCoord: {x: 0, y: 0}

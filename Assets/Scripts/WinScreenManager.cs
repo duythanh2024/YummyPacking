@@ -3,9 +3,11 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening; 
 using System.Collections;
+using MobileMonetizationApp;
 
 public class WinScreenManager : MonoBehaviour
 {
+    
     [Header("UI Components")]
     public TextMeshProUGUI coinText;
     public TextMeshProUGUI coinRewardText;
@@ -78,10 +80,12 @@ public class WinScreenManager : MonoBehaviour
         AudioManager.Instance.Play("Click");
         // 1. Gọi SDK Quảng cáo (Giả định bạn dùng AdMob/AppLovin)
         ///    Debug.Log("<color=green>Calling Rewarded Ad SDK...</color>");
-
+        AdmobAdsManager.instance.SetRewardItem("givex2Coins");
+        // AdsManager.Instance.ShowRewardedCoinAd();
+        AdmobAdsManager.instance.ShowRewardedAd();
         // Nếu dùng quảng cáo thực, bạn sẽ đăng ký callback cho "UserRewarded"
         // Ở đây tôi giả định xem quảng cáo thành công ngay lập tức:
-        OnRewardedAdComplete();
+      //  OnRewardedAdComplete();
     }
 
     // Gắn vào NoThanksButton
@@ -101,7 +105,7 @@ public class WinScreenManager : MonoBehaviour
     // --- BƯỚC 4: NHẬN THƯỞNG & LÀM SẠCH ---
 
     // Callback khi xem quảng cáo thành công
-    private void OnRewardedAdComplete()
+    public void OnRewardedAdComplete()
     {
         claimX2Button.interactable = false;
         nextButton.interactable = false;

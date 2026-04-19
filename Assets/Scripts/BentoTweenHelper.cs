@@ -169,4 +169,16 @@ public static class BentoTweenHelper
               .SetLink(target.gameObject); 
               // Lưu ý: Lặp vô hạn nên sẽ cần gọi DOKill ở chỗ khác để dừng
     }
+
+        public static void DOAlphal(Transform target, float duration, Action onComplete = null)
+    {
+        if (target == null) return;
+        target.DOKill(complete: true);
+
+
+
+        target.GetComponent<SpriteRenderer>().DOFade(0f, duration)
+              .SetLink(target.gameObject).OnComplete(() => onComplete?.Invoke());; 
+              // Lưu ý: Lặp vô hạn nên sẽ cần gọi DOKill ở chỗ khác để dừng
+    }
 }

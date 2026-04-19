@@ -75,6 +75,11 @@ public class OrderManager : MonoBehaviour
             // QUAN TRỌNG: Gán tag để tí nữa biết đường mà thu hồi
             uiElem.CurrentPoolTag = tag;
 
+             // Lấy RectTransform của object hiện tại
+        RectTransform rectTransform = newGo.GetComponent<RectTransform>();
+
+       rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, rectTransform.localPosition.y, 0f);
+
             uiElem.SetupUI(data);
             spawnedUI.Add(uiElem);
             activeOrder++;

@@ -4,6 +4,7 @@ using TMPro;
 using DG.Tweening;
 using System.Collections;
 using System;
+using MobileMonetizationApp;
 
 public class FailScreenManager : MonoBehaviour
 {
@@ -69,8 +70,18 @@ public class FailScreenManager : MonoBehaviour
         // 2. GIẢ LẬP GỌI SDK QUẢNG CÁO (AdMob/AppLovin/UnityAds)
     //    Debug.Log("<color=cyan>[ADS]</color> Requesting Rewarded Ad...");
 
+         //   ShowLoading();
+        AdmobAdsManager.instance.SetRewardItem("undo");
+        // AdsManager.Instance.ShowRewardedCoinAd();
+        AdmobAdsManager.instance.ShowRewardedAd();
+
         // Trong thực tế, bạn sẽ đợi Callback "OnUserEarnedReward"
         // Ở đây ta giả định xem xong thành công:
+      //  
+    }
+
+    public void ShowUndoAfterAds()
+    {
         StartCoroutine(ExecuteReviveRoutine());
     }
 
@@ -80,7 +91,7 @@ public class FailScreenManager : MonoBehaviour
      //   Debug.Log("<color=cyan>[ADS]</color> Tat...");
 
      //   Debug.Log("<color=green>Reviving: Undoing 1 step...</color>");
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.5f);
         HideFailScreen();
         gameObject.SetActive(false);
         GameManager.Instance.isFail=false;
