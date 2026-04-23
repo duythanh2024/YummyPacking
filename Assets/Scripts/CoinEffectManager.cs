@@ -5,7 +5,7 @@ using System; // Thêm namespace này để dùng Action
 
 public class CoinEffectManager : MonoBehaviour
 {
-    public static CoinEffectManager Instance;
+    //public static CoinEffectManager Instance;
 
     [Header("Settings")]
     //public GameObject coinPrefab;      // Prefab của đồng coin (UI Image)
@@ -14,6 +14,56 @@ public class CoinEffectManager : MonoBehaviour
     public int coinCount = 10;         // Số lượng coin muốn hiện
 
     private Coroutine spawnRoutine;
+
+    /// <summary>
+    /// bonus khay
+    /// </summary>
+    /// <param name="coinSprite"></param>
+    /// <param name="uiTarget"></param>
+    /// <param name="onComplete"></param>
+    public void PlayCoinAnimation(GameObject coinSprite, RectTransform uiTarget, Action onAllComplete = null)
+    {
+        if (coinSprite == null || uiTarget == null) return;
+
+        // 1. Reset trạng thái ban đầu
+        coinSprite.gameObject.SetActive(true);
+        coinSprite.transform.localScale = Vector3.one;
+
+        // 2. Lấy vị trí đích (Vì dùng chung 1 camera, tọa độ UI Target chính là World Pos)
+        // Chúng ta ép Z = 0 để đảm bảo Coin bay trên mặt phẳng Gameplay
+        Vector3 targetWorldPos = uiTarget.position;
+        targetWorldPos.z = 0;
+
+        // 3. Chuỗi hiệu ứng Sequence
+        Sequence coinSeq = DOTween.Sequence();
+
+        // Bước 1: Coin nảy lên tạo cảm giác "vàng rơi" (Juicy)
+        // Dùng Ease.OutBack để có độ nảy nhẹ ở đỉnh
+        coinSeq.Append(coinSprite.transform.DOMoveY(coinSprite.transform.position.y + 1.2f, 0.35f).SetEase(Ease.OutBack));
+
+        // Bước 2: Bay về phía UI và thu nhỏ dần về 0
+        // SetLink giúp tự động xóa Tween nếu Object bị hủy, tránh leak bộ nhớ
+        coinSeq.Append(coinSprite.transform.DOMove(targetWorldPos, 0.5f).SetEase(Ease.InQuad));
+        coinSeq.Join(coinSprite.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InQuad));
+
+        // 4. Kết thúc: Ẩn xu và cộng điểm
+        coinSeq.OnComplete(() =>
+        {
+
+            AudioManager.Instance.Play("Coins");
+            coinTarget.DOKill(true);
+            coinTarget.DOPunchScale(Vector3.one * 0.1f, 0.1f, 5, 1);
+            coinSprite.gameObject.SetActive(false);
+            coinSprite.transform.localScale = Vector3.zero; // Đảm bảo Scale về đúng 0
+            onAllComplete?.Invoke();
+        });
+
+        // Tối ưu hóa cho Mobile
+        coinSeq.SetLink(coinSprite.gameObject);
+        //coinSeq.SetUpdate(UpdateType.Normal, true); // Chạy cả khi Time.timeScale = 0
+
+    }
+
     //Shop
     public void PlayCoinOverLayFlowEffect(Action onAllComplete = null)
     {
@@ -35,7 +85,7 @@ public class CoinEffectManager : MonoBehaviour
             if (this == null || coinSpawnParent == null) yield break;
 
 
-            GameObject coin = ObjectPooler.Instance.SpawnFromPool("Coins",Vector3.zero, Quaternion.identity);
+            GameObject coin = ObjectPooler.Instance.SpawnFromPool("Coins", Vector3.zero, Quaternion.identity);
             coin.transform.SetParent(coinSpawnParent);
 
             //GameObject coin = Instantiate(coinPrefab, coinSpawnParent);
@@ -71,18 +121,19 @@ public class CoinEffectManager : MonoBehaviour
                         // Kill tween cũ trước khi chạy tween mới để UI không bị vỡ scale
                         coinTarget.DOKill(true);
                         coinTarget.DOPunchScale(Vector3.one * 0.1f, 0.1f, 5, 1);
-                        AudioManager.Instance.Play("Coins");
+
                     }
                 }
 
                 if (coin != null)
                 {
-                    ObjectPooler.Instance.ReturnToPool("Coins",coin);
+                    ObjectPooler.Instance.ReturnToPool("Coins", coin);
                 }
 
                 completedCoins++;
                 if (completedCoins >= coinCount)
                 {
+                    AudioManager.Instance.Play("Coins");
                     ResetTargetScale();
                     onAllComplete?.Invoke();
                 }
@@ -112,8 +163,8 @@ public class CoinEffectManager : MonoBehaviour
         {
             if (this == null || coinSpawnParent == null) yield break;
 
-          //  GameObject coin = Instantiate(coinPrefab, coinSpawnParent);
-            GameObject coin = ObjectPooler.Instance.SpawnFromPool("Coins",Vector3.zero, Quaternion.identity);
+            //  GameObject coin = Instantiate(coinPrefab, coinSpawnParent);
+            GameObject coin = ObjectPooler.Instance.SpawnFromPool("Coins", Vector3.zero, Quaternion.identity);
             coin.transform.SetParent(coinSpawnParent);
             // Tính toán vị trí ngẫu nhiên quanh điểm spawn
             float randomX = UnityEngine.Random.Range(-50f, 50f); // Giới hạn vùng spawn nhỏ lại cho đẹp
@@ -142,10 +193,10 @@ public class CoinEffectManager : MonoBehaviour
                     coinTarget.DOPunchScale(Vector3.one * 0.1f, 0.1f, 5, 1);
                 }
                 //Lam lai
-               
+
                 if (coin != null)
                 {
-                    ObjectPooler.Instance.ReturnToPool("Coins",coin);
+                    ObjectPooler.Instance.ReturnToPool("Coins", coin);
                 }
 
                 completedCoins++;

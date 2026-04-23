@@ -4,6 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class BoardItemSetup
 {
+    public int foodID; // Thêm biến này để Mapping
     [Tooltip("Kéo thả file FoodData (vd: Salmon_2x1) vào đây")]
     public FoodData foodAsset;
 
@@ -27,4 +28,7 @@ public class BoardItemSetup
     public Vector2 customOffset;
 
     public bool Finish;
+    public bool isIce;
+public bool isLid;
+    public bool requireAd;
 }

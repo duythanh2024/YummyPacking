@@ -19,6 +19,8 @@ public class FoodTile : MonoBehaviour
     public FoodSlot currentFoodSlot;
     [HideInInspector]
     public bool IsClick;
+
+    public Sprite[] iconStatusTile; //0 ice, 1 lock, 1 nap
     public void SetDefault()
     {
         tray.gameObject.SetActive(true);
@@ -36,14 +38,29 @@ public class FoodTile : MonoBehaviour
     }
     public void SetStatus()
     {
+        iconStatus.gameObject.SetActive(false);
+        isLocked=false;
         if (typeTrayFood == TypeTrayFood.None)
         {
             iconStatus.gameObject.SetActive(false);
             isLocked=false;
         }
-        else
+        else if (typeTrayFood == TypeTrayFood.Ice)
         {
             iconStatus.gameObject.SetActive(true);
+            iconStatus.sprite=iconStatusTile[0];
+            isLocked=true;
+        }
+         else if (typeTrayFood == TypeTrayFood.Lock)
+        {
+            iconStatus.gameObject.SetActive(true);
+            iconStatus.sprite=iconStatusTile[1];
+            isLocked=true;
+        }
+         else if (typeTrayFood == TypeTrayFood.Hidden)
+        {
+            iconStatus.gameObject.SetActive(true);
+            iconStatus.sprite=iconStatusTile[2];
             isLocked=true;
         }
 

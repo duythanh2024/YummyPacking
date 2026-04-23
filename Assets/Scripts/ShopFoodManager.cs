@@ -11,6 +11,8 @@ public class ShopFoodManager : MonoBehaviour
     public TextMeshProUGUI Txt_Reward;
     public CoinEffectManager coinEffectManager;
     public ScenesType scenesType;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -46,7 +48,7 @@ public class ShopFoodManager : MonoBehaviour
     public void Collect()
     {
         Debug.Log("Collect");
-        //AudioManager.Instance.Play("Click");
+        AudioManager.Instance.Play("Click");
         RewardPanel.SetActive(false);
         Txt_Reward.gameObject.SetActive(false);
         Img_Coin.GetComponent<RectTransform>().localScale = Vector3.one * 0.8f;
@@ -61,7 +63,8 @@ public class ShopFoodManager : MonoBehaviour
                 ShowCoins();
 
             });
-        }else if (scenesType == ScenesType.Home)
+        }
+        else if (scenesType == ScenesType.Home)
         {
             //Canvas camera
             coinEffectManager.PlayCoinFlowEffect(() =>
@@ -90,6 +93,9 @@ public class ShopFoodManager : MonoBehaviour
         else if (type == 2)
             coin = GameData.hammerBootPrice;
 
+        else if (type == 3)
+            coin = GameData.torchBootPrice;
+
         if (GameData.Coins >= coin)
         {
             GameData.Coins -= coin;
@@ -99,9 +105,19 @@ public class ShopFoodManager : MonoBehaviour
                 GameData.SwapNumber += 3;
             else if (type == 2)
                 GameData.HammerNumber += 3;
+            else if (type == 3)
+                GameData.TorchNumber += 3;
             GameData.Save();
-            ShowCoins();
-            ToastManager.Instance.ShowToast("Success");
+            
+             if (scenesType == ScenesType.Game)
+            {
+                ShowCoins();        
+            }
+            else
+            {
+                 HomeManager.Instance.ShowInfoCoins();
+            }
+            ToastManager.Instance.ShowToast("Purchase successful!");
 
         }
         else

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using MobileMonetizationApp;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour, IInputHandler
     public TextMeshProUGUI Txt_Coins;
     public GameObject Booster;
     public Animator catAnimator;
+    public RectTransform Img_Coins;
     public static GameManager Instance { get; private set; }
     // public bool processing = false;
     public bool isWin = false;
@@ -54,8 +56,9 @@ public class GameManager : MonoBehaviour, IInputHandler
     public TextMeshProUGUI Txt_Error;
     public GameObject torch;
     public GameObject Img_Hint;
-     public GameObject Img_Title;
-    
+    public GameObject Img_Title;
+    float offsetCamera=0.2f;
+
     private void Awake()
     {
         // 2. Thiết lập Singleton
@@ -75,18 +78,19 @@ public class GameManager : MonoBehaviour, IInputHandler
         AudioManager.Instance.PlayBackground(AudioManager.Instance.gameplayMusic);
         isWin = false;
         isFail = false;
+         SetBotom();
         //test
-        // GameData.SavedLevelIndex = currentLevelIndex;
-        // GameData.Save();
+        GameData.SavedLevelIndex = currentLevelIndex;
+        GameData.Save();
         currentLevelIndex = GameData.SavedLevelIndex;
-         if (currentLevelIndex >= allLevels.Count)
+        if (currentLevelIndex >= allLevels.Count)
         {
             // Quay lại chơi một level ngẫu nhiên để giữ chân người chơi
-            currentLevelIndex = UnityEngine.Random.Range(8, allLevels.Count-1);
-            Debug.Log("🔄 Chơi lại level ngẫu nhiên vì đã hết danh sách!");
-     
+            currentLevelIndex = UnityEngine.Random.Range(16, allLevels.Count - 1);
+            //  Debug.Log("🔄 Chơi lại level ngẫu nhiên vì đã hết danh sách!");
+
         }
-       
+
 
 
         // Gọi hàm nạp level lần đầu tiên
@@ -114,6 +118,41 @@ public class GameManager : MonoBehaviour, IInputHandler
         //     Txt_Error.SetText(ex.Message);
         // }
 
+
+    }
+    void SetBotom()
+    {
+        bool hasInternet = Utilities.CheckNetWork();
+        RectTransform rectTransform=Booster.GetComponent<RectTransform>();
+        float aspectRatio = (float)Screen.width / Screen.height;
+
+        if (hasInternet)
+        {
+            AdmobAdsManager.instance.ShowBanner();
+           
+           if (aspectRatio < 0.5f) 
+            {
+                 rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 120);
+                  offsetCamera=0.2f;
+            } 
+            else if (aspectRatio >= 0.5f && aspectRatio < 0.65f) 
+            {
+                // Màn hình CHUẨN (Portrait)
+                // Ví dụ: Các dòng Android cũ, iPhone 8 trở về trước (tỷ lệ 9:16)
+                rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 100);
+            } 
+            else 
+            {
+                // Màn hình VUÔNG (Portrait)
+                // Ví dụ: iPad (tỷ lệ 3:4 ~ 0.75)
+                rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 95);
+            }
+        }
+        else
+        {
+             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 0);
+             offsetCamera=0;
+        }
     }
 
     public void InitializeLevel(int index)
@@ -159,17 +198,18 @@ public class GameManager : MonoBehaviour, IInputHandler
         rewardLevel = GameData.GetRewardLevel(currentData.difficultLevel);
         IsStack = currentData.IsStack;
 
-       
-        Camera.main.orthographicSize = currentData.sizeCamera;
+
+        Camera.main.orthographicSize = currentData.sizeCamera+offsetCamera;
 
         // 4. Sinh ra bàn Mahjong (Tầng 3)
+        boardCtrl.ResizeBoard(currentData.isColumn5);
         SpawnLevelBoard(currentData.boardItems);
         boosterManager.LoadBooster();
         ShowCoin();
         boardCtrl.CaptureBoardDNA();
         boosterManager.ClearStack();
 
-        Debug.Log($"<color=green>🎮 LEVEL {index + 1} LOADED SUCCESSFULLY</color>");
+        //        Debug.Log($"<color=green>🎮 LEVEL {index + 1} LOADED SUCCESSFULLY</color>");
         //TutorialManager
         if (currentLevelIndex == 0)
         {
@@ -191,6 +231,12 @@ public class GameManager : MonoBehaviour, IInputHandler
         {
 
             boosterManager.ShowBoosterDes(3);
+
+        }
+        else if (currentLevelIndex == 15 && !GameData.TorchBoostTutorial)
+        {
+
+            boosterManager.ShowBoosterDes(4);
 
         }
 
@@ -448,7 +494,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         if (currentLevelIndex >= allLevels.Count)
         {
             // Quay lại chơi một level ngẫu nhiên để giữ chân người chơi
-            currentLevelIndex = UnityEngine.Random.Range(8, allLevels.Count-1);
+            currentLevelIndex = UnityEngine.Random.Range(16, allLevels.Count - 1);
             Debug.Log("🔄 Chơi lại level ngẫu nhiên vì đã hết danh sách!");
         }
 
@@ -472,7 +518,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         if (currentLevelIndex >= allLevels.Count)
         {
             // Quay lại chơi một level ngẫu nhiên để giữ chân người chơi
-            currentLevelIndex = UnityEngine.Random.Range(8, allLevels.Count-1);
+            currentLevelIndex = UnityEngine.Random.Range(16, allLevels.Count - 1);
             //  Debug.Log("🔄 Chơi lại level ngẫu nhiên vì đã hết danh sách!");
         }
         // 4. Gọi hàm khởi tạo lại toàn bộ bàn chơi
@@ -517,7 +563,7 @@ public class GameManager : MonoBehaviour, IInputHandler
 
         }
         // Lấy tọa độ đích cố định từ yêu cầu của Đơn hàng
-        if (gridCtrl.GetFixedTargetCoord(tappedTile, currentOrder, out Vector2 targetCoord))
+        if (gridCtrl.GetFixedTargetCoord(tappedTile, currentOrder, out Vector2 targetCoord, out int indexSlot))
         {
             bufferCtrl.RemoveTile(tappedTile);
 
@@ -555,7 +601,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         // Debug.Log("OnTileTapped");
         int colId = tappedTile.columnId; // Lấy ID cột của miếng vừa bấm
         // Lấy tọa độ đích cố định từ yêu cầu của Đơn hàng
-        if (gridCtrl.GetFixedTargetCoord(tappedTile, currentOrder, out Vector2 targetCoord) && !tappedTile.data.isBuff)
+        if (gridCtrl.GetFixedTargetCoord(tappedTile, currentOrder, out Vector2 targetCoord, out int indexSlot) && !tappedTile.data.isBuff)
         {
             //  Debug.Log("OnTileTapped");
             // TRƯỚC KHI REMOVE: Ghi lại dữ liệu Undo
@@ -588,6 +634,24 @@ public class GameManager : MonoBehaviour, IInputHandler
             {
 
                 gridCtrl.PlaceTile(tappedTile, targetCoord);
+                //Xem slot có coin ko
+                gridCtrl.GetRewardSlot(indexSlot);
+
+                List<FoodTile> foodTiles = boardCtrl.GetListLockTiles();
+                if (foodTiles.Count > 0)
+                {
+                    FoodTile foodTile = foodTiles.Where(n => n.data.foodType == tappedTile.data.foodType).FirstOrDefault();
+                    if (foodTile != null)
+                    {
+                        foodTile.isLocked = false;
+                        foodTile.isClickable = true;
+                        foodTile.typeTrayFood = TypeTrayFood.None;
+                        foodTile.iconStatus.gameObject.SetActive(false);
+                    }
+
+                }
+
+                //  CoinEffectManager.
                 BentoTweenHelper.PackPopEffect(tappedTile.transform, () =>
                 {
                     //    Debug.Log("Kiem tra " + IsStack);
@@ -980,7 +1044,7 @@ public class GameManager : MonoBehaviour, IInputHandler
 
     public void ShowOrderActive(int orderActive, int totalOrder)
     {
-        Txt_Order.text = "Order: " + orderActive + "/" + totalOrder;
+        Txt_Order.text = orderActive + "/" + totalOrder;
     }
 
     public bool IsWinOrFail()
@@ -1010,8 +1074,8 @@ public class GameManager : MonoBehaviour, IInputHandler
             }
             if (boosterManager.isMagnet)
             {
-                 Debug.Log("Đã click vào Tile!");
-                if (selectedTile.typeTrayFood!=TypeTrayFood.Ice)
+                Debug.Log("Đã click vào Tile!");
+                if (selectedTile.typeTrayFood != TypeTrayFood.Ice)
                     return;
                 boosterManager.ExecuteMagnet(selectedTile);
                 return; // Thoát hàm, không chạy logic nhặt đĩa bên dưới
@@ -1021,7 +1085,7 @@ public class GameManager : MonoBehaviour, IInputHandler
             if (selectedTile.isLocked) return;
             // Debug.Log("Đã click vào Tile! 1");
             // --- LOGIC BÚA (ƯU TIÊN HÀNG ĐẦU) ---
-           
+
             // Debug.Log("Đã click vào Tile!");
             // 1. Nếu Tutorial đang bật
             if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
@@ -1296,9 +1360,9 @@ public class GameManager : MonoBehaviour, IInputHandler
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            // GameData.Coins = 10000;
-            // GameData.Save();
-            GameManager.Instance.boardCtrl.SetLockTiles();
+            GameData.Coins = 5000;
+            GameData.Save();
+            // GameManager.Instance.boardCtrl.SetLockTiles();
 
         }
         if (Input.GetKeyDown(KeyCode.Space))

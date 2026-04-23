@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -59,7 +60,14 @@ public class MahjongBoardController : MonoBehaviour
     private void Awake()
     {
         // Khởi tạo List cho từng cột
-        InitializeBoard(3);
+        // if(GameData.SavedLevelIndex<=21)
+        //     InitializeBoard(3);
+        // else
+        // { 
+        //     InitializeBoard(5);
+            
+        // }
+         InitializeBoard(5);
     }
 
     public void InitializeBoard(int numColumns)
@@ -72,6 +80,36 @@ public class MahjongBoardController : MonoBehaviour
         {
             allTilesOnBoard.Add(new List<FoodTile>());
         }
+        
+
+
+
+
+
+    }
+
+    public void ResizeBoard(bool isColumn5)
+    {
+
+        if (isColumn5)
+        {
+            columns[0].localPosition=new Vector3(-4,0,0);
+            columns[1].localPosition=new Vector3(-2,0,0);
+            columns[2].localPosition=new Vector3(0,0,0);
+            columns[3].localPosition=new Vector3(2,0,0);
+            columns[4].localPosition=new Vector3(4,0,0);
+
+        }
+        else
+        {
+            columns[0].localPosition=new Vector3(-2,0,0);
+            columns[1].localPosition=new Vector3(0,0,0);
+            columns[2].localPosition=new Vector3(2,0,0);
+        }
+
+
+
+
     }
     // RẤT QUAN TRỌNG: Thuật toán kiểm tra xem mảnh nào được phép nhấn
     public void UpdateClickableStates2()
@@ -97,7 +135,7 @@ public class MahjongBoardController : MonoBehaviour
 
     public void UpdateClickableStates()
     {
-        Debug.Log("UpdateClickableStates");
+       // Debug.Log("UpdateClickableStates");
         if (!GameManager.Instance.IsStack)
         {
             
@@ -177,7 +215,7 @@ public class MahjongBoardController : MonoBehaviour
 
                         // 2. Hiển thị Visual (Trạng thái Highlight)
                         Color targetColor;
-                        if (canInteract)
+                        if (canInteract && tile.typeTrayFood == TypeTrayFood.None)
                         {
                             targetColor = Color.white; // Sáng rực để biết là bấm được
                         }
@@ -330,7 +368,7 @@ public class MahjongBoardController : MonoBehaviour
             }
         }
 
-        Debug.Log(shouldLock ? "Đã khóa toàn bộ đĩa trên bàn." : "Đã mở khóa toàn bộ đĩa.");
+//        Debug.Log(shouldLock ? "Đã khóa toàn bộ đĩa trên bàn." : "Đã mở khóa toàn bộ đĩa.");
     }
      public int SizeBoard()
     {
@@ -356,7 +394,7 @@ public class MahjongBoardController : MonoBehaviour
     public void SetLockTiles()
     {
 
-Debug.Log("SetLockTiles");
+//Debug.Log("SetLockTiles");
 
         for (int i = 0; i < allTilesOnBoard.Count; i++)
         {
@@ -400,6 +438,31 @@ Debug.Log("SetLockTiles");
         }
         return false;
 
+        
+
+    }
+
+     public  List<FoodTile> GetListLockTiles()
+    {
+
+        List<FoodTile> foodTiles=new List<FoodTile>();
+
+        for (int i = 0; i < allTilesOnBoard.Count; i++)
+        {
+            if (allTilesOnBoard[i] == null) continue;
+
+            // Duyệt qua từng đĩa FoodTile trong danh sách của cột đó
+            foreach (FoodTile tile in allTilesOnBoard[i])
+            {
+                if (tile != null)
+                {
+                   if(tile.typeTrayFood==TypeTrayFood.Lock)
+                  foodTiles.Add(tile);
+                }
+            }
+        }
+        
+return foodTiles;
         
 
     }

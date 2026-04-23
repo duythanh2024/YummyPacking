@@ -2,6 +2,8 @@ using UnityEngine;
 
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using System.IO;
 
 [CreateAssetMenu(fileName = "Level_001", menuName = "BentoJam/Level Data")]
 public class LevelData : ScriptableObject 
@@ -19,6 +21,8 @@ public class LevelData : ScriptableObject
     public List<OrderData> orderQueue;
 
     public bool IsStack=false; // true co tang, false la ko co
+
+    public bool isColumn5;
 
     [Header("--- BỐ CỤC BÀN ĂN (TẦNG 3) ---")]
     [Tooltip("Danh sách tất cả các mảnh đồ ăn có trên bàn lúc bắt đầu")]
@@ -95,4 +99,51 @@ public class LevelData : ScriptableObject
         // }
         
     }
+    #if UNITY_EDITOR
+    [ContextMenu("Import JSON to SO")]
+    public void LoadLevelFromJSON()
+    {
+        // 1. Tìm đường dẫn file JSON cùng tên với SO
+        string path = AssetDatabase.GetAssetPath(this).Replace(".asset", ".json");
+        if (!File.Exists(path)) {
+            Debug.LogError($"[Strong Studio] Không tìm thấy file: {path}");
+            return;
+        }
+
+        string jsonText = File.ReadAllText(path);
+        
+        // 2. Nạp các thông số cơ bản (int, float, bool)
+        JsonUtility.FromJsonOverwrite(jsonText, this);
+
+        // 3. Xử lý đặc biệt cho FoodAsset (Mapping ID -> ScriptableObject)
+        // Lưu ý: Anh cần một Database hoặc Resources folder chứa các FoodData
+        // foreach (var item in boardItems)
+        // {
+        //     // Giả sử anh đặt tên FoodData SO là "Food_1", "Food_2"...
+        //     string assetName = $"Food_{item.foodID}"; 
+        //     item.foodAsset = Resources.Load<FoodData>($"DataFoods/{assetName}");
+        // }
+
+        // 3. Mapping FoodAsset từ thư mục cụ thể của anh
+    string folderPath = "Assets/Scripts/Data/DataFoods"; // Đường dẫn anh vừa cung cấp
+
+    foreach (var item in boardItems)
+    {
+        // Giả sử file của anh tên là Food_1.asset, Food_2.asset...
+        string assetPath = $"{folderPath}/Food_{item.foodID}.asset";
+        
+        item.foodAsset = AssetDatabase.LoadAssetAtPath<FoodData>(assetPath);
+
+        if (item.foodAsset == null)
+        {
+            Debug.LogWarning($"[Lỗi] Không tìm thấy: {assetPath}. Kiểm tra lại ID: {item.foodID}");
+        }
+    }
+
+
+        EditorUtility.SetDirty(this);
+        AssetDatabase.SaveAssets();
+        Debug.Log($">> [CTO Check] Level {levelId} nạp thành công từ JSON!");
+    }
+    #endif
 }

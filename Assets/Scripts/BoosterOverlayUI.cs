@@ -18,12 +18,12 @@ public class BoosterOverlayUI : MonoBehaviour
     // Lưu Action vào biến class để tránh tạo rác Closure (Lambda)
     private Action currentOnCompleteAction;
 
-    private void Awake()
-    {
-        // Tối ưu 1: Ép TextMeshPro luôn hiển thị chữ IN HOA ở cấp độ render.
-        // Cài đặt này chỉ gọi 1 lần khi khởi tạo.
-        boosterNameText.fontStyle = FontStyles.UpperCase;
-    }
+    // private void Awake()
+    // {
+    //     // Tối ưu 1: Ép TextMeshPro luôn hiển thị chữ IN HOA ở cấp độ render.
+    //     // Cài đặt này chỉ gọi 1 lần khi khởi tạo.
+    //     boosterNameText.fontStyle = FontStyles.UpperCase;
+    // }
 
     public void PlayBoosterAnim(string name, Sprite icon, Action onCompleteAction)
     {

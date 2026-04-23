@@ -5,24 +5,6 @@ using System;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using GoogleMobileAds.Common;
-// if (isAds) //xem quang cao màn win
-//     {
-//         bool hasInternet = Utilities.CheckNetWork();
-
-//         if (!hasInternet)
-//         {
-//             Toast.Instance.ShowToast("Network error. Please check again");
-//             return;
-//         }
-//         ShowLoading();
-//         MobileMonetizationPro_AdmobAdsInitializer.instance.SetRewardItem("Coins");
-//         // AdsManager.Instance.ShowRewardedCoinAd();
-//         MobileMonetizationPro_AdmobAdsInitializer.instance.ShowRewardedAd(Scenes.GameScene);
-//     }
-//     else
-//     {
-//         coinEffectManager.RewardCoins(isAds);
-//     }
 namespace MobileMonetizationApp
 {
     public class AdmobAdsManager : MonoBehaviour
@@ -134,7 +116,7 @@ namespace MobileMonetizationApp
         string nativeId;
         string appopenId;
         string rewardedinterstitalId;
-        string nativeoverlayID;
+
         //string rewardedinterstitalId;
 
         [Header("Ads Settings")]
@@ -258,14 +240,15 @@ namespace MobileMonetizationApp
         {
             if (UseGDPRConsent == false)
             {
+                
                 InitializeAndLoadAds();
                 SceneManager.sceneLoaded += OnSceneLoaded;
             }
 
-            if (IsInitializationCompleted == true)
-            {
-                SceneManager.sceneLoaded += OnSceneLoaded;
-            }
+            // if (IsInitializationCompleted == true)
+            // {
+            //     SceneManager.sceneLoaded += OnSceneLoaded;
+            // }
         }
         public void InitializeAndLoadAds()
         {
@@ -273,8 +256,9 @@ namespace MobileMonetizationApp
             MobileAds.Initialize(initStatus =>
             {
                 IsInitializationCompleted = true;
-                if (ShowBannerAdsInStart == true && EnableBannerAds == true)
+                if (EnableBannerAds == true)
                 {
+                    
                     LoadBanner();
                 }
 
@@ -290,7 +274,7 @@ namespace MobileMonetizationApp
                     LoadRewarded();
                 }
 
-                //RequestNativeAd();
+
 
                 if (EnableRewardedInterstitialAds == true)
                 {
@@ -322,10 +306,19 @@ namespace MobileMonetizationApp
         {
             if (IsInitializationCompleted == true)
             {
-                //if (IsBannerStartShowing == true || ShowBannerAdsInStart == true)
-                //{
+                // if (IsBannerStartShowing == true || ShowBannerAdsInStart == true)
+                // {
+                //     Debug.Log("LoadBanner 12");
                 //    LoadBanner();
-                //}
+                // }
+
+                // Ưu tiên gọi thẳng LoadBanner để refresh quảng cáo mới cho scene mới
+                if (EnableBannerAds && (IsBannerStartShowing || ShowBannerAdsInStart))
+                {
+                    Debug.Log("Scene Loaded - Reloading Banner");
+                    LoadBanner(); 
+                }
+
                 if (EnableInterstitialAds == true)
                 {
                     LoadInterstitial();
@@ -457,32 +450,7 @@ namespace MobileMonetizationApp
                 LoadAppOpenAd();
             };
         }
-        // private void Update()
-        // {
-        //     if (PlayerPrefs.GetInt("AdsRemovedSuccessfully") == 0 && EnableInterstitialAds == true)
-        //     {
-        //         if (Timer >= InterstitialAdIntervalSeconds)
-        //         {
-        //             Timer = 0;
-        //             IsInterstitialAdTimerCompleted = true;
-        //         }
-        //         else
-        //         {
-        //             if (EnableTimedInterstitalAds == true)
-        //             {
-        //                 Timer += Time.deltaTime;
-        //                 if (GameData.AdsRemoved)
-        //                 {
-        //                     if (PlayerPrefs.GetInt("AdsRemovedSuccessfully") == 0)
-        //                     {
-        //                         DestroyBannerAd();
-        //                         PlayerPrefs.SetInt("AdsRemovedSuccessfully", 1);
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+  
 
 
         public void CheckForAdCompletion()
@@ -549,40 +517,57 @@ namespace MobileMonetizationApp
 
         public void LoadBanner()
         {
-            if (!GameData.AdsRemoved && IsInitializationCompleted == true)
-            {
-                if (bannerView == null || IsBannerStartShowing == false)
-                {
-                    //create a banner
-                    CreateBannerView();
+            if (!IsInitializationCompleted) return;
 
-                    //listen to banner events
-                    ListenToBannerEvents();
+            Debug.Log("Forcing Load Banner...");
 
-                    //load the banner
-                    if (bannerView == null)
-                    {
-                        CreateBannerView();
-                    }
 
-                    var adRequest = new AdRequest();
-                    adRequest.Keywords.Add("unity-admob-sample");
+            // Tạo mới hoàn toàn
+            CreateBannerView();
+            ListenToBannerEvents();
 
-                    //DebugLog.WriteLog("Loading banner Ad !!");
-                    bannerView.LoadAd(adRequest);//show the banner on the screen
-                    IsBannerStartShowing = true;
-                }
-                else
-                {
-                    bannerView.Show();
-                }
-            }
+            var adRequest = new AdRequest();
+            adRequest.Keywords.Add("unity-admob-sample");
+
+            bannerView.LoadAd(adRequest);
+            IsBannerStartShowing = true;
+
+            // if (IsInitializationCompleted == true)
+            // {
+            //     if (bannerView == null || IsBannerStartShowing == false)
+            //     {
+            //       Debug.Log("LoadBanner");
+            //         //create a banner
+            //         CreateBannerView();
+
+            //         //listen to banner events
+            //         ListenToBannerEvents();
+
+            //         // //load the banner
+            //         // if (bannerView == null)
+            //         // {
+            //         //     CreateBannerView();
+            //         // }
+
+            //         var adRequest = new AdRequest();
+            //         adRequest.Keywords.Add("unity-admob-sample");
+
+            //         //DebugLog.WriteLog("Loading banner Ad !!");
+            //         bannerView.LoadAd(adRequest);//show the banner on the screen
+            //         IsBannerStartShowing = true;
+            //     }
+            //     // else
+            //     // {
+            //     //     bannerView.Show();
+            //     // }
+            // }
         }
         public void ShowBanner()
         {
+            
             if (bannerView != null)
             {
-                //DebugLog.WriteLog("Showing banner view.");
+                Debug.Log("Showing banner view.");
                 bannerView.Show();
             }
         }
@@ -596,8 +581,8 @@ namespace MobileMonetizationApp
         }
         void CreateBannerView()
         {
-            if (!GameData.AdsRemoved)
-            {
+            // if (1==1 || !GameData.AdsRemoved)
+            // {
                 if (bannerView != null)
                 {
                     DestroyBannerAd();
@@ -643,14 +628,16 @@ namespace MobileMonetizationApp
                 }
                 else
                 {
+                    
                     bannerView = new BannerView(bannerId, BannerAdSize, ChooseBannerPosition);
                 }
-            }
+                bannerView.Hide();
+           // }
         }
         void ListenToBannerEvents()
         {
-            if (!GameData.AdsRemoved)
-            {
+            // if (1==1 || !GameData.AdsRemoved)
+            // {
                 bannerView.OnBannerAdLoaded += () =>
             {
                 // DebugLog.WriteLog("Banner view loaded an ad with response : "
@@ -689,7 +676,7 @@ namespace MobileMonetizationApp
                 {
                     // DebugLog.WriteLog("Banner view full screen content closed.");
                 };
-            }
+          //  }
         }
         public void DestroyBannerAd()
         {
@@ -706,7 +693,8 @@ namespace MobileMonetizationApp
 
         public void LoadInterstitial()
         {
-            if (!GameData.AdsRemoved && IsInitializationCompleted == true)
+            // if (!GameData.AdsRemoved && IsInitializationCompleted == true)  
+             if ( IsInitializationCompleted == true)
             {
                 if (interstitialAd != null)
                 {
@@ -733,14 +721,16 @@ namespace MobileMonetizationApp
         }
         public void ShowInterstitialAd(bool ShowInterstitialImmediately)
         {
-            if (!GameData.AdsRemoved)
-            {
+            // if (1==1 || !GameData.AdsRemoved)
+ 
                 if (ShowInterstitialImmediately == true)
                 {
                     if (interstitialAd != null && interstitialAd.CanShowAd())
                     {
                         if (AudioManager.Instance != null)
                             AudioManager.Instance.PauseAllAudioForAds();
+                        print("Intersititial show ad!!");
+                           
                         interstitialAd.Show();
                     }
                     else
@@ -778,7 +768,7 @@ namespace MobileMonetizationApp
                     }
                 }
 
-            }
+            
         }
         public void ResetInterstitialAdTimer()
         {
@@ -897,6 +887,8 @@ namespace MobileMonetizationApp
                 // CloseLoading(scenes);
 
                 ToastManager.Instance.ShowToast("Rewarded ad not ready");
+                GameManager.Instance.Win_Pnl.GetComponent<WinScreenManager>().SetbuttonDefault();
+
             }
         }
 
@@ -1147,8 +1139,7 @@ namespace MobileMonetizationApp
             }
             else if (watchFreeCoin)
             {
-                 GameData.Coins += 100;
-                 GameData.Save();
+              
                  if(GameManager.Instance!=null)
                     GameManager.Instance.Pnl_Shop.GetComponent<ShopFoodManager>().ShowRewardCoin();
                  else   if(HomeManager.Instance!=null)

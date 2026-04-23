@@ -23,8 +23,8 @@ public class BoosterManager : MonoBehaviour
     public RectTransform swapBoost;
     public RectTransform undoBoost;
     public RectTransform hammerBoost;
-     public RectTransform MagnetBoost;
-    
+    public RectTransform MagnetBoost;
+
     public static BoosterManager Instance;
     [Header("Settings")]
     private Stack<UndoStep> undoStack = new Stack<UndoStep>();
@@ -33,7 +33,7 @@ public class BoosterManager : MonoBehaviour
     public Sprite shuffleIconTo;
     public Sprite undoIconTo;
     public Sprite hammerIconTo;
-      public Sprite magnetIconTo;
+    public Sprite magnetIconTo;
     public Sprite extraSlotIconTo;
     public GameObject Pnl_Booster;
     public GameObject Pnl_Booster_Buy;
@@ -77,6 +77,10 @@ public class BoosterManager : MonoBehaviour
             {
                 itemBoost.txt_Level.text = GameData.HammerNumber.ToString();
             }
+            if (itemBoost.typeBooter == 4)
+            {
+                itemBoost.txt_Level.text = GameData.TorchNumber.ToString();
+            }
 
         }
     }
@@ -111,10 +115,20 @@ public class BoosterManager : MonoBehaviour
             Txt_Booster_Des.text = "Instantly collects dishes!";
             Pnl_Booster.SetActive(true);
         }
+        else if (typeBooster == 4) //Magnet
+        {
+            Img_Booster.sprite = magnetIconTo;
+            Img_Booster.SetNativeSize();
+            Txt_Booster_Name.text = "Blowtorch";
+            Txt_Booster_Des.text = "Break the frozen layers!";
+            Pnl_Booster.SetActive(true);
+        }
+
     }
 
     public void OpenTutorial()
     {
+         GameManager.Instance.PlayClick();
         if (this.typeBooster == 1)//Undo
         {
             TutorialManager.Instance.StartUndoTutorial();
@@ -127,6 +141,11 @@ public class BoosterManager : MonoBehaviour
         {
 
             HamerTutorial();
+        }
+        else if (this.typeBooster == 4)//Undo
+        {
+
+            MagnetTutorial();
         }
         Pnl_Booster.SetActive(false);
     }
@@ -151,6 +170,7 @@ public class BoosterManager : MonoBehaviour
 
 
     }
+
     public void HamerTutorial()
     {
         if (!GameData.HammerBoostTutorial)
@@ -158,6 +178,17 @@ public class BoosterManager : MonoBehaviour
             TutorialManager.Instance.StartBoosterFocus(hammerBoost, "Tap to Collect", 3);
             GameData.HammerBoostTutorial = true;
             GameData.Save();
+
+        }
+    }
+    public void MagnetTutorial()
+    {
+        if (!GameData.TorchBoostTutorial)
+        {
+            TutorialManager.Instance.StartBoosterFocus(MagnetBoost, "Tap to Break", 4);
+            GameData.TorchBoostTutorial = true;
+            GameData.Save();
+
         }
     }
     public void ExecuteUndo()
@@ -183,15 +214,14 @@ public class BoosterManager : MonoBehaviour
 
 
 
-        Debug.Log("undoStack " + undoStack.Count);
+        // Debug.Log("undoStack " + undoStack.Count);
 
         if (GameData.UndoNumber <= 0)
         {
             GameManager.Instance.IsProcessing = false;
             Pnl_Booster_Buy.SetActive(true);
             BoosterBuyManager boosterBuyManager = Pnl_Booster_Buy.GetComponent<BoosterBuyManager>();
-            boosterBuyManager.SetData("Undo", "Go back one step", 1800, 3, undoIconTo, 0);
-
+            boosterBuyManager.SetData("Undo", "Go back one step", GameData.untoBootPrice, 3, undoIconTo, 0);
             return;
         }
         // . Kiểm tra nếu không còn bước nào để Undo
@@ -332,9 +362,11 @@ public class BoosterManager : MonoBehaviour
             GameManager.Instance.IsProcessing = false;
             Pnl_Booster_Buy.SetActive(true);
             BoosterBuyManager boosterBuyManager = Pnl_Booster_Buy.GetComponent<BoosterBuyManager>();
-            boosterBuyManager.SetData("Swap", "Rearrange all dishes", 1900, 3, shuffleIconTo, 1);
+            boosterBuyManager.SetData("Swap", "Rearrange all dishes", GameData.shuffBootPrice, 3, shuffleIconTo, 1);
             return;
         }
+
+
         // Giả sử bạn đã kéo thả BoosterOverlayUI vào Inspector
         boosterOverlayUI.PlayBoosterAnim("Rearrange all dishes", shuffleIconTo, () =>
         {
@@ -357,7 +389,12 @@ public class BoosterManager : MonoBehaviour
             }
 
             // 2. Kiểm tra nếu không có đĩa nào thì không chạy
-            if (allActiveTiles.Count <= 1) return;
+            if (allActiveTiles.Count <= 1)
+            {
+                GameManager.Instance.IsProcessing = false;
+                return;
+            }
+
 
             ClearStack();
             // 3. Gọi hàm thực thi xáo trộn
@@ -445,7 +482,7 @@ public class BoosterManager : MonoBehaviour
             // Cập nhật Sorting Order ngay lập tức để đĩa không bay xuyên qua nhau
             tile.tray.sortingOrder = targetOrder;
             tile.icon.sortingOrder = targetOrder + 1;
-
+            tile.iconStatus.sortingOrder = targetOrder + 2;
             // Tween bay về vị trí
             shuffleSeq.Join(tile.transform.DOLocalJump(targetPos, 2.0f, 1, 0.65f)
                 .SetEase(Ease.OutQuad)
@@ -489,9 +526,10 @@ public class BoosterManager : MonoBehaviour
             GameManager.Instance.IsProcessing = false;
             Pnl_Booster_Buy.SetActive(true);
             BoosterBuyManager boosterBuyManager = Pnl_Booster_Buy.GetComponent<BoosterBuyManager>();
-            boosterBuyManager.SetData("Magnet", "Instantly collects dishes!", 1900, 3, hammerIconTo, 2);
+            boosterBuyManager.SetData("Magnet", "Instantly collects dishes!", GameData.hammerBootPrice, 3, hammerIconTo, 2);
             return;
         }
+
 
         // if (GameData.HammerBoostTutorial)
         // {
@@ -527,7 +565,7 @@ public class BoosterManager : MonoBehaviour
                 {
                     foreach (FoodPlacement foodPlacement in requiredLayouts)
                     {
-                        if (foodTile.data.foodType.Equals(foodPlacement.foodType))
+                        if (foodTile.data.foodType.Equals(foodPlacement.foodType) && foodTile.typeTrayFood==TypeTrayFood.None  )
                         {
                             foodTileTarget = foodTile;
                             break;
@@ -624,7 +662,7 @@ public class BoosterManager : MonoBehaviour
         if (undoStack != null)
         {
             undoStack.Clear();
-            Debug.Log("DA CELEAR " + undoStack.Count);
+            //            Debug.Log("DA CELEAR " + undoStack.Count);
         }
     }
 
@@ -645,15 +683,29 @@ public class BoosterManager : MonoBehaviour
 
     public void Magnet()
     {
+        if (TutorialManager.Instance != null)
+        {
+            TutorialManager.Instance.EndBoosterTutorial();
+        }
         if (GameManager.Instance.IsWinOrFail())
             return;
         GameManager.Instance.PlayClick();
-         if (itemBoosts[3].level > GameData.SavedLevelIndex)
+        if (itemBoosts[3].level > GameData.SavedLevelIndex)
         {
             GameManager.Instance.IsProcessing = false;
             ToastManager.Instance.ShowToast("Unlock Level " + (itemBoosts[3].level + 1));
             return;
         }
+
+        if (GameData.TorchNumber <= 0)
+        {
+            GameManager.Instance.IsProcessing = false;
+            Pnl_Booster_Buy.SetActive(true);
+            BoosterBuyManager boosterBuyManager = Pnl_Booster_Buy.GetComponent<BoosterBuyManager>();
+            boosterBuyManager.SetData("Blowtorch", "Break the frozen layers!", GameData.torchBootPrice, 3, magnetIconTo, 1);
+            return;
+        }
+
 
         if (!GameManager.Instance.boardCtrl.CheckFrozenTray())
         {
@@ -661,16 +713,17 @@ public class BoosterManager : MonoBehaviour
             ToastManager.Instance.ShowToast("No frozen trays!");
             return;
         }
+
         isMagnet = true;
-        Debug.Log("Chon magnet "+isMagnet );
         GameManager.Instance.Img_Hint.SetActive(true);
         GameManager.Instance.Img_Title.SetActive(true);
         GameManager.Instance.Booster.SetActive(false);
-        
+
     }
 
     public void ExecuteMagnet(FoodTile targetTile)
     {
+        GameManager.Instance.IsProcessing = true;
         int colId = targetTile.columnId;
 
         // 1. Khóa xử lý để tránh người chơi bấm đĩa khác lúc đang nổ
@@ -690,24 +743,22 @@ public class BoosterManager : MonoBehaviour
         BentoTweenHelper.DOAlphal(targetTile.iconStatus.transform, 1.0f, () =>
         {
             GameManager.Instance.Img_Hint.SetActive(false);
-             GameManager.Instance.Img_Title.SetActive(false);
+            GameManager.Instance.Img_Title.SetActive(false);
             targetTile.iconStatus.gameObject.SetActive(false);
             GameManager.Instance.torch.SetActive(false);
             GameManager.Instance.Booster.SetActive(true);
-             targetTile.isLocked=false;
-             targetTile.typeTrayFood=TypeTrayFood.None;
+            targetTile.isLocked = false;
+            targetTile.typeTrayFood = TypeTrayFood.None;
             isMagnet = false;
+            BentoTweenHelper.SafeDOColor(targetTile.tray.GetComponent<SpriteRenderer>(), Color.white, 0.2f);
+            BentoTweenHelper.SafeDOColor(targetTile.icon, Color.white, 0.2f);
             ClearStack();
+            GameData.TorchNumber -= 1;
+            GameData.Save();
             GameManager.Instance.boosterManager.LoadBooster();
+            GameManager.Instance.IsProcessing = false;
 
         });
-        // TutorialManager.Instance.EnableHameHint(false);
-        // // Rung màn hình (Haptic Feedback)
-        // Camera.main.transform.DOShakePosition(0.2f, 0.1f);
-        // GameData.HammerNumber -= 1;
-        // //  Debug.Log("<color=red>Hammer destroyed targeted tile!</color>");
-        // TutorialManager.Instance.EndBoosterTutorial();
-        // GameManager.Instance.boosterManager.LoadBooster();
 
     }
 }

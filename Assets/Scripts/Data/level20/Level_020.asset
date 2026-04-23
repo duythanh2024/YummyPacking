@@ -1,0 +1,244 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47242727038164cb88529402f3174a7e, type: 3}
+  m_Name: Level_020
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  levelId: 20
+  bufferCapacity: 3
+  sizeCamera: 13
+  difficultLevel: 1
+  orderQueue:
+  - {fileID: 11400000, guid: 2a685e4e8909a4705ba1f89bc0d13cb0, type: 2}
+  IsStack: 1
+  isColumn5: 0
+  boardItems:
+  - foodID: 2
+    foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 1
+    rowId: 0
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 1
+    isLid: 0
+    requireAd: 0
+  - foodID: 2
+    foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 1
+    rowId: 0
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 1
+    isLid: 0
+    requireAd: 0
+  - foodID: 1
+    foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 1
+    rowId: 0
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 1
+    isLid: 0
+    requireAd: 0
+  - foodID: 1
+    foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 0
+    columnId: 0
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 3
+    foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    typeTrayFood: 0
+    rowId: 0
+    columnId: 1
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 2
+    foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 0
+    columnId: 2
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 2
+    foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 1
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 1
+    foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 1
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 1
+    foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 1
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 3
+    foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    typeTrayFood: 0
+    rowId: 1
+    columnId: 0
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 2
+    foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 1
+    columnId: 1
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 3
+    foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    typeTrayFood: 0
+    rowId: 1
+    columnId: 2
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 1
+    foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 0
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 3
+    foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 4
+    foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 2
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 4
+    foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 0
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 1
+    foodAsset: {fileID: 11400000, guid: 48499a2127a2348bfb2712c47a96e826, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 1
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 4
+    foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 2
+    columnId: 2
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 2
+    foodAsset: {fileID: 11400000, guid: 2d35d64ab03be4e64a1445cf76535807, type: 2}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 1
+    layer: 0
+    customOffset: {x: 0, y: 0.15}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  - foodID: 4
+    foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
+    typeTrayFood: 0
+    rowId: 3
+    columnId: 1
+    layer: 1
+    customOffset: {x: 0, y: 0}
+    Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
+  plateDeltaOffset: {x: 8, y: -15}

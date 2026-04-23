@@ -48,8 +48,8 @@ public class Loading : MonoBehaviour
             yield return null;
         }
 
-                // 2. Xử lý Apple ATT (Chỉ hiện Popup hệ thống, không hiện màn hình mồi)
-        #if UNITY_IOS && !UNITY_EDITOR
+        // 2. Xử lý Apple ATT (Chỉ hiện Popup hệ thống, không hiện màn hình mồi)
+#if UNITY_IOS && !UNITY_EDITOR
                 // Kiểm tra trạng thái, nếu chưa xác định (NOT_DETERMINED) thì mới hiện Popup
                 if (ATTrackingStatusBinding.GetAuthorizationTrackingStatus() == ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
                 {
@@ -65,13 +65,30 @@ public class Loading : MonoBehaviour
                 }
                 
                 // Log trạng thái để bạn kiểm tra trong Xcode console
-        #endif
+#endif
 
-        // 3. Bước cuối: Vào Home
-        EnterHome();
+        if (PlayerPrefs.GetInt("First", 0) == 0)
+        {
+            PlayerPrefs.SetInt("First", 1);
+            GameData.Heart-=1;
+            GameData.Save();
+            EnterGame();
+        }
+        else
+        {
+            // 3. Bước cuối: Vào Home
+            EnterHome();
+        }
+
+
     }
 
     void EnterHome()
+    {
+        // Sử dụng LoadSceneAsync để quá trình chuyển cảnh mượt mà hơn
+        SceneManager.LoadSceneAsync("Home");
+    }
+    void EnterGame()
     {
         // Sử dụng LoadSceneAsync để quá trình chuyển cảnh mượt mà hơn
         SceneManager.LoadSceneAsync("Game");

@@ -1,0 +1,46 @@
+{
+  "levelId": 20,
+  "bufferCapacity": 3,
+  "sizeCamera": 6.0,
+  "difficultLevel": 5,
+  "IsStack": true,
+  "orderQueue": [
+    { "orderName": "Boss Wave", "trayType": "Tray_3x3", "requiredItems": [
+        { "foodID": 1, "count": 6 },
+        { "foodID": 2, "count": 6 },
+        { "foodID": 3, "count": 3 }
+      ] 
+    }
+  ],
+  "boardItems": [
+   
+    { "foodID": 2, "rowId": 0, "columnId": 0, "layer": 0, "isIce": true, "customOffset": {"x":0,"y":0.15} },
+    { "foodID": 2, "rowId": 0, "columnId": 1, "layer": 0, "isIce": true, "customOffset": {"x":0,"y":0.15} },
+    { "foodID": 1, "rowId": 0, "columnId": 2, "layer": 0, "isIce": true, "customOffset": {"x":0,"y":0.15} },
+
+    { "foodID": 1, "rowId": 0, "columnId": 0, "layer": 1, "customOffset": {"x":0,"y":0} },
+    { "foodID": 50, "rowId": 0, "columnId": 1, "layer": 1, "customOffset": {"x":0,"y":0} }, 
+    { "foodID": 2, "rowId": 0, "columnId": 2, "layer": 1, "customOffset": {"x":0,"y":0} },
+
+    { "foodID": 2, "rowId": 1, "columnId": 0, "layer": 0, "customOffset": {"x":0,"y":0.15} },
+    { "foodID": 1, "rowId": 1, "columnId": 1, "layer": 0, "customOffset": {"x":0,"y":0.15} },
+    { "foodID": 1, "rowId": 1, "columnId": 2, "layer": 0, "customOffset": {"x":0,"y":0.15} },
+
+    { "foodID": 3, "rowId": 1, "columnId": 0, "layer": 1, "customOffset": {"x":0,"y":0} },
+    { "foodID": 2, "rowId": 1, "columnId": 1, "layer": 1, "customOffset": {"x":0,"y":0} },
+    { "foodID": 3, "rowId": 1, "columnId": 2, "layer": 1, "customOffset": {"x":0,"y":0} },
+
+
+    { "foodID": 1, "rowId": 2, "columnId": 0, "layer": 0, "customOffset": {"x":0,"y":0.15} },
+    { "foodID": 3, "rowId": 2, "columnId": 1, "layer": 0, "customOffset": {"x":0,"y":0.15} },
+    { "foodID": 4, "rowId": 2, "columnId": 2, "layer": 0, "customOffset": {"x":0,"y":0.15} },
+
+    { "foodID": 4, "rowId": 2, "columnId": 0, "layer": 1, "customOffset": {"x":0,"y":0} },
+    { "foodID": 1, "rowId": 2, "columnId": 1, "layer": 1, "customOffset": {"x":0,"y":0} },
+    { "foodID": 4, "rowId": 2, "columnId": 2, "layer": 1, "customOffset": {"x":0,"y":0} },
+
+  
+    { "foodID": 2, "rowId": 3, "columnId": 1, "layer": 0, "customOffset": {"x":0,"y":0.15} },
+    { "foodID": 4, "rowId": 3, "columnId": 1, "layer": 1, "customOffset": {"x":0,"y":0} }
+  ]
+}

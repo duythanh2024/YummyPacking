@@ -15,7 +15,9 @@ MonoBehaviour:
   orderId: 1
   targetGridSize: {x: 2, y: 3}
   typeOfTray: 2
-  slotLocks: 
+  typeRewardSlot: 0
+  spriteSlot: {fileID: 0}
+  slotInTrays: 
   requiredLayout:
   - foodType: 4
     gridCoord: {x: 0, y: 0}

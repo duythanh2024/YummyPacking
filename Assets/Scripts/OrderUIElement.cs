@@ -15,7 +15,7 @@ public class OrderUIElement : MonoBehaviour
         
         List<FoodPlacement> requireds = data.requiredLayout;
 
-        Debug.Log("requireds.Count "+requireds.Count +" foodIcon "+foodIcon.Length);
+//        Debug.Log("requireds.Count "+requireds.Count +" foodIcon "+foodIcon.Length);
 
         for (int i = 0; i < requireds.Count; i++)
         {

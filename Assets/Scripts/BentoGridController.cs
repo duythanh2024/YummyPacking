@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -29,6 +30,7 @@ public class BentoGridController : MonoBehaviour
 
     private GameObject currentBentoUI;  // Khay đang nằm trên màn hình
     public TypeTray typeTray;
+    public CoinEffectManager coinEffectManager;
 
     public void InitializeGrid(int width, int height, TypeTray typeTray)
     {
@@ -69,13 +71,17 @@ public class BentoGridController : MonoBehaviour
 
     private void SpawnNewBento()
     {
-
+        TypeRewardSlot typeRewardSlot = TypeRewardSlot.None;
+        Sprite spriteSlot = null;
+        int[] slotInTrays = null;
         if (GameManager.Instance.orderCtrl.activeOrders.Count > 0)
         {
             this.gridWidth = GameManager.Instance.orderCtrl.activeOrders[0].targetGridSize.x;
             this.gridHeight = GameManager.Instance.orderCtrl.activeOrders[0].targetGridSize.y;
             this.typeTray = GameManager.Instance.orderCtrl.activeOrders[0].typeOfTray;
-
+            typeRewardSlot = GameManager.Instance.orderCtrl.activeOrders[0].typeRewardSlot;
+            spriteSlot = GameManager.Instance.orderCtrl.activeOrders[0].spriteSlot;
+            slotInTrays = GameManager.Instance.orderCtrl.activeOrders[0].slotInTrays;
         }
         // TỐI ƯU MEMORY: Chỉ cấp phát mảng mới nếu kích thước thay đổi
         if (gridCells == null || gridCells.GetLength(0) != gridWidth || gridCells.GetLength(1) != gridHeight)
@@ -96,16 +102,16 @@ public class BentoGridController : MonoBehaviour
         currentBentoUI = ObjectPooler.Instance.SpawnFromPool(tagTray, spawnPoint.position, Quaternion.identity);
         currentBentoUI.transform.SetParent(BentoPos);
 
-
-        // TrayOrder trayOrder = currentBentoUI.GetComponent<TrayOrder>();
-        // trayOrder.CurrentPoolTag = tagTray;
-        // trayOrder.SetDefault();
-
         // 2. TỐI ƯU: Dùng TryGetComponent
         if (currentBentoUI.TryGetComponent<TrayOrder>(out var trayOrder))
         {
             trayOrder.CurrentPoolTag = tagTray;
             trayOrder.SetDefault();
+            if (typeRewardSlot != TypeRewardSlot.None)
+            {
+                trayOrder.GetRewardInSlot(typeRewardSlot, spriteSlot, slotInTrays);
+            }
+
         }
 
         // Bay từ phải vào giữa
@@ -118,7 +124,40 @@ public class BentoGridController : MonoBehaviour
 
     }
 
+    public void GetRewardSlot(int indexSlot)
+    {
+        FoodSlot currentSlot = null;
+        //co slot 
+        if (currentBentoUI.TryGetComponent<TrayOrder>(out var trayOrder))
+        {
 
+            FoodSlot[] foodSlot = trayOrder.foodSlots;
+            for (int i = 0; i < foodSlot.Length; i++)
+            {
+                if (foodSlot[i].typeRewardSlot == TypeRewardSlot.Coin && i == indexSlot)
+                {
+                    currentSlot = foodSlot[i];
+                    break;
+                }
+            }
+
+            if (currentSlot != null)
+                coinEffectManager.PlayCoinAnimation(currentSlot.transform.GetChild(0).gameObject, GameManager.Instance.Img_Coins, () =>
+                {
+
+                    GameData.Coins +=20;
+                     GameData.Save();
+                    GameManager.Instance.ShowCoin();
+
+                });
+
+
+
+        }
+
+
+
+    }
     // 2. Hàm gọi khi hoàn thành 1 đơn hàng (CompleteOrder)
     public void MoveOutAndRefresh()
     {
@@ -126,8 +165,8 @@ public class BentoGridController : MonoBehaviour
 
         GameObject oldBento = currentBentoUI;
 
-      //  TrayOrder trayOrder = oldBento.GetComponent<TrayOrder>();
-       if (oldBento.TryGetComponent<TrayOrder>(out var trayOrder))
+        //  TrayOrder trayOrder = oldBento.GetComponent<TrayOrder>();
+        if (oldBento.TryGetComponent<TrayOrder>(out var trayOrder))
         {
 
             trayOrder.locks.SetActive(true);
@@ -197,7 +236,7 @@ public class BentoGridController : MonoBehaviour
 
                              SpawnNewBento();
                              GameManager.Instance.isWin = false;
-                            GameManager.Instance.boardCtrl.UpdateClickableStates();
+                             GameManager.Instance.boardCtrl.UpdateClickableStates();
                          }
                          else
                          {
@@ -207,7 +246,7 @@ public class BentoGridController : MonoBehaviour
                          }
 
                      });
-                 }).SetLink(oldBento);;
+                 }).SetLink(oldBento); ;
             });
         }
 
@@ -239,16 +278,37 @@ public class BentoGridController : MonoBehaviour
         }
         return false;
     }
-    public bool GetFixedTargetCoord(FoodTile tile, OrderData currentOrder, out Vector2 targetCoord)
+    public bool GetFixedTargetCoord(FoodTile tile, OrderData currentOrder, out Vector2 targetCoord, out int index)
     {
         targetCoord = new Vector2(-1, -1);
+        index = -1;
+        // List<FoodPlacement> requiredLayouts = currentOrder.requiredLayout;
+        // foreach (var placement in requiredLayouts)
+        // {
+        //     // Nếu loại món khớp (ví dụ: "Rice") 
+        //     // VÀ ô đó trong lưới thực tế đang trống (gridCells == 0)
+        //     if (placement.foodType == tile.data.foodType &&
+        //         gridCells[placement.gridCoord.x, placement.gridCoord.y] == 0)
+        //     {
+
+        //         targetCoord = placement.gridValues;
+
+        //         gridCells[placement.gridCoord.x, placement.gridCoord.y] = 1;
+        //         tile.gridCoordX = placement.gridCoord.x;
+        //         tile.gridCoordY = placement.gridCoord.y;
+        //         occupiedCells++;
+        //         index = requiredLayouts.IndexOf(placement);
+        //         return true;
+        //     }
+        // }
+
         List<FoodPlacement> requiredLayouts = currentOrder.requiredLayout;
-        foreach (var placement in requiredLayouts)
+
+        for (int i = 0; i < requiredLayouts.Count; i++)
         {
-            // Nếu loại món khớp (ví dụ: "Rice") 
-            // VÀ ô đó trong lưới thực tế đang trống (gridCells == 0)
+            var placement = requiredLayouts[i];
             if (placement.foodType == tile.data.foodType &&
-                gridCells[placement.gridCoord.x, placement.gridCoord.y] == 0)
+          gridCells[placement.gridCoord.x, placement.gridCoord.y] == 0)
             {
 
                 targetCoord = placement.gridValues;
@@ -257,6 +317,7 @@ public class BentoGridController : MonoBehaviour
                 tile.gridCoordX = placement.gridCoord.x;
                 tile.gridCoordY = placement.gridCoord.y;
                 occupiedCells++;
+                index = requiredLayouts.IndexOf(placement);
                 return true;
             }
         }

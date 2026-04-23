@@ -15,7 +15,7 @@ public enum TypeTrayFood
     None,
     Ice,
     Lock,
-    Hidden
+    Hidden //Nap
 }
 public enum DifficultyLevel
 {
@@ -36,12 +36,20 @@ public enum TypeTray
     Tray33,
     TrayHex
 }
+public enum TypeRewardSlot
+{
+    None,
+    Lock,
+    Coin
+}
 public static class GameData
 {
     //GIA CA
     public const int untoBootPrice = 100;
     public const int shuffBootPrice = 150;
     public const int hammerBootPrice = 500;
+   public const int torchBootPrice = 650;
+
     public const int slot1Price = 500;
     public const int slot2Price = 1000;
     public const int slot3Price = 2500;
@@ -50,7 +58,7 @@ public static class GameData
     public const int normalRewardLevel = 25; //sl order: 3,4
     public const int normalHardLevel = 50; //sl order: 5,6
     public const int veryHardLevel = 120; //sl order: 7,8,0,10
-
+    private const string KEY_TORCH_TUTORIAL = "torchBoostTutorial";
     private const string KEY_HAMER_TUTORIAL = "hammerBoostTutorial";
     private const string KEY_UNDO_TUTORIAL = "undoBoostTutorial";
     private const string KEY_SWAP_TUTORIAL = "swapBoostTutorial";
@@ -58,6 +66,7 @@ public static class GameData
     private const string KEY_UNDO = "undoNumber";
     private const string KEY_SWAP = "swapNumber";
     private const string KEY_HAMMER = "hammerNumber";
+    private const string KEY_TORCH = "torchNumber";
     private const string KEY_COIN = "coinNumber";
     private const string KEY_HEART = "heartNumber";
     private const string KEY_STAR = "starNumber";
@@ -116,7 +125,7 @@ public static class GameData
     public static int Coins
     {
         // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
-        get => PlayerPrefs.GetInt(KEY_COIN, 10000);
+        get => PlayerPrefs.GetInt(KEY_COIN, 100);
         set => PlayerPrefs.SetInt(KEY_COIN, value);
     }
     public static int Heart
@@ -134,29 +143,40 @@ public static class GameData
     public static int UndoNumber
     {
         // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
-        get => PlayerPrefs.GetInt(KEY_UNDO, 10);
+        get => PlayerPrefs.GetInt(KEY_UNDO, 2);
         set => PlayerPrefs.SetInt(KEY_UNDO, value);
     }
 
     public static int SwapNumber
     {
         // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
-        get => PlayerPrefs.GetInt(KEY_SWAP, 10);
+        get => PlayerPrefs.GetInt(KEY_SWAP, 2);
         set => PlayerPrefs.SetInt(KEY_SWAP, value);
     }
 
     public static int HammerNumber
     {
         // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
-        get => PlayerPrefs.GetInt(KEY_HAMMER, 10);
+        get => PlayerPrefs.GetInt(KEY_HAMMER, 2);
         set => PlayerPrefs.SetInt(KEY_HAMMER, value);
     }
-
+    public static int TorchNumber
+    {
+        // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
+        get => PlayerPrefs.GetInt(KEY_TORCH, 2);
+        set => PlayerPrefs.SetInt(KEY_TORCH, value);
+    }
     public static int SavedLevelIndex
     {
         // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
         get => PlayerPrefs.GetInt(KEY_LEVEL, 0);
         set => PlayerPrefs.SetInt(KEY_LEVEL, value);
+    }
+    public static bool TorchBoostTutorial
+    {
+        // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
+        get => PlayerPrefs.GetInt(KEY_TORCH_TUTORIAL, 0) == 1;
+        set => PlayerPrefs.SetInt(KEY_TORCH_TUTORIAL, value ? 1 : 0);
     }
 
     public static bool HammerBoostTutorial

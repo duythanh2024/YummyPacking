@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c357eb0814191412d9ee4e680c066700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MobileMonetizationApp.AdmobAdsManager
-  UseGDPRConsent: 1
-  EnableBannerAds: 0
+  UseGDPRConsent: 0
+  EnableBannerAds: 1
   EnableInterstitialAds: 0
   EnableRewardedAds: 1
   EnableRewardedInterstitialAds: 0
@@ -60,15 +60,15 @@ MonoBehaviour:
   IOSRewardedId: ca-app-pub-3940256099942544/1712485313
   IOSAppOpenId: ca-app-pub-3940256099942544/9257395921
   IOSRewardedInterstitialID: ca-app-pub-3940256099942544/6978759866
-  ShowBannerAdsInStart: 1
-  ChooseBannerPosition: 1
-  UseAdaptiveBannerSize: 1
+  ShowBannerAdsInStart: 0
+  ChooseBannerPosition: 0
+  UseAdaptiveBannerSize: 0
   UseCustomAdaptiveBannerWidth: 0
   CustomAdaptiveBannerWidth: 0
-  AdaptiveBannerAdSizeOptions: 2
-  EnableTimedInterstitalAds: 1
+  AdaptiveBannerAdSizeOptions: 1
+  EnableTimedInterstitalAds: 0
   InterstitialAdIntervalSeconds: 10
-  ResetInterstitalAdTimerOnRewardedAd: 1
+  ResetInterstitalAdTimerOnRewardedAd: 0
   AppOpensToCheckBeforeShowingAppOpenAd: 3
   DelayShowAppOpenAd: 2
   IsInterstitialAdTimerCompleted: 0

@@ -68,8 +68,14 @@ public class WinScreenManager : MonoBehaviour
 
         // Reset trạng thái nút
         claimX2Button.gameObject.SetActive(true);
-        BentoTweenHelper.DOPunchScale(claimX2Button.transform, Vector3.one * 0.01f, 0.4f);
-        //claimX2Button.transform.DOPunchScale(Vector3.one * 0.01f, 0.4f).SetLoops(-1);        // Hiệu ứng Fade In chuyên nghiệp
+        //BentoTweenHelper.DOPunchScale(claimX2Button.transform, Vector3.one * 0.01f, 0.4f);
+          bool hasInternet = Utilities.CheckNetWork();
+
+                // if (AdmobAdsManager.instance != null && hasInternet)
+                // {
+                //     AdmobAdsManager.instance.ShowInterstitialAd(true);
+                // }
+        claimX2Button.transform.DOPunchScale(Vector3.one * 0.01f, 0.4f).SetLoops(-1);        // Hiệu ứng Fade In chuyên nghiệp
     }
 
     // --- BƯỚC 3: XỬ LÝ CLICK NÚT ---
@@ -119,6 +125,13 @@ public class WinScreenManager : MonoBehaviour
                    // Nhận coin gấp đôi
                    ClaimCoinsAndProceed(x2Reward);
                });
+
+    }
+
+     public void SetbuttonDefault()
+    {
+        claimX2Button.interactable = true;
+        nextButton.interactable = true;
 
     }
 

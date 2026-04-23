@@ -1,5 +1,6 @@
 
 //using MobileMonetizationPro;
+using MobileMonetizationApp;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,6 +37,7 @@ public class HomeManager : Singleton<HomeManager>
         ShowInfoCoins();
         LoadScreen(1);
         AudioManager.Instance.PlayBackground(AudioManager.Instance.homeMusic);
+        
     }
     public void ShowInfoCoins()
     {
