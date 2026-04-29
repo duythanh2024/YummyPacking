@@ -1497,7 +1497,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Arena
+  m_text: Build
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4b8b7ec989b2245de9aa26364c8788a1, type: 2}
   m_sharedMaterial: {fileID: 6399581052452292954, guid: 4b8b7ec989b2245de9aa26364c8788a1, type: 2}

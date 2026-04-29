@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   levelId: 0
   bufferCapacity: 3
-  sizeCamera: 13
+  sizeCamera: 12.6
   difficultLevel: 0
   orderQueue:
   - {fileID: 11400000, guid: 2c12637f3ffc54ee9a22b52734c8c2c5, type: 2}

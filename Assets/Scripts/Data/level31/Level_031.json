@@ -1,0 +1,51 @@
+{
+  "levelId": 26,
+  "bufferCapacity": 3,
+  "sizeCamera": 7.5,
+  "difficultLevel": 3,
+  "IsStack": true,
+  "isColumn5": true,
+  "orderQueue": [
+    { "orderName": "X Wave 1", "trayType": "Tray_2x3", "requiredItems": [{ "foodID": 1, "count": 2 }, { "foodID": 2, "count": 2 }, { "foodID": 3, "count": 2 }] },
+    { "orderName": "X Wave 2", "trayType": "Tray_Hex", "requiredItems": [{ "foodID": 10, "count": 2 }, { "foodID": 1, "count": 2 }, { "foodID": 2, "count": 2 }] },
+    { "orderName": "X Wave 3", "trayType": "Tray_2x3", "requiredItems": [{ "foodID": 3, "count": 3 }, { "foodID": 10, "count": 3 }] },
+    { "orderName": "X Wave 4", "trayType": "Tray_3x3", "requiredItems": [{ "foodID": 1, "count": 3 }, { "foodID": 2, "count": 3 }, { "foodID": 10, "count": 3 }] }
+  ],
+  "boardItems": [
+
+    { "foodID": 1, "rowId": 0, "columnId": 0, "layer": 0, "customOffset": {"x":-0.15,"y":0.15}, "Finish": false },
+    { "foodID": 10, "rowId": 0, "columnId": 0, "layer": 1, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 2, "rowId": 0, "columnId": 0, "layer": 2, "customOffset": {"x":0.1,"y":-0.1}, "Finish": false },
+    { "foodID": 1, "rowId": 0, "columnId": 0, "layer": 3, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 10, "rowId": 0, "columnId": 0, "layer": 4, "customOffset": {"x":-0.1,"y":0.1}, "Finish": false },
+
+ 
+    { "foodID": 10, "rowId": 0, "columnId": 4, "layer": 0, "customOffset": {"x":0.15,"y":0.15}, "Finish": false },
+    { "foodID": 1, "rowId": 0, "columnId": 4, "layer": 1, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 2, "rowId": 0, "columnId": 4, "layer": 2, "customOffset": {"x":-0.1,"y":-0.1}, "Finish": false },
+    { "foodID": 10, "rowId": 0, "columnId": 4, "layer": 3, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 1, "rowId": 0, "columnId": 4, "layer": 4, "customOffset": {"x":0.1,"y":0.1}, "Finish": false },
+
+    { "foodID": 3, "rowId": 1, "columnId": 2, "layer": 0, "isIce": true, "customOffset": {"x":0,"y":-0.2}, "Finish": false },
+    { "foodID": 3, "rowId": 1, "columnId": 2, "layer": 1, "isIce": true, "customOffset": {"x":0,"y":-0.35}, "Finish": false },
+    { "foodID": 3, "rowId": 1, "columnId": 2, "layer": 2, "isLid": true, "customOffset": {"x":0,"y":-0.5}, "Finish": false },
+    { "foodID": 3, "rowId": 1, "columnId": 2, "layer": 3, "customOffset": {"x":0,"y":-0.65}, "Finish": false },
+    { "foodID": 3, "rowId": 1, "columnId": 2, "layer": 4, "customOffset": {"x":0,"y":-0.8}, "Finish": false },
+    { "foodID": 1, "rowId": 1, "columnId": 2, "layer": 5, "customOffset": {"x":0,"y":-0.95}, "Finish": false },
+    { "foodID": 2, "rowId": 1, "columnId": 2, "layer": 6, "customOffset": {"x":0,"y":-1.1}, "Finish": false },
+
+
+    { "foodID": 2, "rowId": 3, "columnId": 0, "layer": 0, "customOffset": {"x":-0.15,"y":-0.15}, "Finish": false },
+    { "foodID": 10, "rowId": 3, "columnId": 0, "layer": 1, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 1, "rowId": 3, "columnId": 0, "layer": 2, "customOffset": {"x":0.1,"y":0.1}, "Finish": false },
+    { "foodID": 2, "rowId": 3, "columnId": 0, "layer": 3, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 10, "rowId": 3, "columnId": 0, "layer": 4, "customOffset": {"x":-0.1,"y":-0.1}, "Finish": false },
+
+
+    { "foodID": 1, "rowId": 3, "columnId": 4, "layer": 0, "customOffset": {"x":0.15,"y":-0.15}, "Finish": false },
+    { "foodID": 2, "rowId": 3, "columnId": 4, "layer": 1, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 10, "rowId": 3, "columnId": 4, "layer": 2, "customOffset": {"x":-0.1,"y":0.1}, "Finish": false },
+    { "foodID": 1, "rowId": 3, "columnId": 4, "layer": 3, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 2, "rowId": 3, "columnId": 4, "layer": 4, "customOffset": {"x":0.1,"y":-0.1}, "Finish": false }
+  ]
+}

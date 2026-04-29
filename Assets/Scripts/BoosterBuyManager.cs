@@ -7,7 +7,8 @@ public enum BoosterType
     Undo = 0,
     Swap = 1,
     Magnet = 2,
-    Slot = 3
+    Slot = 3,
+    Torch = 4,
 }
 public class BoosterBuyManager : MonoBehaviour
 {
@@ -37,6 +38,18 @@ public class BoosterBuyManager : MonoBehaviour
 
         Img_Booster.sprite = spriteBoost;
         Img_Booster.SetNativeSize();
+        RectTransform rectTransform = Img_Booster.GetComponent<RectTransform>();
+        if (typeBuy == 4)
+        {
+            
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x - 20, rectTransform.anchoredPosition.y);
+        }
+        else
+        {
+             rectTransform.anchoredPosition = new Vector2(0, rectTransform.anchoredPosition.y);
+        }
+
+
         Img_Small_Booster.sprite = spriteBoost;
         Img_Small_Booster.SetNativeSize();
 
@@ -49,7 +62,6 @@ public class BoosterBuyManager : MonoBehaviour
     {
         AudioManager.Instance.Play("Click");
 
-        AudioManager.Instance.Play("Click");
 
         // Tối ưu 2: Early Exit - Gom logic kiểm tra tiền lên đầu, thoát sớm nếu không đủ.
         // Giúp loại bỏ hoàn toàn các khối if-else lồng nhau phức tạp.
@@ -66,6 +78,7 @@ public class BoosterBuyManager : MonoBehaviour
     private void ProcessPurchase()
     {
 
+        Debug.Log(currentType);
         GameData.Coins -= currentPrice;
 
         // Tối ưu 3: Dùng Switch-case gọn gàng và có tốc độ thực thi nhỉnh hơn if-else
@@ -79,6 +92,9 @@ public class BoosterBuyManager : MonoBehaviour
                 break;
             case BoosterType.Magnet:
                 GameData.HammerNumber += 3;
+                break;
+            case BoosterType.Torch:
+                GameData.TorchNumber += 3;
                 break;
             case BoosterType.Slot:
                 UnlockSlot();

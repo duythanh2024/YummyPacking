@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour, IInputHandler
     [Header("--- DATA ---")]
     public List<LevelData> allLevels; // Kéo tất cả các file LevelData vào list này
     public int currentLevelIndex = 0;   // Chỉ số level hiện tại (0 là Level 1)
+    private int showLevelIndex = 0;
     public FoodDatabase foodDb; // Kéo file Database vào đây
 
     [Header("--- UI REFERENCES ---")]
@@ -57,7 +58,8 @@ public class GameManager : MonoBehaviour, IInputHandler
     public GameObject torch;
     public GameObject Img_Hint;
     public GameObject Img_Title;
-    float offsetCamera=0.2f;
+    float offsetCamera = 0.2f;
+    bool isShowAds = false;
 
     private void Awake()
     {
@@ -78,11 +80,15 @@ public class GameManager : MonoBehaviour, IInputHandler
         AudioManager.Instance.PlayBackground(AudioManager.Instance.gameplayMusic);
         isWin = false;
         isFail = false;
-         SetBotom();
-        //test
-        GameData.SavedLevelIndex = currentLevelIndex;
-        GameData.Save();
+
+        // //test
+        // GameData.SavedLevelIndex = currentLevelIndex;
+        // GameData.ShowSavedLevelIndex = currentLevelIndex;
+        // GameData.Save();
+
         currentLevelIndex = GameData.SavedLevelIndex;
+        showLevelIndex = GameData.ShowSavedLevelIndex;
+
         if (currentLevelIndex >= allLevels.Count)
         {
             // Quay lại chơi một level ngẫu nhiên để giữ chân người chơi
@@ -120,45 +126,108 @@ public class GameManager : MonoBehaviour, IInputHandler
 
 
     }
-    void SetBotom()
-    {
-        bool hasInternet = Utilities.CheckNetWork();
-        RectTransform rectTransform=Booster.GetComponent<RectTransform>();
-        float aspectRatio = (float)Screen.width / Screen.height;
+    //     void SetBotom1(bool isReset = false)
+    //     {
+    //         bool hasInternet = Utilities.CheckNetWork();
+    //         RectTransform rectTransform = Booster.GetComponent<RectTransform>();
+    //         float aspectRatio = (float)Screen.width / Screen.height;
 
-        if (hasInternet)
-        {
-            AdmobAdsManager.instance.ShowBanner();
-           
-           if (aspectRatio < 0.5f) 
-            {
-                 rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 120);
-                  offsetCamera=0.2f;
-            } 
-            else if (aspectRatio >= 0.5f && aspectRatio < 0.65f) 
-            {
-                // Màn hình CHUẨN (Portrait)
-                // Ví dụ: Các dòng Android cũ, iPhone 8 trở về trước (tỷ lệ 9:16)
-                rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 100);
-            } 
-            else 
-            {
-                // Màn hình VUÔNG (Portrait)
-                // Ví dụ: iPad (tỷ lệ 3:4 ~ 0.75)
-                rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 95);
-            }
-        }
-        else
-        {
-             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 0);
-             offsetCamera=0;
-        }
-    }
+    //         Debug.Log("aspectRatio " + aspectRatio);
+    //   RectTransform canvasRect = UI_Canvas.GetComponent<RectTransform>();
+    //             float canvasHeight = canvasRect.rect.height;
+    //             RectTransform bgRect = Img_Booster.GetComponent<RectTransform>();
+    //             float originalHeight = 150;
+    //         if (isReset)
+    //         {
+    //             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 0);
+    //             offsetCamera = 0;
+
+    //             return;
+    //         }
+
+
+
+    //         if (hasInternet)
+    //         {
+    //             AdmobAdsManager.instance.ShowBanner();
+    //             isShowAds = true;
+
+
+    //             // if (aspectRatio <= 0.47f)
+    //             // {
+    //             //     // NHÓM 1: Siêu dài (iPhone 13, 14, 15, 16 - tỷ lệ ~9:19.5)
+    //             //     // Cần Safe Area cực kỳ nghiêm ngặt vì Notch/Dynamic Island rất sâu.
+    //             //     rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 120);
+    //             //     offsetCamera = 0.2f;
+    //             //     Debug.Log("Màn hình Siêu Dài (< 9:19)");
+    //             // }
+    //             // else if (aspectRatio > 0.47f && aspectRatio <= 0.51f)
+    //             // {
+    //             //     rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 120);
+    //             //     offsetCamera = 0.2f;
+    //             //     // NHÓM 2: Màn hình của bạn (9:18 - 9:18.5)
+    //             //     // Đây là các máy Android tràn viền đời đầu.
+    //             //     // Ít khi bị Notch che, nhưng diện tích dọc bắt đầu dư dả cho game Word.
+    //             //     Debug.Log("Màn hình 9:18: Tỷ lệ lý tưởng để hiện Banner AdMob mà không lo lấn sân game.");
+    //             // }
+    //             // else if (aspectRatio > 0.51f && aspectRatio <= 0.60f)
+    //             // {
+    //             //     rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 100);
+    //             //     offsetCamera = 0.2f;
+    //             //     Debug.Log("Màn hình 9:16: Tỷ lệ lý tưởng để hiện Banner AdMob mà không lo lấn sân game.");
+    //             // }
+    //             // else
+    //             // {
+    //             //     // NHÓM 4: Màn hình vuông (iPad/Tablet - 3:4 hoặc 2:3)
+    //             //     Debug.Log("Màn hình Tablet: Cần co lại (padding) hai bên để chữ không bị sát mép.");
+    //             //     rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, 95);
+    //             //     offsetCamera = 0.2f;
+    //             // }
+    //             //    float safeY = Screen.height * 0.1f;
+
+    //             // // Chuyển đổi tọa độ màn hình về tọa độ Canvas
+    //             // float canvasHeight = GetComponentInParent<Canvas>().GetComponent<RectTransform>().rect.height;
+    //             // float yOffset = (safeY / Screen.height) * canvasHeight;
+
+    //             // rectTransform.anchoredPosition = new Vector2(0, yOffset);
+
+    //             // 1. Lấy chiều cao của Canvas
+
+    //             // 2. Tính toán tỉ lệ Banner (50dp) so với chiều cao màn hình thực tế
+    //             // Sau đó nhân với chiều cao Canvas để ra con số tương ứng trong Unity Editor
+    //             float bannerHeightInCanvas = (50f * (Screen.dpi / 160f) / Screen.height) * canvasHeight;
+
+    //             // 3. Nếu DPI lỗi hoặc ra con số quá nhỏ/lớn, dùng mốc an toàn (thường là 10% chiều cao)
+    //             if (Screen.dpi <= 0 || bannerHeightInCanvas > canvasHeight * 0.2f)
+    //             {
+    //                 bannerHeightInCanvas = canvasHeight * 0.1f;
+    //             }
+
+    //             rectTransform.anchoredPosition = new Vector2(0, bannerHeightInCanvas + 5);
+
+    //             float adOffset = 180f; 
+
+    //         // Tăng chiều cao của nền gỗ. 
+    //         // Do Pivot Y = 0, đáy sẽ giữ nguyên, đỉnh sẽ mọc cao lên thêm 180 units.
+    //         bgRect.sizeDelta = new Vector2(bgRect.sizeDelta.x, originalHeight + adOffset);
+    //             offsetCamera = 0.2f;
+    //         }
+    //         else
+    //         {
+
+
+    //             float safeAreaBottomInCanvas = (Screen.safeArea.y / Screen.height) * canvasHeight;
+    //             rectTransform.anchoredPosition = new Vector2(0, safeAreaBottomInCanvas + 10f);
+    //             bgRect.sizeDelta = new Vector2(bgRect.sizeDelta.x, originalHeight);
+    //             offsetCamera = 0;
+    //         }
+    //     }
 
     public void InitializeLevel(int index)
     {
         selectedTile = null;
         Booster.SetActive(true);
+
         GameData.SortLayer = 700;
         GameData.Save();
         Txt_Complete.gameObject.SetActive(false);
@@ -168,7 +237,7 @@ public class GameManager : MonoBehaviour, IInputHandler
             //   Debug.LogError("Danh sách LevelData trống hoặc Index vượt quá giới hạn!");
             return;
         }
-        Txt_Levels.text = "Level " + (currentLevelIndex + 1).ToString();
+        Txt_Levels.text = "Level " + (showLevelIndex + 1).ToString();
 
         LevelData currentData = allLevels[index];
 
@@ -199,7 +268,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         IsStack = currentData.IsStack;
 
 
-        Camera.main.orthographicSize = currentData.sizeCamera+offsetCamera;
+        Camera.main.orthographicSize = currentData.sizeCamera + offsetCamera;
 
         // 4. Sinh ra bàn Mahjong (Tầng 3)
         boardCtrl.ResizeBoard(currentData.isColumn5);
@@ -209,20 +278,42 @@ public class GameManager : MonoBehaviour, IInputHandler
         boardCtrl.CaptureBoardDNA();
         boosterManager.ClearStack();
 
+
+
         //        Debug.Log($"<color=green>🎮 LEVEL {index + 1} LOADED SUCCESSFULLY</color>");
         //TutorialManager
         if (currentLevelIndex == 0)
         {
+            if (isShowAds)
+            {
+                AdmobAdsManager.instance.HideBanner();
+                isShowAds = false;
+                // SetBotom(true);
+            }
+
             TutorialManager.Instance.StartLevel1Tutorial();
 
         }
         else if (currentLevelIndex == 2 && !GameData.UndoBoostTutorial) //undo
         {
+            if (isShowAds)
+            {
+                AdmobAdsManager.instance.HideBanner();
+                isShowAds = false;
+                // SetBotom(true);
+            }
+
             boosterManager.ShowBoosterDes(1);
             // TutorialManager.Instance.StartUndoTutorial();
         }
         else if (currentLevelIndex == 4 && !GameData.SwapBoostTutorial)
         {
+            if (isShowAds)
+            {
+                AdmobAdsManager.instance.HideBanner();
+                isShowAds = false;
+                // SetBotom(true);
+            }
 
             boosterManager.ShowBoosterDes(2);
 
@@ -230,17 +321,42 @@ public class GameManager : MonoBehaviour, IInputHandler
         else if (currentLevelIndex == 11 && !GameData.HammerBoostTutorial)
         {
 
+            if (isShowAds)
+            {
+                AdmobAdsManager.instance.HideBanner();
+                isShowAds = false;
+                // SetBotom(true);
+            }
+
             boosterManager.ShowBoosterDes(3);
 
         }
         else if (currentLevelIndex == 15 && !GameData.TorchBoostTutorial)
         {
 
+            if (isShowAds)
+            {
+                AdmobAdsManager.instance.HideBanner();
+                isShowAds = false;
+                // SetBotom(true);
+            }
+
             boosterManager.ShowBoosterDes(4);
 
         }
 
 
+
+    }
+
+    void HiddenAds()
+    {
+        if (isShowAds)
+        {
+            AdmobAdsManager.instance.HideBanner();
+            isShowAds = false;
+            // SetBotom(true);
+        }
     }
 
     public void ShowCoin()
@@ -489,6 +605,7 @@ public class GameManager : MonoBehaviour, IInputHandler
         isFail = false;
         // 1. Tăng chỉ số level
         currentLevelIndex++;
+        showLevelIndex++;
 
         // 2. Kiểm tra nếu đã chơi hết danh sách level (Tránh bị Apple Reject vì hết content)
         if (currentLevelIndex >= allLevels.Count)
@@ -500,6 +617,9 @@ public class GameManager : MonoBehaviour, IInputHandler
 
         // 3. Lưu tiến trình vào máy (Để tắt game mở lại vẫn ở level đó)
         GameData.SavedLevelIndex++;
+        GameData.Save();
+
+        GameData.ShowSavedLevelIndex++;
         GameData.Save();
 
         // 4. Gọi hàm khởi tạo lại toàn bộ bàn chơi
@@ -675,7 +795,7 @@ public class GameManager : MonoBehaviour, IInputHandler
 
                         if (isWin)
                         {
-                            Debug.Log("Kiem tra " + IsStack);
+                         //   Debug.Log("Kiem tra " + IsStack);
                             GameManager.Instance.boardCtrl.SetLockTiles();
                         }
                         else
@@ -1000,6 +1120,7 @@ public class GameManager : MonoBehaviour, IInputHandler
 
         yield return new WaitForSeconds(1.5f);
         Booster.SetActive(false);
+        HiddenAds();
         Win_Pnl.gameObject.SetActive(true);
         catAnimator.Play("Idle");
         GameData.Stars += 1;
@@ -1074,9 +1195,13 @@ public class GameManager : MonoBehaviour, IInputHandler
             }
             if (boosterManager.isMagnet)
             {
-                Debug.Log("Đã click vào Tile!");
+
                 if (selectedTile.typeTrayFood != TypeTrayFood.Ice)
                     return;
+
+                if (selectedTile.typeTrayFood == TypeTrayFood.Ice && !selectedTile.isClickable)
+                    return;
+
                 boosterManager.ExecuteMagnet(selectedTile);
                 return; // Thoát hàm, không chạy logic nhặt đĩa bên dưới
             }
@@ -1318,6 +1443,14 @@ public class GameManager : MonoBehaviour, IInputHandler
             return;
         AudioManager.Instance.Play("Click");
         Pnl_Shop.SetActive(display);
+        // if (display)
+        // {
+        //      AdmobAdsManager.instance.ShowBanner();
+        // }
+        // else
+        // {
+        //      AdmobAdsManager.instance.HideBanner();
+        // }
     }
 
     public void RestartGame()
@@ -1360,7 +1493,7 @@ public class GameManager : MonoBehaviour, IInputHandler
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            GameData.Coins = 5000;
+            GameData.Coins = 15000;
             GameData.Save();
             // GameManager.Instance.boardCtrl.SetLockTiles();
 

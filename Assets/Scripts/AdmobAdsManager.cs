@@ -20,7 +20,27 @@ namespace MobileMonetizationApp
         public bool EnableRewardedInterstitialAds = true;
         public bool EnableAppOpenAds = true;
 
+        [Header("Ad unit Id's For Android")]
+        [Tooltip("Android AdMob Banner Ad Unit ID.")]
+        private string AndroidBannerId = "ca-app-pub-3940256099942544/6300978111";
+
+        [Tooltip("Android AdMob Interstitial Ad Unit ID.")]
+        public string AndroidInterstitalId = "ca-app-pub-3940256099942544/1033173712";
+
+        [Tooltip("Android AdMob Rewarded Video Ad Unit ID.")]
+        public string AndroidRewardedId = "ca-app-pub-3940256099942544/5224354917";
+
+        //[Tooltip("Android AdMob Native Ad Unit ID.")]
+        //public string AndroidNativeId = "ca-app-pub-3940256099942544/2247696110";
+
+        [Tooltip("Android AdMob App Open Ad Unit ID.")]
+        private string AndroidAppOpenId = "ca-app-pub-3940256099942544/9257395921";
+
+        [Tooltip("Android AdMob Rewarded Interstitial Ad Unit ID.")]
+        private string AndroidRewardedInterstitialID = "ca-app-pub-3940256099942544/5354046379";
+        // #region  Test Android
         // [Header("Ad unit Id's For Android")]
+        // //  ID ANDROID ca-app-pub-3940256099942544~3347511713
         // [Tooltip("Android AdMob Banner Ad Unit ID.")]
         // public string AndroidBannerId = "ca-app-pub-3940256099942544/6300978111";
 
@@ -38,31 +58,33 @@ namespace MobileMonetizationApp
 
         // [Tooltip("Android AdMob Rewarded Interstitial Ad Unit ID.")]
         // public string AndroidRewardedInterstitialID = "ca-app-pub-3940256099942544/5354046379";
-        #region  Test Android
-        [Header("Ad unit Id's For Android")]
-        //  ID ANDROID ca-app-pub-3940256099942544~3347511713
-        [Tooltip("Android AdMob Banner Ad Unit ID.")]
-        public string AndroidBannerId = "ca-app-pub-3940256099942544/6300978111";
-
-        [Tooltip("Android AdMob Interstitial Ad Unit ID.")]
-        public string AndroidInterstitalId = "ca-app-pub-3940256099942544/1033173712";
-
-        [Tooltip("Android AdMob Rewarded Video Ad Unit ID.")]
-        public string AndroidRewardedId = "ca-app-pub-3940256099942544/5224354917";
-
-        //[Tooltip("Android AdMob Native Ad Unit ID.")]
-        //public string AndroidNativeId = "ca-app-pub-3940256099942544/2247696110";
-
-        [Tooltip("Android AdMob App Open Ad Unit ID.")]
-        public string AndroidAppOpenId = "ca-app-pub-3940256099942544/9257395921";
-
-        [Tooltip("Android AdMob Rewarded Interstitial Ad Unit ID.")]
-        public string AndroidRewardedInterstitialID = "ca-app-pub-3940256099942544/5354046379";
-        #endregion
+        // #endregion
 
         //public string AndroidNativeOverlayID = "ca-app-pub-3940256099942544/5354046379";
 
+         [Header("Ad unit Id's For iOS")]
+         private string IOSBannerId = "ca-app-pub-3940256099942544/2934735716";
+
+        [Tooltip("iOS AdMob Interstitial Ad Unit ID.")]
+        public string IOSInterstitalId = "ca-app-pub-3940256099942544/44114689102";
+
+        [Tooltip("iOS AdMob Rewarded Video Ad Unit ID.")]
+        public string IOSRewardedId = "ca-app-pub-3940256099942544/1712485313";
+
+        //[Tooltip("iOS AdMob Native Ad Unit ID.")]
+        //public string IOSNativeId = "ca-app-pub-3940256099942544/3986624511";
+
+        [Tooltip("iOS AdMob App Open Ad Unit ID.")]
+        private string IOSAppOpenId = "ca-app-pub-3940256099942544/9257395921";
+
+        [Tooltip("iOS AdMob Rewarded Interstitial Ad Unit ID.")]
+        private string IOSRewardedInterstitialID = "ca-app-pub-3940256099942544/6978759866";
+
+        private string IOSNativeOverlayID = "ca-app-pub-3940256099942544/5354046379";
+
+        // #region  Test IOS
         // [Header("Ad unit Id's For iOS")]
+        // //// ID IOS ca-app-pub-3940256099942544~1458002511
         // public string IOSBannerId = "ca-app-pub-3940256099942544/2934735716";
 
         // [Tooltip("iOS AdMob Interstitial Ad Unit ID.")]
@@ -80,29 +102,7 @@ namespace MobileMonetizationApp
         // [Tooltip("iOS AdMob Rewarded Interstitial Ad Unit ID.")]
         // public string IOSRewardedInterstitialID = "ca-app-pub-3940256099942544/6978759866";
 
-        //public string IOSNativeOverlayID = "ca-app-pub-3940256099942544/5354046379";
-
-        #region  Test IOS
-        [Header("Ad unit Id's For iOS")]
-        //// ID IOS ca-app-pub-3940256099942544~1458002511
-        public string IOSBannerId = "ca-app-pub-3940256099942544/2934735716";
-
-        [Tooltip("iOS AdMob Interstitial Ad Unit ID.")]
-        public string IOSInterstitalId = "ca-app-pub-3940256099942544/44114689102";
-
-        [Tooltip("iOS AdMob Rewarded Video Ad Unit ID.")]
-        public string IOSRewardedId = "ca-app-pub-3940256099942544/1712485313";
-
-        //[Tooltip("iOS AdMob Native Ad Unit ID.")]
-        //public string IOSNativeId = "ca-app-pub-3940256099942544/3986624511";
-
-        [Tooltip("iOS AdMob App Open Ad Unit ID.")]
-        public string IOSAppOpenId = "ca-app-pub-3940256099942544/9257395921";
-
-        [Tooltip("iOS AdMob Rewarded Interstitial Ad Unit ID.")]
-        public string IOSRewardedInterstitialID = "ca-app-pub-3940256099942544/6978759866";
-
-        #endregion
+        // #endregion
 
         private NativeOverlayAd _nativeOverlayAd;
 
@@ -217,30 +217,30 @@ namespace MobileMonetizationApp
             }
 
 
-#if UNITY_ANDROID
-            bannerId = AndroidBannerId;
-            interId = AndroidInterstitalId;
-            rewardedId = AndroidRewardedId;
-            //nativeId = AndroidNativeId;
-            appopenId = AndroidAppOpenId;
-            rewardedinterstitalId = AndroidRewardedInterstitialID;
-            //nativeoverlayID = AndroidNativeOverlayID;
-            //rewardedinterstitalId = AndroidRewardedInterstitalId;
-#elif UNITY_IPHONE
-            bannerId = IOSBannerId;
-            interId = IOSInterstitalId;
-            rewardedId = IOSRewardedId;
-            //nativeId = IOSNativeId;
-            appopenId = IOSAppOpenId;
-            rewardedinterstitalId = IOSRewardedInterstitialID;
-            //nativeoverlayID = IOSNativeOverlayID;
-#endif
+// #if UNITY_ANDROID
+//             bannerId = AndroidBannerId;
+//             interId = AndroidInterstitalId;
+//             rewardedId = AndroidRewardedId;
+//             //nativeId = AndroidNativeId;
+//             appopenId = AndroidAppOpenId;
+//             rewardedinterstitalId = AndroidRewardedInterstitialID;
+//             //nativeoverlayID = AndroidNativeOverlayID;
+//             //rewardedinterstitalId = AndroidRewardedInterstitalId;
+// #elif UNITY_IPHONE
+//             bannerId = IOSBannerId;
+//             interId = IOSInterstitalId;
+//             rewardedId = IOSRewardedId;
+//             //nativeId = IOSNativeId;
+//             appopenId = IOSAppOpenId;
+//             rewardedinterstitalId = IOSRewardedInterstitialID;
+//             //nativeoverlayID = IOSNativeOverlayID;
+// #endif
         }
         void Start()
         {
             if (UseGDPRConsent == false)
             {
-                
+
                 InitializeAndLoadAds();
                 SceneManager.sceneLoaded += OnSceneLoaded;
             }
@@ -255,50 +255,56 @@ namespace MobileMonetizationApp
             //MobileAds.RaiseAdEventsOnUnityMainThread = true;
             MobileAds.Initialize(initStatus =>
             {
-                IsInitializationCompleted = true;
-                if (EnableBannerAds == true)
+                // Sử dụng EventExecutor để đảm bảo việc Load Ads chạy đúng luồng
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
                 {
-                    
-                    LoadBanner();
-                }
+                    IsInitializationCompleted = true;
 
-
-
-                if (EnableInterstitialAds == true)
-                {
-                    LoadInterstitial();
-                }
-
-                if (EnableRewardedAds == true)
-                {
-                    LoadRewarded();
-                }
-
-
-
-                if (EnableRewardedInterstitialAds == true)
-                {
-                    LoadRewardedInterstitialAd();
-                }
-
-                if (EnableAppOpenAds == true)
-                {
-                    LoadAppOpenAd();
-                    if (PlayerPrefs.GetInt("Admob_IsAppOpened") == 0)
+                    if (EnableBannerAds == true)
                     {
-                        openCount = PlayerPrefs.GetInt("AdmobAd_AppOpenCount", 0);
-                        openCount++;
-                        PlayerPrefs.SetInt("AdmobAd_AppOpenCount", openCount);
-                        PlayerPrefs.Save();
-                        PlayerPrefs.SetInt("Admob_IsAppOpened", 1);
+
+                        LoadBanner();
                     }
-                    if (openCount >= AppOpensToCheckBeforeShowingAppOpenAd)
+
+
+
+                    if (EnableInterstitialAds == true)
                     {
-                        StartCoroutine(ShowAppOpenAdWithDelay());
-                        PlayerPrefs.SetInt("AdmobAd_AppOpenCount", 0);
-                        openCount = PlayerPrefs.GetInt("AdmobAd_AppOpenCount", 0);
+                        LoadInterstitial();
                     }
-                }
+
+                    if (EnableRewardedAds == true)
+                    {
+                        LoadRewarded();
+                    }
+
+
+
+                    if (EnableRewardedInterstitialAds == true)
+                    {
+                        LoadRewardedInterstitialAd();
+                    }
+
+                    if (EnableAppOpenAds == true)
+                    {
+                        LoadAppOpenAd();
+                        if (PlayerPrefs.GetInt("Admob_IsAppOpened") == 0)
+                        {
+                            openCount = PlayerPrefs.GetInt("AdmobAd_AppOpenCount", 0);
+                            openCount++;
+                            PlayerPrefs.SetInt("AdmobAd_AppOpenCount", openCount);
+                            PlayerPrefs.Save();
+                            PlayerPrefs.SetInt("Admob_IsAppOpened", 1);
+                        }
+                        if (openCount >= AppOpensToCheckBeforeShowingAppOpenAd)
+                        {
+                            StartCoroutine(ShowAppOpenAdWithDelay());
+                            PlayerPrefs.SetInt("AdmobAd_AppOpenCount", 0);
+                            openCount = PlayerPrefs.GetInt("AdmobAd_AppOpenCount", 0);
+                        }
+                    }
+
+                });
 
             });
         }
@@ -316,7 +322,7 @@ namespace MobileMonetizationApp
                 if (EnableBannerAds && (IsBannerStartShowing || ShowBannerAdsInStart))
                 {
                     Debug.Log("Scene Loaded - Reloading Banner");
-                    LoadBanner(); 
+                    LoadBanner();
                 }
 
                 if (EnableInterstitialAds == true)
@@ -450,7 +456,7 @@ namespace MobileMonetizationApp
                 LoadAppOpenAd();
             };
         }
-  
+
 
 
         public void CheckForAdCompletion()
@@ -564,7 +570,7 @@ namespace MobileMonetizationApp
         }
         public void ShowBanner()
         {
-            
+
             if (bannerView != null)
             {
                 Debug.Log("Showing banner view.");
@@ -583,100 +589,100 @@ namespace MobileMonetizationApp
         {
             // if (1==1 || !GameData.AdsRemoved)
             // {
-                if (bannerView != null)
+            if (bannerView != null)
+            {
+                DestroyBannerAd();
+            }
+            if (UseAdaptiveBannerSize == true)
+            {
+                if (AdaptiveBannerAdSizeOptions == AdaptiveBannerAdSizeOptionsEnum.LandscapeAndPortrait)
                 {
-                    DestroyBannerAd();
-                }
-                if (UseAdaptiveBannerSize == true)
-                {
-                    if (AdaptiveBannerAdSizeOptions == AdaptiveBannerAdSizeOptionsEnum.LandscapeAndPortrait)
+                    if (UseCustomAdaptiveBannerWidth == false)
                     {
-                        if (UseCustomAdaptiveBannerWidth == false)
-                        {
-                            adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
-                        }
-                        else
-                        {
-                            adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(CustomAdaptiveBannerWidth);
-                        }
-                        bannerView = new BannerView(bannerId, adaptiveSize, ChooseBannerPosition);
-                    }
-                    else if (AdaptiveBannerAdSizeOptions == AdaptiveBannerAdSizeOptionsEnum.Landscape)
-                    {
-                        if (UseCustomAdaptiveBannerWidth == false)
-                        {
-                            adaptiveSize = AdSize.GetLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
-                        }
-                        else
-                        {
-                            adaptiveSize = AdSize.GetLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(CustomAdaptiveBannerWidth);
-                        }
-                        bannerView = new BannerView(bannerId, adaptiveSize, ChooseBannerPosition);
+                        adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
                     }
                     else
                     {
-                        if (UseCustomAdaptiveBannerWidth == false)
-                        {
-                            adaptiveSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
-                        }
-                        else
-                        {
-                            adaptiveSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(CustomAdaptiveBannerWidth);
-                        }
-                        bannerView = new BannerView(bannerId, adaptiveSize, ChooseBannerPosition);
+                        adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(CustomAdaptiveBannerWidth);
                     }
+                    bannerView = new BannerView(bannerId, adaptiveSize, ChooseBannerPosition);
+                }
+                else if (AdaptiveBannerAdSizeOptions == AdaptiveBannerAdSizeOptionsEnum.Landscape)
+                {
+                    if (UseCustomAdaptiveBannerWidth == false)
+                    {
+                        adaptiveSize = AdSize.GetLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+                    }
+                    else
+                    {
+                        adaptiveSize = AdSize.GetLandscapeAnchoredAdaptiveBannerAdSizeWithWidth(CustomAdaptiveBannerWidth);
+                    }
+                    bannerView = new BannerView(bannerId, adaptiveSize, ChooseBannerPosition);
                 }
                 else
                 {
-                    
-                    bannerView = new BannerView(bannerId, BannerAdSize, ChooseBannerPosition);
+                    if (UseCustomAdaptiveBannerWidth == false)
+                    {
+                        adaptiveSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+                    }
+                    else
+                    {
+                        adaptiveSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(CustomAdaptiveBannerWidth);
+                    }
+                    bannerView = new BannerView(bannerId, adaptiveSize, ChooseBannerPosition);
                 }
-                bannerView.Hide();
-           // }
+            }
+            else
+            {
+
+                bannerView = new BannerView(bannerId, BannerAdSize, ChooseBannerPosition);
+            }
+            bannerView.Hide();
+            // }
         }
         void ListenToBannerEvents()
         {
             // if (1==1 || !GameData.AdsRemoved)
             // {
-                bannerView.OnBannerAdLoaded += () =>
+            bannerView.OnBannerAdLoaded += () =>
+        {
+            // DebugLog.WriteLog("Banner view loaded an ad with response : "
+            //     + bannerView.GetResponseInfo());
+        };
+            // Raised when an ad fails to load into the banner view.
+            bannerView.OnBannerAdLoadFailed += (LoadAdError error) =>
             {
-                // DebugLog.WriteLog("Banner view loaded an ad with response : "
-                //     + bannerView.GetResponseInfo());
+                Debug.LogError("Banner view failed to load an ad with error : "
+                   + error);
             };
-                // Raised when an ad fails to load into the banner view.
-                bannerView.OnBannerAdLoadFailed += (LoadAdError error) =>
-                {
-                    Debug.LogError("Banner view failed to load an ad with error : "
-                       + error);
-                };
-                // Raised when the ad is estimated to have earned money.
-                bannerView.OnAdPaid += (AdValue adValue) =>
-                {
-                    // DebugLog.WriteLog("Banner view paid {0} {1}." +
-                    //     adValue.Value +
-                    //     adValue.CurrencyCode);
-                };
-                // Raised when an impression is recorded for an ad.
-                bannerView.OnAdImpressionRecorded += () =>
-                {
-                    //DebugLog.WriteLog("Banner view recorded an impression.");
-                };
-                // Raised when a click is recorded for an ad.
-                bannerView.OnAdClicked += () =>
-                {
-                    //   DebugLog.WriteLog("Banner view was clicked.");
-                };
-                // Raised when an ad opened full screen content.
-                bannerView.OnAdFullScreenContentOpened += () =>
-                {
-                    // DebugLog.WriteLog("Banner view full screen content opened.");
-                };
-                // Raised when the ad closed full screen content.
-                bannerView.OnAdFullScreenContentClosed += () =>
-                {
-                    // DebugLog.WriteLog("Banner view full screen content closed.");
-                };
-          //  }
+            // Raised when the ad is estimated to have earned money.
+            bannerView.OnAdPaid += (AdValue adValue) =>
+            {
+                // DebugLog.WriteLog("Banner view paid {0} {1}." +
+                //     adValue.Value +
+                //     adValue.CurrencyCode);
+            };
+            // Raised when an impression is recorded for an ad.
+            bannerView.OnAdImpressionRecorded += () =>
+            {
+                //DebugLog.WriteLog("Banner view recorded an impression.");
+            };
+            // Raised when a click is recorded for an ad.
+            bannerView.OnAdClicked += () =>
+            {
+                //   DebugLog.WriteLog("Banner view was clicked.");
+            };
+            // Raised when an ad opened full screen content.
+            bannerView.OnAdFullScreenContentOpened += () =>
+            {
+                // DebugLog.WriteLog("Banner view full screen content opened.");
+            };
+            // Raised when the ad closed full screen content.
+            bannerView.OnAdFullScreenContentClosed += () =>
+            {
+                // DebugLog.WriteLog("Banner view full screen content closed.");
+            };
+            //  }
         }
         public void DestroyBannerAd()
         {
@@ -694,7 +700,7 @@ namespace MobileMonetizationApp
         public void LoadInterstitial()
         {
             // if (!GameData.AdsRemoved && IsInitializationCompleted == true)  
-             if ( IsInitializationCompleted == true)
+            if (IsInitializationCompleted == true)
             {
                 if (interstitialAd != null)
                 {
@@ -722,15 +728,28 @@ namespace MobileMonetizationApp
         public void ShowInterstitialAd(bool ShowInterstitialImmediately)
         {
             // if (1==1 || !GameData.AdsRemoved)
- 
-                if (ShowInterstitialImmediately == true)
+
+            if (ShowInterstitialImmediately == true)
+            {
+                if (interstitialAd != null && interstitialAd.CanShowAd())
+                {
+                    if (AudioManager.Instance != null)
+                        AudioManager.Instance.PauseAllAudioForAds();
+                    print("Intersititial show ad!!");
+
+                    interstitialAd.Show();
+                }
+                else
+                {
+                    print("Intersititial ad not ready!!");
+                }
+            }
+            else
+            {
+                if (EnableTimedInterstitalAds == false)
                 {
                     if (interstitialAd != null && interstitialAd.CanShowAd())
                     {
-                        if (AudioManager.Instance != null)
-                            AudioManager.Instance.PauseAllAudioForAds();
-                        print("Intersititial show ad!!");
-                           
                         interstitialAd.Show();
                     }
                     else
@@ -740,7 +759,8 @@ namespace MobileMonetizationApp
                 }
                 else
                 {
-                    if (EnableTimedInterstitalAds == false)
+
+                    if (IsInterstitialAdTimerCompleted == true)
                     {
                         if (interstitialAd != null && interstitialAd.CanShowAd())
                         {
@@ -751,24 +771,10 @@ namespace MobileMonetizationApp
                             print("Intersititial ad not ready!!");
                         }
                     }
-                    else
-                    {
-
-                        if (IsInterstitialAdTimerCompleted == true)
-                        {
-                            if (interstitialAd != null && interstitialAd.CanShowAd())
-                            {
-                                interstitialAd.Show();
-                            }
-                            else
-                            {
-                                print("Intersititial ad not ready!!");
-                            }
-                        }
-                    }
                 }
+            }
 
-            
+
         }
         public void ResetInterstitialAdTimer()
         {
@@ -805,17 +811,33 @@ namespace MobileMonetizationApp
             // Raised when the ad closed full screen content.
             ad.OnAdFullScreenContentClosed += () =>
             {
-                //  DebugLog.WriteLog("Interstitial ad full screen content closed.");
-                if (AudioManager.Instance != null)
-                    AudioManager.Instance.ResumeAllAudioAfterAds();
-                IsAdSkipped = true;
-                CheckForAdCompletion();
+
+
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+          {
+              // Code tương tác với Object của Unity phải nằm trong khối này
+              // Nếu không Unity sẽ báo lỗi "can only be called from the main thread"
+              //  DebugLog.WriteLog("Interstitial ad full screen content closed.");
+              if (AudioManager.Instance != null)
+                  AudioManager.Instance.ResumeAllAudioAfterAds();
+              IsAdSkipped = true;
+              CheckForAdCompletion();
+          });
+
             };
             // Raised when the ad failed to open full screen content.
             ad.OnAdFullScreenContentFailed += (AdError error) =>
             {
-                if (AudioManager.Instance != null)
-                    AudioManager.Instance.ResumeAllAudioAfterAds();
+
+
+
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                    {
+                        if (AudioManager.Instance != null)
+                            AudioManager.Instance.ResumeAllAudioAfterAds();
+                    });
+
+
                 Debug.LogError("Interstitial ad failed to open full screen content " +
                               "with error : " + error);
             };
@@ -882,7 +904,7 @@ namespace MobileMonetizationApp
             }
             else
             {
-                  print("Rewarded ad not ready");
+                print("Rewarded ad not ready");
                 // GameManager.Instance.isClick = false;
                 // CloseLoading(scenes);
 
@@ -939,11 +961,12 @@ namespace MobileMonetizationApp
                 IsAdCompleted = true;
                 IsRewardedAdCompleted = true;
                 // 2. BẬT LẠI ÂM THANH KHI ĐÓNG AD
-                if (AudioManager.Instance != null)
-                    AudioManager.Instance.ResumeAllAudioAfterAds();
+
 
                 MobileAdsEventExecutor.ExecuteInUpdate(() =>
                 {
+                    if (AudioManager.Instance != null)
+                        AudioManager.Instance.ResumeAllAudioAfterAds();
                     // Code tương tác với Object của Unity phải nằm trong khối này
                     // Nếu không Unity sẽ báo lỗi "can only be called from the main thread"
                     CheckForAdCompletion();
@@ -955,9 +978,14 @@ namespace MobileMonetizationApp
             {
                 Debug.LogError("Rewarded ad failed to open full screen content " +
                               "with error : " + error);
-                // 2. BẬT LẠI ÂM THANH KHI ĐÓNG AD
-                if (AudioManager.Instance != null)
-                    AudioManager.Instance.ResumeAllAudioAfterAds();
+
+                MobileAdsEventExecutor.ExecuteInUpdate(() =>
+                {
+                    // 2. BẬT LẠI ÂM THANH KHI ĐÓNG AD
+                    if (AudioManager.Instance != null)
+                        AudioManager.Instance.ResumeAllAudioAfterAds();
+                });
+
             };
         }
 
@@ -1106,7 +1134,7 @@ namespace MobileMonetizationApp
             undo = false;
             givex2Coins = false;
             watchFreeCoin = false;
-           
+
 
             if (powerUpName == "undo")
                 undo = true;
@@ -1114,7 +1142,7 @@ namespace MobileMonetizationApp
                 givex2Coins = true;
             else if (powerUpName == "watchFreeCoin")
                 watchFreeCoin = true;
-    
+
         }
         /// <summary>
         /// Phan thuong tra ve
@@ -1134,15 +1162,15 @@ namespace MobileMonetizationApp
             }
             else if (givex2Coins)
             {
-                
-                 GameManager.Instance.Win_Pnl.GetComponent<WinScreenManager>().OnRewardedAdComplete();
+
+                GameManager.Instance.Win_Pnl.GetComponent<WinScreenManager>().OnRewardedAdComplete();
             }
             else if (watchFreeCoin)
             {
-              
-                 if(GameManager.Instance!=null)
+
+                if (GameManager.Instance != null)
                     GameManager.Instance.Pnl_Shop.GetComponent<ShopFoodManager>().ShowRewardCoin();
-                 else   if(HomeManager.Instance!=null)
+                else if (HomeManager.Instance != null)
                     HomeManager.Instance.screens[0].GetComponent<ShopFoodManager>().ShowRewardCoin();
             }
             // if (!getCoinShop) //nam giao dien home thi khoong goi 

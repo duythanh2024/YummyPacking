@@ -15,7 +15,7 @@ MonoBehaviour:
   levelId: 20
   bufferCapacity: 3
   sizeCamera: 13
-  difficultLevel: 5
+  difficultLevel: 2
   orderQueue:
   - {fileID: 11400000, guid: e36d5dbc32c964b2b86b0c710c1f0951, type: 2}
   - {fileID: 11400000, guid: 115c0b2eccc104a789a6a3eec0fe789f, type: 2}

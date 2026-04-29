@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using DG.Tweening; 
+using DG.Tweening;
 using System.Collections;
 using MobileMonetizationApp;
 
 public class WinScreenManager : MonoBehaviour
 {
-    
+
     [Header("UI Components")]
     public TextMeshProUGUI coinText;
     public TextMeshProUGUI coinRewardText;
@@ -69,15 +69,35 @@ public class WinScreenManager : MonoBehaviour
         // Reset trạng thái nút
         claimX2Button.gameObject.SetActive(true);
         //BentoTweenHelper.DOPunchScale(claimX2Button.transform, Vector3.one * 0.01f, 0.4f);
-          bool hasInternet = Utilities.CheckNetWork();
+        bool hasInternet = Utilities.CheckNetWork();
 
-                // if (AdmobAdsManager.instance != null && hasInternet)
-                // {
-                //     AdmobAdsManager.instance.ShowInterstitialAd(true);
-                // }
+
         claimX2Button.transform.DOPunchScale(Vector3.one * 0.01f, 0.4f).SetLoops(-1);        // Hiệu ứng Fade In chuyên nghiệp
-    }
+        if (AdmobAdsManager.instance != null && hasInternet)
+        {
+            int levelCounter = PlayerPrefs.GetInt("InterstitialCounter", 0);
+            levelCounter++;
+            if (levelCounter >= 3)
+            {
+                PlayerPrefs.SetInt("InterstitialCounter", 0);
+                StartCoroutine(ShowAdWithDelay());
+            }
+            else
+            {
+                PlayerPrefs.SetInt("InterstitialCounter", levelCounter);
 
+
+            }
+
+        }
+    }
+// Hàm bổ trợ để tạo độ trễ
+IEnumerator ShowAdWithDelay()
+{
+    // Đợi một chút để các hiệu ứng Popup Win ổn định
+    yield return new WaitForSeconds(0.3f); 
+    AdmobAdsManager.instance.ShowInterstitialAd(true);
+}
     // --- BƯỚC 3: XỬ LÝ CLICK NÚT ---
 
     // Gắn vào ClaimX2Button
@@ -91,7 +111,7 @@ public class WinScreenManager : MonoBehaviour
         AdmobAdsManager.instance.ShowRewardedAd();
         // Nếu dùng quảng cáo thực, bạn sẽ đăng ký callback cho "UserRewarded"
         // Ở đây tôi giả định xem quảng cáo thành công ngay lập tức:
-      //  OnRewardedAdComplete();
+        //  OnRewardedAdComplete();
     }
 
     // Gắn vào NoThanksButton
@@ -128,7 +148,7 @@ public class WinScreenManager : MonoBehaviour
 
     }
 
-     public void SetbuttonDefault()
+    public void SetbuttonDefault()
     {
         claimX2Button.interactable = true;
         nextButton.interactable = true;
@@ -157,13 +177,13 @@ public class WinScreenManager : MonoBehaviour
     }
     private void OnDisable()
     {
-       // Dọn dẹp "kép" để không lọt lưới bất kỳ Tween nào
+        // Dọn dẹp "kép" để không lọt lưới bất kỳ Tween nào
 
-    // 1. Giết các DOVirtual hoặc các Tween có target được gán bằng this (như DelayedCall ở trên)
-    DOTween.Kill(this); 
+        // 1. Giết các DOVirtual hoặc các Tween có target được gán bằng this (như DelayedCall ở trên)
+        DOTween.Kill(this);
 
-    // 2. Giết các hiệu ứng vật lý, di chuyển, co giãn tác động lên Object này
-    transform.DOKill();
+        // 2. Giết các hiệu ứng vật lý, di chuyển, co giãn tác động lên Object này
+        transform.DOKill();
     }
 
 }

@@ -431,7 +431,7 @@ public class MahjongBoardController : MonoBehaviour
             {
                 if (tile != null)
                 {
-                   if(tile.typeTrayFood==TypeTrayFood.Ice)
+                   if(tile.typeTrayFood==TypeTrayFood.Ice && tile.isClickable)
                    return true;
                 }
             }

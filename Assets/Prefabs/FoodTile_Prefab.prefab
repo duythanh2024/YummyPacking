@@ -118,7 +118,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0033, y: 0.00046771765, z: 0}
-  m_LocalScale: {x: 1.0111, y: 1, z: 1}
+  m_LocalScale: {x: 0.8531662, y: 0.8438, z: 0.8438}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1261904368442043914}
@@ -172,7 +172,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 792e40e0290c34d16adf937b9eef2c2f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7f0e6aef30df4f93babec4f88a3b9c4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -383,6 +383,6 @@ MonoBehaviour:
   currentFoodSlot: {fileID: 0}
   IsClick: 0
   iconStatusTile:
-  - {fileID: 21300000, guid: 792e40e0290c34d16adf937b9eef2c2f, type: 3}
+  - {fileID: 21300000, guid: e7f0e6aef30df4f93babec4f88a3b9c4, type: 3}
   - {fileID: 21300000, guid: 9482c68aa722448a1aaa91d434187990, type: 3}
   - {fileID: 21300000, guid: 0226d0d09d4b946a68db3897cddafb6b, type: 3}

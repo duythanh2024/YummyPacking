@@ -62,6 +62,7 @@ public static class GameData
     private const string KEY_HAMER_TUTORIAL = "hammerBoostTutorial";
     private const string KEY_UNDO_TUTORIAL = "undoBoostTutorial";
     private const string KEY_SWAP_TUTORIAL = "swapBoostTutorial";
+    private const string KEY_SHOW_LEVEL = "SavedShowLevelIndex";
     private const string KEY_LEVEL = "SavedLevelIndex";
     private const string KEY_UNDO = "undoNumber";
     private const string KEY_SWAP = "swapNumber";
@@ -137,7 +138,7 @@ public static class GameData
     public static int Stars
     {
         // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
-        get => PlayerPrefs.GetInt(KEY_STAR, 5);
+        get => PlayerPrefs.GetInt(KEY_STAR, 0);
         set => PlayerPrefs.SetInt(KEY_STAR, value);
     }
     public static int UndoNumber
@@ -165,6 +166,12 @@ public static class GameData
         // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
         get => PlayerPrefs.GetInt(KEY_TORCH, 2);
         set => PlayerPrefs.SetInt(KEY_TORCH, value);
+    }
+     public static int ShowSavedLevelIndex
+    {
+        // PlayerPrefs không hỗ trợ bool, ta dùng 0 (false) và 1 (true)
+        get => PlayerPrefs.GetInt(KEY_SHOW_LEVEL, 0);
+        set => PlayerPrefs.SetInt(KEY_SHOW_LEVEL, value);
     }
     public static int SavedLevelIndex
     {

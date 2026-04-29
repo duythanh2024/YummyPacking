@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7455bddad185d44388ad62aba00749cc, type: 2}
   - {fileID: 11400000, guid: 90e11517d01854a1a9c1499d38647cab, type: 2}
   IsStack: 1
+  isColumn5: 0
   boardItems:
   - foodID: 3
     foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
@@ -30,6 +31,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: 0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 5
     foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
     typeTrayFood: 0
@@ -38,6 +42,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: -0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 6
     foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
     typeTrayFood: 0
@@ -46,6 +53,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: 0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 5
     foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
     typeTrayFood: 0
@@ -54,6 +64,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 4
     foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
     typeTrayFood: 0
@@ -62,6 +75,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 3
     foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
     typeTrayFood: 0
@@ -70,6 +86,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 5
     foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
     typeTrayFood: 0
@@ -78,6 +97,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: 0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 3
     foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
     typeTrayFood: 0
@@ -86,6 +108,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: -0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 6
     foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
     typeTrayFood: 0
@@ -94,6 +119,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: 0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 6
     foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
     typeTrayFood: 0
@@ -102,6 +130,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 5
     foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
     typeTrayFood: 0
@@ -110,6 +141,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 4
     foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
     typeTrayFood: 0
@@ -118,6 +152,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 4
     foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
     typeTrayFood: 0
@@ -126,6 +163,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: 0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 6
     foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
     typeTrayFood: 0
@@ -134,6 +174,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: -0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 5
     foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
     typeTrayFood: 0
@@ -142,6 +185,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: 0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 3
     foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
     typeTrayFood: 0
@@ -150,6 +196,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 5
     foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
     typeTrayFood: 0
@@ -158,6 +207,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 6
     foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
     typeTrayFood: 0
@@ -166,6 +218,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 5
     foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
     typeTrayFood: 0
@@ -174,6 +229,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: 0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 4
     foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
     typeTrayFood: 0
@@ -182,6 +240,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: -0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 3
     foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
     typeTrayFood: 0
@@ -190,6 +251,9 @@ MonoBehaviour:
     layer: 0
     customOffset: {x: 0.05, y: 0.05}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 6
     foodAsset: {fileID: 11400000, guid: 5947950dc8ea54067a0f67b1d477ff35, type: 2}
     typeTrayFood: 0
@@ -198,6 +262,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 5
     foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
     typeTrayFood: 0
@@ -206,6 +273,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 4
     foodAsset: {fileID: 11400000, guid: 17e9ecf32797245ed87ab4fa9c467538, type: 2}
     typeTrayFood: 0
@@ -214,6 +284,9 @@ MonoBehaviour:
     layer: 1
     customOffset: {x: 0, y: 0}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 3
     foodAsset: {fileID: 11400000, guid: 88864f5ae608f4f94b959b1e6770fa82, type: 2}
     typeTrayFood: 0
@@ -222,6 +295,9 @@ MonoBehaviour:
     layer: 2
     customOffset: {x: 0, y: -0.15}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   - foodID: 5
     foodAsset: {fileID: 11400000, guid: b7f85c9f04f3b46e09516d4714162e40, type: 2}
     typeTrayFood: 0
@@ -230,4 +306,7 @@ MonoBehaviour:
     layer: 2
     customOffset: {x: 0, y: -0.15}
     Finish: 0
+    isIce: 0
+    isLid: 0
+    requireAd: 0
   plateDeltaOffset: {x: 8, y: -15}

@@ -1,0 +1,43 @@
+{
+  "levelId":35,
+  "bufferCapacity": 3,
+  "sizeCamera": 8.0,
+  "difficultLevel": 5,
+  "IsStack": true,
+  "isColumn5": true,
+  "orderQueue": [
+    { "orderName": "Royal Mix 1 (2-2-2)", "trayType": "Tray_Hex", "requiredItems": [{ "foodID": 15, "count": 2 }, { "foodID": 1, "count": 2 }, { "foodID": 10, "count": 2 }] },
+    { "orderName": "Royal Mix 2 (2-2-2)", "trayType": "Tray_Hex", "requiredItems": [{ "foodID": 15, "count": 2 }, { "foodID": 2, "count": 2 }, { "foodID": 3, "count": 2 }] },
+    { "orderName": "FINAL COMBO (1-1-1-1-2)", "trayType": "Tray_Hex", "requiredItems": [{ "foodID": 15, "count": 1 }, { "foodID": 1, "count": 1 }, { "foodID": 2, "count": 1 }, { "foodID": 3, "count": 1 }, { "foodID": 10, "count": 2 }] }
+  ],
+  "boardItems": [
+
+    { "foodID": 15, "rowId": 0, "columnId": 0, "layer": 0, "isIce": true, "customOffset": {"x":-0.25,"y":0.25}, "Finish": false },
+    { "foodID": 1, "rowId": 0, "columnId": 0, "layer": 1, "customOffset": {"x":-0.15,"y":0.15}, "Finish": false },
+    { "foodID": 10, "rowId": 0, "columnId": 0, "layer": 2, "customOffset": {"x":0,"y":0}, "Finish": false },
+
+
+    { "foodID": 1, "rowId": 1, "columnId": 1, "layer": 0, "isLid": true, "customOffset": {"x":-0.1,"y":0.2}, "Finish": false },
+    { "foodID": 2, "rowId": 1, "columnId": 1, "layer": 1, "customOffset": {"x":0,"y":0.1}, "Finish": false },
+    { "foodID": 3, "rowId": 1, "columnId": 1, "layer": 2, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 15, "rowId": 1, "columnId": 1, "layer": 3, "customOffset": {"x":0.1,"y":-0.1}, "Finish": false },
+
+
+    { "foodID": 15, "rowId": 0, "columnId": 2, "layer": 0, "customOffset": {"x":0,"y":0.4}, "Finish": false },
+    { "foodID": 10, "rowId": 0, "columnId": 2, "layer": 1, "isLid": true, "customOffset": {"x":0,"y":0.25}, "Finish": false },
+    { "foodID": 3, "rowId": 0, "columnId": 2, "layer": 2, "isIce": true, "customOffset": {"x":0,"y":0.1}, "Finish": false },
+    { "foodID": 15, "rowId": 0, "columnId": 2, "layer": 3, "customOffset": {"x":0,"y":-0.05}, "Finish": false },
+
+
+    { "foodID": 2, "rowId": 1, "columnId": 3, "layer": 0, "isLid": true, "customOffset": {"x":0.1,"y":0.2}, "Finish": false },
+    { "foodID": 1, "rowId": 1, "columnId": 3, "layer": 1, "customOffset": {"x":0,"y":0.1}, "Finish": false },
+    { "foodID": 10, "rowId": 1, "columnId": 3, "layer": 2, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 15, "rowId": 1, "columnId": 3, "layer": 3, "customOffset": {"x":-0.1,"y":-0.1}, "Finish": false },
+
+
+    { "foodID": 15, "rowId": 0, "columnId": 4, "layer": 0, "isIce": true, "customOffset": {"x":0.25,"y":0.25}, "Finish": false },
+    { "foodID": 2, "rowId": 0, "columnId": 4, "layer": 1, "customOffset": {"x":0.15,"y":0.15}, "Finish": false },
+    { "foodID": 3, "rowId": 0, "columnId": 4, "layer": 2, "customOffset": {"x":0,"y":0}, "Finish": false },
+    { "foodID": 10, "rowId": 0, "columnId": 4, "layer": 3, "customOffset": {"x":-0.1,"y":-0.1}, "Finish": false }
+  ]
+}

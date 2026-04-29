@@ -91,6 +91,8 @@ public class BoosterManager : MonoBehaviour
     public void ShowBoosterDes(int typeBooster)
     {
         this.typeBooster = typeBooster;
+        RectTransform rectTransform = Img_Booster.GetComponent<RectTransform>();
+        
         if (typeBooster == 1) //Undo
         {
             Img_Booster.sprite = undoIconTo;
@@ -107,7 +109,7 @@ public class BoosterManager : MonoBehaviour
             Txt_Booster_Des.text = "Rearrange all dishes";
             Pnl_Booster.SetActive(true);
         }
-        else if (typeBooster == 3) //Hamer
+        else if (typeBooster == 3) //magnet
         {
             Img_Booster.sprite = hammerIconTo;
             Img_Booster.SetNativeSize();
@@ -115,10 +117,11 @@ public class BoosterManager : MonoBehaviour
             Txt_Booster_Des.text = "Instantly collects dishes!";
             Pnl_Booster.SetActive(true);
         }
-        else if (typeBooster == 4) //Magnet
+        else if (typeBooster == 4) //Torch
         {
             Img_Booster.sprite = magnetIconTo;
             Img_Booster.SetNativeSize();
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x - 20, rectTransform.anchoredPosition.y);
             Txt_Booster_Name.text = "Blowtorch";
             Txt_Booster_Des.text = "Break the frozen layers!";
             Pnl_Booster.SetActive(true);
@@ -128,7 +131,7 @@ public class BoosterManager : MonoBehaviour
 
     public void OpenTutorial()
     {
-         GameManager.Instance.PlayClick();
+        GameManager.Instance.PlayClick();
         if (this.typeBooster == 1)//Undo
         {
             TutorialManager.Instance.StartUndoTutorial();
@@ -565,7 +568,9 @@ public class BoosterManager : MonoBehaviour
                 {
                     foreach (FoodPlacement foodPlacement in requiredLayouts)
                     {
-                        if (foodTile.data.foodType.Equals(foodPlacement.foodType) && foodTile.typeTrayFood==TypeTrayFood.None  )
+                        if (foodTile.data.foodType.Equals(foodPlacement.foodType)
+                        && GameManager.Instance.gridCtrl.CheckGridEmpty(foodPlacement.gridCoord.x, foodPlacement.gridCoord.y)
+                        && foodTile.typeTrayFood == TypeTrayFood.None)
                         {
                             foodTileTarget = foodTile;
                             break;
@@ -702,7 +707,7 @@ public class BoosterManager : MonoBehaviour
             GameManager.Instance.IsProcessing = false;
             Pnl_Booster_Buy.SetActive(true);
             BoosterBuyManager boosterBuyManager = Pnl_Booster_Buy.GetComponent<BoosterBuyManager>();
-            boosterBuyManager.SetData("Blowtorch", "Break the frozen layers!", GameData.torchBootPrice, 3, magnetIconTo, 1);
+            boosterBuyManager.SetData("Blowtorch", "Break the frozen layers!", GameData.torchBootPrice, 3, magnetIconTo, 4);
             return;
         }
 

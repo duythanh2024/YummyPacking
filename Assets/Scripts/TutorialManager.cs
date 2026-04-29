@@ -39,6 +39,14 @@ public class TutorialManager : MonoBehaviour
 
     public bool IsActive => isTutorialActive;
 
+    public GameObject Board;
+    public GameObject Txt_Oder;
+    public GameObject Top_OrderLayer1;
+    public GameObject Top_OrderLayer2;
+    public GameObject TMPCanvas;
+    private bool isTmpActive=false;
+
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -48,6 +56,28 @@ public class TutorialManager : MonoBehaviour
         holeRadiusID = Shader.PropertyToID("_HoleRadius");
 
         tutorialCanvas.SetActive(false);
+    }
+
+    void SetPosition(bool undo)
+    {
+        if (!undo)
+        {
+            //tu mac dinh di chuyen qua canva tmp
+            isTmpActive=true;
+            Board.transform.SetParent(Top_OrderLayer2.transform, false);
+            Txt_Oder.transform.SetParent(Top_OrderLayer2.transform, false);
+            TMPCanvas.SetActive(true);
+        }
+        else
+        {
+             isTmpActive=false;
+            //tu mac dinh di chuyen qua canva tmp
+            Board.transform.SetParent(Top_OrderLayer1.transform, false);
+            Txt_Oder.transform.SetParent(Top_OrderLayer1.transform, false);
+            TMPCanvas.SetActive(false);
+        }
+
+
     }
 
     // ==========================================
@@ -62,6 +92,7 @@ public class TutorialManager : MonoBehaviour
         isTutorialActive = true;
         isBoosterMode = false;
         typeBooster = 0;
+        SetPosition(false);
         tutorialCanvas.SetActive(true);
 
         ShowCurrentStep();
@@ -262,7 +293,11 @@ public class TutorialManager : MonoBehaviour
         isBoosterMode = false;
         masterSequence.Kill();
         tutorialCanvas.SetActive(false);
-
+        if (isTmpActive) // Neu huong dan level 1
+        {
+               SetPosition(true);
+        }
+     
         // Mở khóa toàn bộ Board để chơi bình thường
         GameManager.Instance.boardCtrl.LockAllTiles(false);
     }

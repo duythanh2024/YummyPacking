@@ -145,8 +145,8 @@ public class BentoGridController : MonoBehaviour
                 coinEffectManager.PlayCoinAnimation(currentSlot.transform.GetChild(0).gameObject, GameManager.Instance.Img_Coins, () =>
                 {
 
-                    GameData.Coins +=20;
-                     GameData.Save();
+                    GameData.Coins += 20;
+                    GameData.Save();
                     GameManager.Instance.ShowCoin();
 
                 });
@@ -321,6 +321,13 @@ public class BentoGridController : MonoBehaviour
                 return true;
             }
         }
+        return false;
+    }
+
+    public bool CheckGridEmpty(int x, int y)
+    {
+        if (gridCells[x, y] == 0)
+            return true;
         return false;
     }
 
