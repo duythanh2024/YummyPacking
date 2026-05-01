@@ -25,10 +25,10 @@ namespace MobileMonetizationApp
         private string AndroidBannerId = "ca-app-pub-3940256099942544/6300978111";
 
         [Tooltip("Android AdMob Interstitial Ad Unit ID.")]
-        public string AndroidInterstitalId = "ca-app-pub-3940256099942544/1033173712";
+        public string AndroidInterstitalId = "ca-app-pub-1806836686285293/1454286736";
 
         [Tooltip("Android AdMob Rewarded Video Ad Unit ID.")]
-        public string AndroidRewardedId = "ca-app-pub-3940256099942544/5224354917";
+        public string AndroidRewardedId = "ca-app-pub-1806836686285293/5784728612";
 
         //[Tooltip("Android AdMob Native Ad Unit ID.")]
         //public string AndroidNativeId = "ca-app-pub-3940256099942544/2247696110";
@@ -66,10 +66,10 @@ namespace MobileMonetizationApp
          private string IOSBannerId = "ca-app-pub-3940256099942544/2934735716";
 
         [Tooltip("iOS AdMob Interstitial Ad Unit ID.")]
-        public string IOSInterstitalId = "ca-app-pub-3940256099942544/44114689102";
+        public string IOSInterstitalId = "ca-app-pub-1806836686285293/4088503566";
 
         [Tooltip("iOS AdMob Rewarded Video Ad Unit ID.")]
-        public string IOSRewardedId = "ca-app-pub-3940256099942544/1712485313";
+        public string IOSRewardedId = "ca-app-pub-1806836686285293/2824268219";
 
         //[Tooltip("iOS AdMob Native Ad Unit ID.")]
         //public string IOSNativeId = "ca-app-pub-3940256099942544/3986624511";
@@ -217,24 +217,26 @@ namespace MobileMonetizationApp
             }
 
 
-// #if UNITY_ANDROID
-//             bannerId = AndroidBannerId;
-//             interId = AndroidInterstitalId;
-//             rewardedId = AndroidRewardedId;
-//             //nativeId = AndroidNativeId;
-//             appopenId = AndroidAppOpenId;
-//             rewardedinterstitalId = AndroidRewardedInterstitialID;
-//             //nativeoverlayID = AndroidNativeOverlayID;
-//             //rewardedinterstitalId = AndroidRewardedInterstitalId;
-// #elif UNITY_IPHONE
-//             bannerId = IOSBannerId;
-//             interId = IOSInterstitalId;
-//             rewardedId = IOSRewardedId;
-//             //nativeId = IOSNativeId;
-//             appopenId = IOSAppOpenId;
-//             rewardedinterstitalId = IOSRewardedInterstitialID;
-//             //nativeoverlayID = IOSNativeOverlayID;
-// #endif
+#if UNITY_ANDROID
+            bannerId = AndroidBannerId;
+            interId = AndroidInterstitalId;
+            rewardedId = AndroidRewardedId;
+            //nativeId = AndroidNativeId;
+            appopenId = AndroidAppOpenId;
+            rewardedinterstitalId = AndroidRewardedInterstitialID;
+            //nativeoverlayID = AndroidNativeOverlayID;
+            //rewardedinterstitalId = AndroidRewardedInterstitalId;
+#elif UNITY_IOS
+            bannerId = IOSBannerId;
+            interId = IOSInterstitalId;
+            rewardedId = IOSRewardedId;
+            //nativeId = IOSNativeId;
+            appopenId = IOSAppOpenId;
+            rewardedinterstitalId = IOSRewardedInterstitialID;
+            //nativeoverlayID = IOSNativeOverlayID;
+#endif
+
+//Debug.Log("interId "+interId+ "  "+rewardedId);
         }
         void Start()
         {
